@@ -2,7 +2,7 @@ import { Reducer } from 'react';
 import { AnyAction } from 'redux';
 import { IUserState } from '../types/IUserState';
 import { UserActionsTypes } from '../types/UserEnums';
-import { IRequestLoginSuccess, IRequestUserError } from '../types/IUserPayloadTypes';
+// import { IRequestLoginSuccess, IRequestUserError } from '../types/IUserPayloadTypes';
 
 const INITIAL_STATE: IUserState = {
   user: {
@@ -13,9 +13,9 @@ const INITIAL_STATE: IUserState = {
   error: '',
 };
 
-type IUserActions =
-| IRequestLoginSuccess
-| IRequestUserError;
+// type IUserActions =
+// | IRequestLoginSuccess
+// | IRequestUserError;
 
 const userReducer: Reducer<IUserState, AnyAction> = (
   state = INITIAL_STATE,
