@@ -38,7 +38,12 @@
                 "ts": "never",
                 "tsx": "never"
             }
-        ]
+        ],
+        "no-use-before-define": "off",
+        "no-param-reassign": 0,
+        "react/jsx-props-no-spreading": "off",
+        "@typescript-eslint/no-use-before-define": ["error"],
+        "import/prefer-default-export": "off"
     },
     "settings": {
         "import/resolver": {

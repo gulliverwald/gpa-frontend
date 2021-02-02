@@ -1,7 +1,6 @@
-import { all, takeLatest } from 'redux-saga/effects';
-import { UserActionsTypes } from '../types/UserEnums';
-import userSaga from './userSaga';
+import { fork } from 'redux-saga/effects';
+import { watchRequestLogin } from './userSaga';
 
-export default all([
-  takeLatest(UserActionsTypes.requestLogin, userSaga.requestLogin),
-]);
+export default function* receiptSaga() {
+  yield fork(watchRequestLogin);
+}

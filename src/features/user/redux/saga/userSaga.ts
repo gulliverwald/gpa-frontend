@@ -1,12 +1,12 @@
-import { call, put } from 'redux-saga/effects';
+import { call, put, takeLeading } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
-import { requestLoginSuccess, requestUserError } from '../actions/userActions';
-import { IRequestLogin, IResponseLoginApi } from '../types/IUserPayloadTypes';
+import { requestLogin, requestLoginSuccess, requestUserError } from '../reducers/userReducer';
+import { IResponseLoginApi } from '../types/IUserPayloadTypes';
 import api from '../../../../services/api';
 
-function* requestLogin({ payload }: IRequestLogin): unknown {
+function* workerRequestLogin(action: any) {
   try {
-    const { email, password } = payload;
+    const { email, password } = action.payload;
     const response: AxiosResponse<IResponseLoginApi> = yield call(
       api.post,
       'sessions',
@@ -24,4 +24,6 @@ function* requestLogin({ payload }: IRequestLogin): unknown {
   }
 }
 
-export default { requestLogin };
+export function* watchRequestLogin() {
+  yield takeLeading(requestLogin.type, workerRequestLogin);
+}
