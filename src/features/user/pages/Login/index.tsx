@@ -1,21 +1,27 @@
 import React, { useCallback } from 'react';
 // import { Link } from 'react-router-dom';
-import { TextField, Button } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch } from 'react-redux';
+import { IoMdAlert, IoMdContact, IoMdLock } from 'react-icons/io';
+import { InputAdornment } from '@material-ui/core';
 import { requestLogin } from '../../redux/reducers/userReducer';
-import { Container, useStyles } from './styles';
+import Input from '../../../../components/Input';
+import Button from '../../../../components/Button';
+import ImgBackground from '../../../../assets/img/5912.jpg';
+import ImgGPA from '../../../../assets/img/logo.png';
+import { MainContainer, Container, useStyles } from './styles';
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
+
   const loginSchema = yup.object().shape({
     email: yup.string().required().email(),
     password: yup.string().required(),
   });
 
-  const { register, handleSubmit } = useForm({
+  const { register, errors, handleSubmit } = useForm({
     resolver: yupResolver(loginSchema),
   });
 
@@ -23,8 +29,8 @@ const Login: React.FC = () => {
 
   const onSubmit = useCallback(
     // eslint-disable-next-line no-unused-vars
-    (data, event) => {
-      console.log('data', data);
+    (data) => {
+      console.log(data);
       dispatch(requestLogin(data));
     },
     [dispatch],
@@ -32,39 +38,71 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <Container>
-        <form
-          className="login-form"
-          onSubmit={handleSubmit(onSubmit)}
-          autoComplete="off"
-        >
-          <TextField
-            inputRef={register({ required: true })}
-            id="email"
-            name="email"
-            label="Email"
-            variant="outlined"
-            className={classes.inputField}
-          />
-          <TextField
-            inputRef={register({ required: true })}
-            id="password"
-            name="password"
-            label="Senha"
-            type="password"
-            variant="outlined"
-            className={classes.inputField}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
+      <MainContainer>
+        <Container>
+          {/* <a href="https://www.freepik.com/vectors/nature">Nature vector created by pch.vector - www.freepik.com</a> */}
+          <div className={classes.imageContainer}>
+            <img src={ImgGPA} alt="Logo GPA" className={classes.imageGPA} />
+          </div>
+          <form
+            className="login-form"
+            onSubmit={handleSubmit(onSubmit)}
+            autoComplete="off"
           >
-            Entrar
-          </Button>
-        </form>
-        <p>Esqueci minha senha</p>
-      </Container>
+            <Input
+              inputRef={register({ required: 'O email é obrigatório!' })}
+              id="email"
+              name="email"
+              label="Email"
+              className={classes.inputField}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IoMdContact size={26} />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <span>
+              {errors.email && errors.email.type === 'required' && (
+              <>
+                <p className={classes.inputAlert}>
+                  <IoMdAlert color="red" style={{ margin: '0px 8px' }} />
+                  {errors.email.message}
+                </p>
+              </>
+              ) }
+            </span>
+            <Input
+              inputRef={register({ required: 'A senha é obrigatória!' })}
+              id="password"
+              name="password"
+              label="Senha"
+              type="password"
+              className={classes.inputField}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IoMdLock size={26} />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <span>
+              {errors.password && errors.password.type === 'required' && (
+              <>
+                <p className={classes.inputAlert}>
+                  <IoMdAlert color="red" style={{ margin: '0px 8px' }} />
+                  {errors.password.message}
+                </p>
+              </>
+              ) }
+            </span>
+            <Button type="submit"> Entrar </Button>
+          </form>
+        </Container>
+        <img src={ImgBackground} alt="Imagem de fundo" className={classes.imageBackground} />
+      </MainContainer>
     </>
   );
 };

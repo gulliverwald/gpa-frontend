@@ -1,17 +1,8 @@
-import { createStyles, Theme, makeStyles } from '@material-ui/core';
 import styled from 'styled-components';
+import { makeStyles, createStyles, Theme } from '@material-ui/core';
 
 export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
 
-export const MainContainer = styled.div`
-  padding: 20px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 `;
 
 export const ButtonAppbar = styled.button`
@@ -39,12 +30,5 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     alignItems: 'center',
     justifyContent: 'center',
     color: 'blue',
-  },
-  table: {
-    minWidth: '650px',
-    width: '100%',
-  },
-  tableContainer: {
-    width: '50%',
   },
 }));

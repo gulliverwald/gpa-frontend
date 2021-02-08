@@ -12,12 +12,27 @@ export const Container = styled.div`
 
   .login-form {
     padding: 8rem;
-    width: 70%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
+`;
+
+export const MainContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+
+  @media(max-width: 1000px){
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  };
 `;
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -29,7 +44,29 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
   },
   inputField: {
     width: '100%',
-    minWidth: '300px',
+    minWidth: '400px',
     margin: '1rem',
+  },
+  imageBackground: {
+    justifySelf: 'bottom',
+    width: '65%',
+    height: '40%',
+    '@media(max-width: 1000px)': {
+      display: 'none',
+    },
+  },
+  imageGPA: {
+    width: '167px',
+    height: '114px',
+  },
+  imageContainer: {
+    display: 'flex',
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
+  inputAlert: {
+    color: 'red',
+    display: 'flex',
+    alignItems: 'center',
   },
 }));

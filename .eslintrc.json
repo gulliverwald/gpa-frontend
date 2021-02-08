@@ -39,6 +39,7 @@
                 "tsx": "never"
             }
         ],
+        "camelcase": "off",
         "no-use-before-define": "off",
         "no-param-reassign": 0,
         "react/jsx-props-no-spreading": "off",

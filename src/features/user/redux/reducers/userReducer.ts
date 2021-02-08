@@ -4,7 +4,6 @@ import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IUserState } from '../types/IUserState';
 import {
   IRequestLogin,
-  IResponseLoginApi,
   IRequestLoginSuccess,
   IRequestUserError,
 } from '../types/IUserPayloadTypes';
@@ -35,12 +34,12 @@ const userReducerSlice = createSlice({
         },
       } = action;
 
-      Object.assign(state.user.userId, userId);
-      Object.assign(state.user.token, token);
-      Object.assign(state.user.role, role);
-      // state.user.userId = userId;
-      // state.user.token = token;
-      // state.user.role = role;
+      // Object.assign(state.user.userId, userId);
+      // Object.assign(state.user.token, token);
+      // Object.assign(state.user.role, role);
+      state.user.userId = userId;
+      state.user.token = token;
+      state.user.role = role;
     },
     requestUserError(state, action: PayloadAction<IRequestUserError>) {
       const {
@@ -49,8 +48,8 @@ const userReducerSlice = createSlice({
         },
       } = action;
 
-      Object.assign(state.error, message);
-      // state.error = message;
+      // Object.assign(state.error, message);
+      state.error = message;
     },
   },
 });
@@ -59,9 +58,9 @@ export const requestLogin = createAction<IRequestLogin, '@user/requestLogin'>(
   '@user/requestLogin',
 );
 
-export const responseLoginApi = createAction<IResponseLoginApi, '@user/responseLoginApi'>(
-  '@user/responseLoginApi',
-);
+// export const responseLoginApi = createAction<IResponseLoginApi, '@user/responseLoginApi'>(
+//   '@user/responseLoginApi',
+// );
 
 export const {
   requestLoginSuccess,

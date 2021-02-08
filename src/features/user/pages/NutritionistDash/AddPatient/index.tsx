@@ -1,12 +1,14 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { InputAdornment } from '@material-ui/core';
+import { MdSave, MdLock } from 'react-icons/md';
+import api from '../../../../../services/api';
+import Input from '../../../../../components/Input';
+import Button from '../../../../../components/Button';
+import AppBar from '../../../../../components/AppBar';
+import { PatientProps } from './PatientProps';
 import {
-  AppBar, Button, TextField, InputAdornment,
-} from '@material-ui/core';
-import { MdArrowBack, MdSave, MdLock } from 'react-icons/md';
-import {
-  Container, ButtonAppbar, MainContainer, useStyles,
+  Container, MainContainer, useStyles,
 } from './styles';
 
 function generatePassword(length: number) {
@@ -21,71 +23,66 @@ function generatePassword(length: number) {
 
 const AddPatient: React.FC = () => {
   const classes = useStyles();
-  const history = useHistory();
 
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = handleSubmit((data) => { console.log(data); });
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTIzNTY5MTIsImV4cCI6MTYxMjQ0MzMxMiwic3ViIjoiMSJ9.LGujUx7jj2OPvWMQegEKLsu_n6_OUKiggtM2-3hhrtQ';
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+
+  const onSubmit = handleSubmit((data: PatientProps) => {
+    console.log(data);
+    data.authorization = 1;
+    data.district = 'B';
+    data.complement = 'Casa';
+    data.city_id = 1;
+    api.post('/Users', { data }, config);
+  });
 
   return (
     <Container>
-      <AppBar className={classes.appbar}>
-        <p><b>Adicionar Paciente</b></p>
-        <ButtonAppbar onClick={() => history.goBack()} className={classes.returnAppbar}>
-          <MdArrowBack size={20} />
-          Voltar
-        </ButtonAppbar>
-      </AppBar>
+      <AppBar />
       <MainContainer>
         <form onSubmit={onSubmit} className={classes.form}>
           <div className={classes.formColumn}>
             <h2 style={{ color: 'GrayText' }}>Dados Pessoais</h2>
-            <TextField
+            <Input
               inputRef={register({ required: true })}
               id="name"
               name="name"
               label="Nome"
-              variant="outlined"
-              autoComplete="off"
               className={classes.inputForm}
             />
-            <TextField
+            <Input
               inputRef={register({ required: true })}
               id="cpf"
               name="cpf"
               label="CPF"
-              variant="outlined"
-              autoComplete="off"
               className={classes.inputForm}
             />
-            <TextField
+            <Input
               inputRef={register({ required: true })}
-              id="date"
-              name="date"
-              label="Data de Nascimento"
-              defaultValue={Date.now}
               type="date"
+              id="birthday"
+              name="birthday"
+              label="Data de Nascimento"
               InputLabelProps={{
                 shrink: true,
               }}
               className={classes.inputFormTiny}
             />
-            <TextField
+            <Input
               inputRef={register({ required: true })}
               id="email"
               name="email"
               label="Email"
-              variant="outlined"
-              autoComplete="off"
               className={classes.inputForm}
             />
-            <TextField
+            <Input
               inputRef={register({ required: true })}
               id="password"
               name="password"
               label="Senha"
               defaultValue={generatePassword(6)}
-              variant="outlined"
               helperText="Senha gerada aleatoriamente"
               InputProps={{
                 readOnly: true,
@@ -99,8 +96,6 @@ const AddPatient: React.FC = () => {
             />
             <Button
               type="submit"
-              variant="contained"
-              color="primary"
               startIcon={<MdSave />}
               className={classes.buttonForm}
             >
@@ -109,38 +104,34 @@ const AddPatient: React.FC = () => {
           </div>
           <div className={classes.formColumn}>
             <h2 style={{ color: 'GrayText' }}>Endereço</h2>
-            <TextField
+            <Input
               inputRef={register({ required: true })}
-              id="cep"
-              name="cep"
+              id="zipCode"
+              name="zipCode"
               label="CEP"
-              variant="outlined"
               className={classes.inputForm}
             />
             <div className={classes.streetForm}>
-              <TextField
+              <Input
                 inputRef={register({ required: true })}
                 id="street"
                 name="street"
                 label="Rua/Logradouro"
-                variant="outlined"
                 className={classes.inputForm}
               />
-              <TextField
+              <Input
                 inputRef={register({ required: true })}
-                id="street_number"
-                name="street_number"
+                id="number"
+                name="number"
                 label="Nº"
-                variant="outlined"
                 className={classes.inputFormTiny}
               />
             </div>
-            <TextField
+            <Input
               inputRef={register({ required: true })}
               id="phone"
               name="phone"
               label="Telefone"
-              variant="outlined"
               className={classes.inputForm}
               helperText="Coloque apenas o número"
             />
