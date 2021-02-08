@@ -13,8 +13,8 @@ const PatientAppbar: React.FC = () => {
     <>
       <Container>
         <ButtonAppbar onClick={() => history.goBack()} className={classes.returnAppbar}>
-          <MdArrowBack size={20} />
-          Voltar
+          <MdArrowBack size={28} />
+          <b>Voltar</b>
         </ButtonAppbar>
         <div className={classes.imageContainer}>
           <img src={ImgGPA} alt="Logo GPA" className={classes.imageGPA} />

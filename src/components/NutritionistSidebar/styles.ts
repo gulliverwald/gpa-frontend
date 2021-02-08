@@ -54,8 +54,10 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
   toolbar: {
     display: 'flex',
     width: '100%',
+    height: '100px',
     alignItems: 'center',
     justifyContent: 'space-around',
+    backgroundColor: '#CCE0FF',
     // padding: theme.spacing(0, 0.5),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,

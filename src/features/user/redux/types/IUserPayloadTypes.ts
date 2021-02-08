@@ -6,9 +6,19 @@ export interface IRequestLogin {
 export interface IResponseLoginApi {
   user: {
     id: number;
-    crn: string;
     email: string;
     name: string;
+    crn?: string;
+    access_authorization?: number;
+    cpf?: string;
+    phone?: string;
+    birthday?: Date;
+    city_id?: number;
+    district?: string;
+    street?: string;
+    zip?: number;
+    number?: number;
+    adjunct?: string;
   };
   token: string;
   role: string;
@@ -17,7 +27,17 @@ export interface IResponseLoginApi {
 export interface IRequestLoginSuccess {
   user: {
     id: number;
-    crn: string;
+    crn?: string;
+    access_authorization?: number;
+    cpf?: string;
+    phone?: string;
+    birthday?: Date;
+    city_id?: number;
+    district?: string;
+    street?: string;
+    zip?: number;
+    number?: number;
+    adjunct?: string;
     email: string;
     name: string;
   };

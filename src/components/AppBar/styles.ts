@@ -17,7 +17,7 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    height: '50px',
+    height: '57px',
     width: '100%',
     position: 'relative',
     padding: theme.spacing(0, 10),

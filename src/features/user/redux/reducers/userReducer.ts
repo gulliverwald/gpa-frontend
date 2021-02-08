@@ -12,9 +12,19 @@ const INITIAL_STATE: IUserState = {
   userInfo: {
     user: {
       id: -1,
-      crn: '',
       email: '',
       name: '',
+      crn: undefined,
+      access_authorization: undefined,
+      cpf: undefined,
+      phone: undefined,
+      birthday: undefined,
+      city_id: undefined,
+      district: undefined,
+      street: undefined,
+      zip: undefined,
+      number: undefined,
+      adjunct: undefined,
     },
     token: '',
     role: '',
@@ -37,8 +47,19 @@ const userReducerSlice = createSlice({
           token,
           user: {
             id,
-            crn,
             email,
+            name,
+            crn,
+            access_authorization,
+            cpf,
+            phone,
+            birthday,
+            city_id,
+            district,
+            street,
+            zip,
+            number,
+            adjunct,
           },
         },
       } = action;
@@ -47,8 +68,19 @@ const userReducerSlice = createSlice({
       // Object.assign(state.user.token, token);
       // Object.assign(state.user.role, role);
       state.userInfo.user.id = id;
-      state.userInfo.user.crn = crn;
       state.userInfo.user.email = email;
+      state.userInfo.user.name = name;
+      state.userInfo.user.crn = crn;
+      state.userInfo.user.access_authorization = access_authorization;
+      state.userInfo.user.cpf = cpf;
+      state.userInfo.user.phone = phone;
+      state.userInfo.user.birthday = birthday;
+      state.userInfo.user.city_id = city_id;
+      state.userInfo.user.district = district;
+      state.userInfo.user.street = street;
+      state.userInfo.user.zip = zip;
+      state.userInfo.user.number = number;
+      state.userInfo.user.adjunct = adjunct;
       state.userInfo.token = token;
       state.userInfo.role = role;
     },

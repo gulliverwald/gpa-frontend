@@ -1,17 +1,21 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Container } from './styles';
+import { Container, NewsContainer } from './styles';
 
 interface NewsCardProps {
   newsTitle: string;
+  subTitle: string;
   imageLink: string;
 }
 
-const NewsCard: React.FC<NewsCardProps> = ({ newsTitle, imageLink }) => (
+const NewsCard: React.FC<NewsCardProps> = ({ newsTitle, subTitle, imageLink }) => (
   <>
     <Container>
       <img src={imageLink} alt="Imagem da Notícia" />
-      <h3><b>{newsTitle}</b></h3>
+      <NewsContainer>
+        <h3><b>{newsTitle}</b></h3>
+        <p>{subTitle}</p>
+      </NewsContainer>
     </Container>
   </>
 );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { MdNotificationsActive } from 'react-icons/md';
@@ -14,40 +14,31 @@ import {
   Container, MenuContainer, TipContainer, ContentContainer, useStyles,
 } from './styles';
 
-interface PatientProps {
-  nome: string;
-}
-
 interface TipProps {
-  conteudo: string;
+  content: string;
 }
 
 const Homepage: React.FC = () => {
-  const [patient, setPatient] = useState<PatientProps>();
-  const [tip, setTip] = useState<TipProps>();
-  const userId = useSelector((store: WebStore) => store.user.state.userInfo.user.id);
   const classes = useStyles();
+  const [tips, setTips] = useState<TipProps>();
 
-  useEffect(() => {
-    async function handlePatient(): Promise<void> {
-      const response = await api.get(`/Users/${userId}`);
-      setPatient(response.data);
-    }
-    handlePatient();
-  }, [patient]);
+  const user = useSelector((store: WebStore) => store.user.state.userInfo.user);
 
-  useEffect(() => {
-    async function handleTip(): Promise<void> {
-      const response = await api.get('/Tip');
-      setTip(response.data[0]);
-    }
-    handleTip();
-  }, [tip]);
+  useEffect(
+    () => {
+      async function handleTips(): Promise<void> {
+        const response = await api.get('/Tip');
+        setTips(response.data.slice(-1)[0]);
+      }
+      handleTips();
+    },
+    [],
+  );
 
   return (
     <>
       <Container>
-        <PatientSidebar name={`${patient?.nome}`} />
+        <PatientSidebar name={`${user.name}`} />
         <ContentContainer>
           <MenuContainer>
             <TipContainer>
@@ -55,14 +46,16 @@ const Homepage: React.FC = () => {
               <div className={classes.tipContentContainer}>
                 <h3><b>Dica:</b></h3>
                 <p>
-                  {`"${tip?.conteudo}"`}
+                  {`"${tips?.content}"`}
                 </p>
               </div>
             </TipContainer>
-            <NavLink to="/dashboard/eatingPlan">
+            <NavLink to="/dashboard/eatingPlan" className={classes.cardLink}>
               <CardPatient Icon={IoMdPaper} message="Plano Alimentar" />
             </NavLink>
-            <CardPatient Icon={IoMdCalendar} message="Pré-agendar Consulta" />
+            <NavLink to="/dashboard/preSchedule" className={classes.cardLink}>
+              <CardPatient Icon={IoMdCalendar} message="Pré-agendar Consulta" />
+            </NavLink>
           </MenuContainer>
           <NewsFeed />
         </ContentContainer>

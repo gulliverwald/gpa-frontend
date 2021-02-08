@@ -11,7 +11,7 @@ const PatientDash: React.FC = () => (
       <Route exact path="/dashboard" component={Homepage} />
       <Route exact path="/dashboard/newsInfo" component={NewsInfo} />
       <Route exact path="/dashboard/eatingPlan" component={EatingPlan} />
-      <Route exact path="/dashboard/preScheduling" component={PreScheduling} />
+      <Route exact path="/dashboard/preSchedule" component={PreScheduling} />
     </Switch>
   </>
 );

@@ -37,7 +37,7 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     background: '#E7F3FF',
     gridArea: 'AB',
     position: 'relative',
-    height: '80px',
+    height: '100px',
     width: '100%',
     display: 'flex',
   },

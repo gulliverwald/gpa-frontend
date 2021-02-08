@@ -66,6 +66,13 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     flexDirection: 'column',
     alignItems: 'left',
     justifyContent: 'left',
+    maxWidth: '40%',
     margin: theme.spacing(5),
+  },
+  cardLink: {
+    textDecoration: 'none',
+    width: '100%',
+    minWidth: '376px',
+    justifySelf: 'center',
   },
 }));

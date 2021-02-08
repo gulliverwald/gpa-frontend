@@ -15,3 +15,16 @@ export const Container = styled.div`
     padding: 16px;
   }
 `;
+
+export const ShowContainer = styled.div`
+  position: relative;
+  align-self: left;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding-left: 10%;
+  margin: 16px;
+  color: #64C077;
+`;

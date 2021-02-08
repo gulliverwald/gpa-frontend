@@ -22,6 +22,9 @@ const Route: React.FC<RouteProps> = ({
   ...rest
 }) => {
   const user = useSelector((store: WebStore) => store.user.state.userInfo.role);
+  const userAuth = useSelector(
+    (store: WebStore) => store.user.state.userInfo.user.access_authorization,
+  );
   const token = useSelector((store: WebStore) => store.user.state.userInfo.token);
 
   api.defaults.headers.authorization = `Bearer ${token}`;
@@ -29,7 +32,7 @@ const Route: React.FC<RouteProps> = ({
 
   if (user === 'nutritionist') {
     pathname = '/admin';
-  } else {
+  } else if (userAuth === 1) {
     pathname = '/dashboard';
   }
 

@@ -26,16 +26,13 @@ const AddPatient: React.FC = () => {
 
   const { register, handleSubmit } = useForm();
 
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTIzNTY5MTIsImV4cCI6MTYxMjQ0MzMxMiwic3ViIjoiMSJ9.LGujUx7jj2OPvWMQegEKLsu_n6_OUKiggtM2-3hhrtQ';
-  const config = { headers: { Authorization: `Bearer ${token}` } };
-
   const onSubmit = handleSubmit((data: PatientProps) => {
     console.log(data);
     data.authorization = 1;
     data.district = 'B';
     data.complement = 'Casa';
     data.city_id = 1;
-    api.post('/Users', { data }, config);
+    api.post('/Users', { data });
   });
 
   return (

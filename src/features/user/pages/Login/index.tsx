@@ -17,8 +17,8 @@ const Login: React.FC = () => {
   const dispatch = useDispatch();
 
   const loginSchema = yup.object().shape({
-    email: yup.string().required().email(),
-    password: yup.string().required(),
+    email: yup.string().email('Email inválido').required('O email é obrigatório!'),
+    password: yup.string().required('A senha é obrigatória!'),
   });
 
   const { register, errors, handleSubmit } = useForm({
@@ -30,7 +30,6 @@ const Login: React.FC = () => {
   const onSubmit = useCallback(
     // eslint-disable-next-line no-unused-vars
     (data) => {
-      console.log(data);
       dispatch(requestLogin(data));
     },
     [dispatch],

@@ -12,7 +12,7 @@ function* workerRequestLogin(action: any) {
     const { email, password } = action.payload;
     const response: AxiosResponse<IResponseLoginApi> = yield call(
       api.post,
-      'Sessions/nutritionist',
+      'sessions',
       {
         email, password,
       },
