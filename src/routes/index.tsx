@@ -8,7 +8,7 @@ import PatientDash from '../features/user/pages/PatientDash';
 
 const Routes: React.FC = () => (
   <Switch>
-    <Route path="/" component={Login} />
+    <Route path="/" exact component={Login} />
     <Route path="/dashboard" isPrivate component={PatientDash} />
     <Route path="/admin" isPrivate component={NutritionistDash} />
   </Switch>

@@ -9,8 +9,13 @@ import {
 } from '../types/IUserPayloadTypes';
 
 const INITIAL_STATE: IUserState = {
-  user: {
-    userId: -1,
+  userInfo: {
+    user: {
+      id: -1,
+      crn: '',
+      email: '',
+      name: '',
+    },
     token: '',
     role: '',
   },
@@ -30,16 +35,26 @@ const userReducerSlice = createSlice({
         payload: {
           role,
           token,
-          userId,
+          user: {
+            id,
+            crn,
+            email,
+          },
         },
       } = action;
 
       // Object.assign(state.user.userId, userId);
       // Object.assign(state.user.token, token);
       // Object.assign(state.user.role, role);
-      state.user.userId = userId;
-      state.user.token = token;
-      state.user.role = role;
+      state.userInfo.user.id = id;
+      state.userInfo.user.crn = crn;
+      state.userInfo.user.email = email;
+      state.userInfo.token = token;
+      state.userInfo.role = role;
+    },
+    requestLogoutSuccess(state) {
+      state.userInfo.token = '';
+      state.userInfo.user.id = -1;
     },
     requestUserError(state, action: PayloadAction<IRequestUserError>) {
       const {
@@ -58,12 +73,17 @@ export const requestLogin = createAction<IRequestLogin, '@user/requestLogin'>(
   '@user/requestLogin',
 );
 
+export const requestLogout = createAction<void, '@user/requestLogout'>(
+  '@user/requestLogout',
+);
+
 // export const responseLoginApi = createAction<IResponseLoginApi, '@user/responseLoginApi'>(
 //   '@user/responseLoginApi',
 // );
 
 export const {
   requestLoginSuccess,
+  requestLogoutSuccess,
   requestUserError,
 } = userReducerSlice.actions;
 

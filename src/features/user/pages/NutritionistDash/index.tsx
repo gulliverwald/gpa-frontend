@@ -27,10 +27,10 @@ const NutritionistDash: React.FC = () => {
             </div>
           </AppBar>
           <Switch>
-            <Route exact path="/addPatient" component={AddPatient} />
-            <Route exact path="/addEatingPlan" component={AddEatingPlan} />
-            <Route exact path="/listPatient" component={ListPatient} />
-            <Route exact path="/addNews" component={AddNews} />
+            <Route path="/addPatient" component={AddPatient} />
+            <Route path="/addEatingPlan" component={AddEatingPlan} />
+            <Route path="/listPatient" component={ListPatient} />
+            <Route path="/addNews" component={AddNews} />
           </Switch>
         </MainContainer>
       </Container>

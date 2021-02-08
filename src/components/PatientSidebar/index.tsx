@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { MdPerson, MdSettings } from 'react-icons/md';
 import { IoMdExit } from 'react-icons/io';
+import { requestLogout } from '../../features/user/redux/reducers/userReducer';
 import {
   RootContainer, MenuContainer, OptionsContainer, OptionsItem, useStyles,
 } from './styles';
@@ -12,7 +14,13 @@ interface PatientSidebarProps {
 }
 
 const PatientSidebar: React.FC<PatientSidebarProps> = ({ name }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  const handleLogout = useCallback(
+    () => { dispatch(requestLogout()); },
+    [dispatch],
+  );
 
   return (
     <>
@@ -30,7 +38,7 @@ const PatientSidebar: React.FC<PatientSidebarProps> = ({ name }) => {
               <MdSettings size={28} />
               <p>Configurações</p>
             </OptionsItem>
-            <OptionsItem>
+            <OptionsItem onClickCapture={handleLogout}>
               <IoMdExit color="red" size={28} />
               <p style={{ color: 'red' }}>Sair</p>
             </OptionsItem>

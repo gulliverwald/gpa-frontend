@@ -4,13 +4,23 @@ export interface IRequestLogin {
 }
 
 export interface IResponseLoginApi {
-  userId: number;
+  user: {
+    id: number;
+    crn: string;
+    email: string;
+    name: string;
+  };
   token: string;
   role: string;
 }
 
 export interface IRequestLoginSuccess {
-  userId: number;
+  user: {
+    id: number;
+    crn: string;
+    email: string;
+    name: string;
+  };
   token: string;
   role: string;
 }

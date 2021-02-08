@@ -19,7 +19,7 @@ export interface IStore {
 const persistConfig = {
   key: 'GPA',
   storage: Storage,
-  whitelist: ['userReducer'],
+  whitelist: ['user'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

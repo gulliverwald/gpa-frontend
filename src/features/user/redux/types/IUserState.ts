@@ -1,6 +1,11 @@
 export interface IUserState {
-  user: {
-    userId: number,
+  userInfo: {
+    user: {
+      id: number;
+      email: string;
+      name: string;
+      crn: string;
+    },
     token: string,
     role: string,
   },

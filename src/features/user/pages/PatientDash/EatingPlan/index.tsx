@@ -4,7 +4,9 @@ import { Container } from './styles';
 
 const EatingPlan: React.FC = () => (
   <>
-    <Container />
+    <Container>
+      <p>PLANO ALIMENTAR</p>
+    </Container>
   </>
 );
 

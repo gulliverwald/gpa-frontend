@@ -21,9 +21,8 @@ const Route: React.FC<RouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const user = useSelector((store: WebStore) => store.user.state.user.role);
-  const token = useSelector((store: WebStore) => store.user.state.user.token);
-  console.log(`${token}`);
+  const user = useSelector((store: WebStore) => store.user.state.userInfo.role);
+  const token = useSelector((store: WebStore) => store.user.state.userInfo.token);
 
   api.defaults.headers.authorization = `Bearer ${token}`;
   let pathname: string;
@@ -37,13 +36,14 @@ const Route: React.FC<RouteProps> = ({
   return (
     <ReactDOMRoute
       {...rest}
-      render={({ location }) => (isPrivate === !!token ? (
+      // render={({ location }) => (isPrivate === !!token ? (
+      render={() => (isPrivate === !!token ? (
         <Component />
       ) : (
         <Redirect
           to={{
             pathname: isPrivate ? '/' : pathname,
-            state: { from: location },
+            // state: { from: location },
           }}
         />
       ))}
