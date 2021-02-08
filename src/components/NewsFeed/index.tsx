@@ -30,6 +30,7 @@ const NewsFeed: React.FC = () => {
         {news.map((noticia) => (
           <NewsCard
             key={noticia.id}
+            id={noticia.id}
             newsTitle={noticia.title}
             subTitle={noticia.subtitle}
             imageLink={noticia.image_link}

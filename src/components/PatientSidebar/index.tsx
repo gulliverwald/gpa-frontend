@@ -31,7 +31,7 @@ const PatientSidebar: React.FC<PatientSidebarProps> = ({ name }) => {
         <MenuContainer>
           <div className={classes.userMenuContainer}>
             <MdPerson />
-            {name}
+            <p>{name}</p>
           </div>
           <OptionsContainer>
             <OptionsItem>

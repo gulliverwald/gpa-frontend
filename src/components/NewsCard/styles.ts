@@ -1,3 +1,4 @@
+import { createStyles, makeStyles } from '@material-ui/core';
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -27,3 +28,16 @@ export const NewsContainer = styled.div`
     color: #6E6E6E;
   }
 `;
+
+export const useStyles = makeStyles(() => createStyles({
+  linkContainer: {
+    textDecoration: 'none',
+    display: 'flex',
+    width: '90%',
+    color: '#3FB978',
+
+    '&:after': {
+      color: '#3D8B4E',
+    },
+  },
+}));

@@ -1,16 +1,20 @@
 /* eslint-disable camelcase */
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
+// import {
+//   TableContainer,
+//   Table,
+//   TableHead,
+//   TableRow,
+//   TableCell,
+//   TableBody,
+//   Paper,
+//   Checkbox,
+// } from '@material-ui/core';
 import {
   TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
   Paper,
-  Checkbox,
 } from '@material-ui/core';
-import { MdEdit, MdDelete } from 'react-icons/md';
+// import { MdEdit, MdDelete } from 'react-icons/md';
 import AppBar from '../../../../../components/AppBar';
 import {
   Container, MainContainer, useStyles,
@@ -29,11 +33,11 @@ interface Patient{
 const ListPatient: React.FC = () => {
   const classes = useStyles();
   const [patients, setPatients] = useState<Patient[]>([]);
-  const [checked, setChecked] = React.useState(true);
+  // const [checked, setChecked] = React.useState(true);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  };
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setChecked(event.target.checked);
+  // };
 
   const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTIzNTY5MTIsImV4cCI6MTYxMjQ0MzMxMiwic3ViIjoiMSJ9.LGujUx7jj2OPvWMQegEKLsu_n6_OUKiggtM2-3hhrtQ';
   const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -46,23 +50,23 @@ const ListPatient: React.FC = () => {
     handleListPatients();
   }, [patients]);
 
-  const getAge = useMemo(() => (dateString: string) => {
-    const today = new Date();
-    const birthDate = new Date(dateString);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age -= 1;
-    }
-    return age;
-  }, [patients]);
+  // const getAge = useMemo(() => (dateString: string) => {
+  //   const today = new Date();
+  //   const birthDate = new Date(dateString);
+  //   let age = today.getFullYear() - birthDate.getFullYear();
+  //   const m = today.getMonth() - birthDate.getMonth();
+  //   if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+  //     age -= 1;
+  //   }
+  //   return age;
+  // }, [patients]);
 
   return (
     <Container>
       <AppBar />
       <MainContainer>
         <TableContainer component={Paper} className={classes.tableContainer}>
-          <Table className={classes.table} size="small" aria-label="a dense table">
+          {/* <Table className={classes.table} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
                 <TableCell>Nome</TableCell>
@@ -97,7 +101,7 @@ const ListPatient: React.FC = () => {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+          </Table> */}
         </TableContainer>
       </MainContainer>
     </Container>

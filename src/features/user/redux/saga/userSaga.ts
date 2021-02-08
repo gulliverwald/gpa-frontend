@@ -30,7 +30,6 @@ function* workerRequestLogin(action: any) {
 
 function* workerLogoutRequest() {
   try {
-    console.log('logout');
     yield put(requestLogoutSuccess());
   } catch (erro) {
     console.log(erro);

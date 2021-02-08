@@ -1,12 +1,14 @@
 import React from 'react';
 import PatientAppbar from '../../../../../components/PatientAppbar';
-import { Container } from './styles';
+import { Container, BoxContainer } from './styles';
 
 const EatingPlan: React.FC = () => (
   <>
     <PatientAppbar />
     <Container>
-      <p>PLANO ALIMENTAR</p>
+      <BoxContainer>
+        {/* <p>PLANO ALIMENTAR</p> */}
+      </BoxContainer>
     </Container>
   </>
 );

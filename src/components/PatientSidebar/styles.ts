@@ -24,6 +24,10 @@ export const MenuContainer = styled.div`
   width: 100%;
   height: 30%;
   padding: 40px;
+
+  p {
+    padding-left: 16px;
+  }
 `;
 
 export const OptionsContainer = styled.div`

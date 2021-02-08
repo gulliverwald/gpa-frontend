@@ -1,12 +1,14 @@
 import React from 'react';
 import PatientAppbar from '../../../../../components/PatientAppbar';
-import { Container } from './styles';
+import { Container, BoxContainer } from './styles';
 
 const PreScheduling: React.FC = () => (
   <>
     <PatientAppbar />
     <Container>
-      <p>PRÉ AGENDAMENTO</p>
+      <BoxContainer>
+        {/* <p>PLANO ALIMENTAR</p> */}
+      </BoxContainer>
     </Container>
   </>
 );

@@ -71,8 +71,10 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
   },
   cardLink: {
     textDecoration: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: '100%',
     minWidth: '376px',
-    justifySelf: 'center',
   },
 }));
