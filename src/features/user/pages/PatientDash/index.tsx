@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import EatingPlan from './EatingPlan';
 import Homepage from './Homepage';
-import NewsInfo from './NewsInfo';
+import NewsInfo from '../../../news/pages/NewsInfo';
 import PreScheduling from './PreScheduling';
 
 const PatientDash: React.FC = () => (

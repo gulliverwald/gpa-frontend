@@ -1,39 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Divider } from '@material-ui/core';
 import { IoMdArrowDropright } from 'react-icons/io';
 import NewsCard from '../NewsCard';
-import api from '../../services/api';
+import { WebStore } from '../../store/RootReducer';
+import { requestListNews } from '../../features/news/redux/reducers/newsReducer';
 import { Container, ShowContainer } from './styles';
 
-interface NewsProps {
-  id: number;
-  title: string;
-  subtitle: string;
-  image_link: string;
-}
-
 const NewsFeed: React.FC = () => {
-  const [news, setNews] = useState<NewsProps[]>([]);
+  const dispatch = useDispatch();
+  const news = useSelector((store: WebStore) => store.news.news);
 
   useEffect(() => {
-    async function handleNews(): Promise<void> {
-      const response = await api.get('/News');
-      setNews(response.data);
-    }
-    handleNews();
-  }, []);
+    dispatch(requestListNews());
+  }, [dispatch]);
 
   return (
     <>
       <Container>
         <h2><b>Feed de Notícias</b></h2>
-        {news.map((noticia) => (
+        {news.map((news_) => (
           <NewsCard
-            key={noticia.id}
-            id={noticia.id}
-            newsTitle={noticia.title}
-            subTitle={noticia.subtitle}
-            imageLink={noticia.image_link}
+            key={news_.id}
+            id={news_.id}
+            newsTitle={news_.title}
+            subTitle={news_.subtitle}
+            imageLink={news_.image_link}
           />
         ))}
         <Divider />

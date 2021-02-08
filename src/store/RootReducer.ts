@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import userReducer from '../features/user/redux/reducers';
+import newsReducer from '../features/news/redux/reducers/newsReducer';
 import notificationReducer from '../features/notifications/redux/reducers';
 
 export const history = createBrowserHistory();
@@ -11,6 +12,7 @@ export const history = createBrowserHistory();
 const rootReducer = combineReducers({
   router: connectRouter(history),
   user: userReducer,
+  news: newsReducer,
   notification: notificationReducer,
 });
 

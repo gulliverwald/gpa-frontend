@@ -1,6 +1,6 @@
 import { fork } from 'redux-saga/effects';
-import { watchRequestCreateNews } from './newsSaga';
+import { watchRequestNews } from './newsSaga';
 
 export default function* receiptSaga() {
-  yield fork(watchRequestCreateNews);
+  yield fork(watchRequestNews);
 }

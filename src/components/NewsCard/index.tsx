@@ -6,7 +6,7 @@ import { Container, NewsContainer, useStyles } from './styles';
 interface NewsCardProps {
   id: number;
   newsTitle: string;
-  subTitle: string;
+  subTitle?: string;
   imageLink: string;
 }
 

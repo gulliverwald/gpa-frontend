@@ -4,6 +4,8 @@ import {
   IRequestCreateNewsSucess,
   IRequestUpdateNewsSucess,
   IRequestDeleteNewsSucess,
+  IRequestListNewsSucess,
+  IRequestListNews,
   IRequestCreateNews,
   IRequestDeleteNews,
   IRequestUpdateNews,
@@ -23,6 +25,11 @@ const newsReducerSlice = createSlice({
       const { payload } = action;
 
       state.news.push(payload);
+    },
+    requestListNewsSuccess(state, action: PayloadAction<IRequestListNewsSucess>) {
+      const { payload } = action;
+
+      Object.assign(state.news, payload);
     },
     requestUpdateNewsSuccess(state, action: PayloadAction<IRequestUpdateNewsSucess>) {
       const index = state.news.findIndex((news) => news.id === action.payload.id);
@@ -52,6 +59,10 @@ export const requestCreateNews = createAction<IRequestCreateNews, '@news/request
   '@news/requestCreateNews',
 );
 
+export const requestListNews = createAction<IRequestListNews, '@news/requestListNews'>(
+  '@news/requestListNews',
+);
+
 export const requestDeleteNews = createAction<IRequestDeleteNews, '@news/requestDeleteNews'>(
   '@news/requestDeleteNews',
 );
@@ -66,6 +77,7 @@ export const {
   requestDeleteNewsSuccess,
   requestNewsError,
   requestUpdateNewsSuccess,
+  requestListNewsSuccess,
 } = newsReducerSlice.actions;
 
 export default newsReducerSlice.reducer;

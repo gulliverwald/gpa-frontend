@@ -4,15 +4,18 @@ import {
   requestCreateNewsSuccess,
   requestCreateNews,
   requestDeleteNewsSuccess,
+  requestDeleteNews,
   requestUpdateNews,
   requestUpdateNewsSuccess,
-  requestDeleteNews,
+  requestListNews,
+  requestListNewsSuccess,
   requestNewsError,
 } from '../reducers/newsReducer';
 import {
   IRequestCreateNewsSucess,
   IRequestDeleteNewsSucess,
   IRequestUpdateNewsSucess,
+  IRequestListNewsSucess,
 } from '../types/INewsPayloadTypes';
 import api from '../../../../services/api';
 
@@ -43,6 +46,23 @@ function* workerRequestCreateNews(action: any) {
       },
     );
     yield put(requestCreateNewsSuccess({ ...response.data }));
+  } catch (err) {
+    yield put(
+      requestNewsError({
+        message: 'Error',
+      }),
+    );
+    console.log(err);
+  }
+}
+
+function* workerRequestListNews() {
+  try {
+    const response: AxiosResponse<IRequestListNewsSucess> = yield call(
+      api.get,
+      'News',
+    );
+    yield put(requestListNewsSuccess({ ...response.data }));
   } catch (err) {
     yield put(
       requestNewsError({
@@ -109,8 +129,9 @@ function* workerRequestDeleteNews(action: any) {
   }
 }
 
-export function* watchRequestCreateNews() {
+export function* watchRequestNews() {
   yield takeLeading(requestCreateNews.type, workerRequestCreateNews);
   yield takeLeading(requestDeleteNews.type, workerRequestDeleteNews);
   yield takeLeading(requestUpdateNews.type, workerRequestUpdateNews);
+  yield takeLeading(requestListNews.type, workerRequestListNews);
 }
