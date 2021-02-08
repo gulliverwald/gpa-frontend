@@ -7,7 +7,6 @@ import api from '../../../../services/api';
 
 function* workerRequestLogin(action: any) {
   try {
-    console.log('IDOMAR FDP');
     const { email, password } = action.payload;
     const response: AxiosResponse<IResponseLoginApi> = yield call(
       api.post,
