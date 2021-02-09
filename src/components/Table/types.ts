@@ -1,4 +1,5 @@
-import { CSSProperties, ReactElement } from 'react';
+/* eslint-disable no-unused-vars */
+import React, { CSSProperties, ReactElement } from 'react';
 
 export type PropType = number | string;
 
