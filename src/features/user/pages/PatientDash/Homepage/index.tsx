@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { MdNotificationsActive } from 'react-icons/md';
 import { IoMdCalendar, IoMdPaper } from 'react-icons/io';
+import { CircularProgress } from '@material-ui/core';
 import CardPatient from '../../../../../components/CardPatient';
 import PatientSidebar from '../../../../../components/PatientSidebar';
 import NewsFeed from '../../../../../components/NewsFeed';
@@ -46,7 +47,7 @@ const Homepage: React.FC = () => {
               <div className={classes.tipContentContainer}>
                 <h3><b>Dica:</b></h3>
                 <p>
-                  {`"${tips?.content}"`}
+                  { tips ? `"${tips?.content}"` : <CircularProgress color="primary" />}
                 </p>
               </div>
             </TipContainer>

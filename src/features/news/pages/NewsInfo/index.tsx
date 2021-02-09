@@ -16,10 +16,10 @@ const NewsInfo: React.FC = () => {
       <PatientAppbar />
       <Container>
         <BoxContainer>
-          {news?.image_link}
-          {news?.title}
-          {news?.subtitle}
-          {news?.description}
+          <img src={news?.image_link} alt="Imagem da notícia" />
+          <h2><b>{news?.title}</b></h2>
+          <h3>{news?.subtitle}</h3>
+          <p>{news?.description}</p>
         </BoxContainer>
       </Container>
     </>

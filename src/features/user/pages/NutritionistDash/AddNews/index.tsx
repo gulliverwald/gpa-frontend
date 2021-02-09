@@ -1,14 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import {
-  AppBar, Button, TextField,
-} from '@material-ui/core';
-import { MdArrowBack, MdDelete } from 'react-icons/md';
+import { Button, TextField } from '@material-ui/core';
+import { MdDelete } from 'react-icons/md';
 import { IoMdAlert } from 'react-icons/io';
 import api from '../../../../../services/api';
+import AppBar from '../../../../../components/AppBar';
 import {
-  Container, ButtonAppbar, MainContainer, useStyles,
+  Container, MainContainer, useStyles,
 } from './styles';
 
 interface TipProps{
@@ -17,7 +15,6 @@ interface TipProps{
 
 const AddNews: React.FC = () => {
   const classes = useStyles();
-  const history = useHistory();
   const [aux, setAux] = useState(false);
   const [tip, setTip] = useState<TipProps>();
 
@@ -61,13 +58,7 @@ const AddNews: React.FC = () => {
 
   return (
     <Container>
-      <AppBar className={classes.appbar}>
-        <p><b>Adicionar Notícia / Dica do Dia</b></p>
-        <ButtonAppbar onClick={() => history.goBack()} className={classes.returnAppbar}>
-          <MdArrowBack size={20} />
-          Voltar
-        </ButtonAppbar>
-      </AppBar>
+      <AppBar title="Adicionar Notícia / Dica do Dia" />
       <MainContainer>
         <h2>Adicionar Notícia</h2>
         <form key={1} onSubmit={onSubmit} className={classes.form} encType="multipart/form-data">

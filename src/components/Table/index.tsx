@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, {
   memo, useCallback, useMemo, useState,
 } from 'react';
@@ -186,7 +187,7 @@ function Table<T extends DefaultRowProps>({
                 {columns.map((column) => (
                   <MUITableCell
                     key={column.title}
-                    align={column.type === 'number' ? 'right' : 'left'}
+                    // align={column.type === 'number' ? 'right' : 'left'}
                     sortDirection={orderBy === column.props[0] ? order : false}
                   >
                     <TableSortLabel
@@ -233,7 +234,7 @@ function Table<T extends DefaultRowProps>({
                       )}
                       {columns.map((column) => (
                         <TableCell
-                          align={column.type === 'number' ? 'right' : 'left'}
+                          // align={column.type === 'number' ? 'right' : 'left'}
                           column={column}
                           row={row}
                         />

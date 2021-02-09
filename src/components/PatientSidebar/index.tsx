@@ -2,7 +2,7 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { MdPerson, MdSettings } from 'react-icons/md';
-import { IoMdExit } from 'react-icons/io';
+import { IoMdLogOut } from 'react-icons/io';
 import { requestLogout } from '../../features/user/redux/reducers/userReducer';
 import {
   RootContainer, MenuContainer, OptionsContainer, OptionsItem, useStyles,
@@ -39,7 +39,7 @@ const PatientSidebar: React.FC<PatientSidebarProps> = ({ name }) => {
               <p>Configurações</p>
             </OptionsItem>
             <OptionsItem onClickCapture={handleLogout}>
-              <IoMdExit color="red" size={28} />
+              <IoMdLogOut color="red" size={28} />
               <p style={{ color: 'red' }}>Sair</p>
             </OptionsItem>
           </OptionsContainer>

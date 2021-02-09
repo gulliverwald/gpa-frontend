@@ -37,7 +37,7 @@ const AddPatient: React.FC = () => {
 
   return (
     <Container>
-      <AppBar />
+      <AppBar title="Adicionar paciente" />
       <MainContainer>
         <form onSubmit={onSubmit} className={classes.form}>
           <div className={classes.formColumn}>

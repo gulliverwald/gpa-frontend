@@ -1,71 +1,88 @@
 /* eslint-disable camelcase */
-import React, { useEffect, useState } from 'react';
-// import {
-//   TableContainer,
-//   Table,
-//   TableHead,
-//   TableRow,
-//   TableCell,
-//   TableBody,
-//   Paper,
-//   Checkbox,
-// } from '@material-ui/core';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   TableContainer,
   Paper,
 } from '@material-ui/core';
-// import { MdEdit, MdDelete } from 'react-icons/md';
+import { MdDelete, MdEdit } from 'react-icons/md';
 import AppBar from '../../../../../components/AppBar';
+import Table from '../../../../../components/Table';
+import api from '../../../../../services/api';
 import {
   Container, MainContainer, useStyles,
 } from './styles';
-import api from '../../../../../services/api';
 
-interface Patient{
+interface PatientProps{
   id: string;
-  nome: string;
-  data_nascimento: string;
+  name: string;
+  birthday: string;
   email: string;
-  telefone: string;
-  hasAccess: boolean;
+  phone: string;
+  access_authorization: boolean;
 }
 
 const ListPatient: React.FC = () => {
   const classes = useStyles();
-  const [patients, setPatients] = useState<Patient[]>([]);
-  // const [checked, setChecked] = React.useState(true);
-
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setChecked(event.target.checked);
-  // };
-
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTIzNTY5MTIsImV4cCI6MTYxMjQ0MzMxMiwic3ViIjoiMSJ9.LGujUx7jj2OPvWMQegEKLsu_n6_OUKiggtM2-3hhrtQ';
-  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const [patients, setPatients] = useState<PatientProps[]>([]);
 
   useEffect(() => {
     async function handleListPatients(): Promise<void> {
-      const response = await api.get('/Users', config);
+      const response = await api.get('/Users');
       setPatients(response.data);
     }
     handleListPatients();
   }, [patients]);
 
-  // const getAge = useMemo(() => (dateString: string) => {
-  //   const today = new Date();
-  //   const birthDate = new Date(dateString);
-  //   let age = today.getFullYear() - birthDate.getFullYear();
-  //   const m = today.getMonth() - birthDate.getMonth();
-  //   if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-  //     age -= 1;
-  //   }
-  //   return age;
-  // }, [patients]);
+  const getAge = useMemo(() => (dateString: string) => {
+    const today = new Date();
+    const birthDate = new Date(dateString);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age -= 1;
+    }
+    return age;
+  }, [patients]);
 
   return (
     <Container>
-      <AppBar />
+      <AppBar title="Listar pacientes" />
       <MainContainer>
         <TableContainer component={Paper} className={classes.tableContainer}>
+          <Table<PatientProps>
+            columns={[
+              {
+                title: 'Nome',
+                type: 'string',
+                props: ['name'],
+                orderable: true,
+              },
+              {
+                title: 'Idade',
+                type: 'number',
+                props: ['birthday'],
+                formatter: (patient) => getAge(patient.birthday).toString(),
+                orderable: true,
+              },
+            ]}
+            rows={patients}
+            rowActions={[
+              {
+                renderItem: () => (<MdEdit color="purple" size={28} />),
+              },
+              {
+                renderItem: () => (<MdDelete color="red" size={28} />),
+              },
+            ]}
+            selectBox
+            actions={[
+              {
+                renderItem: () => (<MdDelete size={28} />),
+              },
+            ]}
+            defaultOrderBy="name"
+          />
+
           {/* <Table className={classes.table} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>

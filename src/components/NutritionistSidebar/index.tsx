@@ -6,7 +6,7 @@ import {
   Divider, Drawer, IconButton, List, ListItem, ListItemText, ListItemIcon,
 } from '@material-ui/core';
 import { MdRestaurantMenu, MdMenu } from 'react-icons/md';
-import { IoMdCalendar, IoMdExit } from 'react-icons/io';
+import { IoMdCalendar, IoMdLogOut } from 'react-icons/io';
 import { useStyles } from './styles';
 
 import ImgGPA from '../../assets/img/logo.png';
@@ -46,8 +46,8 @@ const NutritionistSidebar: React.FC = () => {
                   src={ImgGPA}
                   alt="Logo GPA"
                   style={{
-                    width: '107px',
-                    height: '54px',
+                    width: '117px',
+                    height: '64px',
                     objectFit: 'fill',
                     paddingLeft: '8px',
                     objectPosition: 'center',
@@ -72,7 +72,7 @@ const NutritionistSidebar: React.FC = () => {
             </NavLink>
             <Divider />
             <ListItem button onClick={handleLogout}>
-              <ListItemIcon><IoMdExit color="red" size={24} /></ListItemIcon>
+              <ListItemIcon><IoMdLogOut color="red" size={24} /></ListItemIcon>
               <ListItemText primary="Sair" style={{ color: 'red' }} />
             </ListItem>
           </List>
