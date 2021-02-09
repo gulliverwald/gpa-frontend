@@ -90,9 +90,7 @@ const userReducerSlice = createSlice({
     },
     requestUserError(state, action: PayloadAction<IRequestUserError>) {
       const {
-        payload: {
-          message,
-        },
+        payload: { message },
       } = action;
 
       // Object.assign(state.error, message);

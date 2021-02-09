@@ -1,18 +1,13 @@
 /* eslint-disable camelcase */
 import React, { useEffect, useState, useMemo } from 'react';
-import {
-  TableContainer,
-  Paper,
-} from '@material-ui/core';
+import { TableContainer, Paper } from '@material-ui/core';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import AppBar from '../../../../../components/AppBar';
 import Table from '../../../../../components/Table';
 import api from '../../../../../services/api';
-import {
-  Container, MainContainer, useStyles,
-} from './styles';
+import { Container, MainContainer, useStyles } from './styles';
 
-interface PatientProps{
+interface PatientProps {
   id: string;
   name: string;
   birthday: string;
@@ -33,16 +28,19 @@ const ListPatient: React.FC = () => {
     handleListPatients();
   }, [patients]);
 
-  const getAge = useMemo(() => (dateString: string) => {
-    const today = new Date();
-    const birthDate = new Date(dateString);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age -= 1;
-    }
-    return age;
-  }, [patients]);
+  const getAge = useMemo(
+    () => (dateString: string) => {
+      const today = new Date();
+      const birthDate = new Date(dateString);
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age -= 1;
+      }
+      return age;
+    },
+    [patients],
+  );
 
   return (
     <Container>
@@ -61,23 +59,23 @@ const ListPatient: React.FC = () => {
                 title: 'Idade',
                 type: 'number',
                 props: ['birthday'],
-                formatter: (patient) => getAge(patient.birthday).toString(),
+                formatter: patient => getAge(patient.birthday).toString(),
                 orderable: true,
               },
             ]}
             rows={patients}
             rowActions={[
               {
-                renderItem: () => (<MdEdit color="purple" size={28} />),
+                renderItem: () => <MdEdit color="purple" size={28} />,
               },
               {
-                renderItem: () => (<MdDelete color="red" size={28} />),
+                renderItem: () => <MdDelete color="red" size={28} />,
               },
             ]}
             selectBox
             actions={[
               {
-                renderItem: () => (<MdDelete size={28} />),
+                renderItem: () => <MdDelete size={28} />,
               },
             ]}
             defaultOrderBy="name"

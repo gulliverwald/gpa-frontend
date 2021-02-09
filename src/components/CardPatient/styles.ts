@@ -9,13 +9,13 @@ export const Container = styled.div`
   border-radius: 5px;
   background-color: white;
 
-  &:active{
-    background-color: #EEEEEE;
+  &:active {
+    background-color: #eeeeee;
   }
 
   b {
     padding: 8px;
-    color: #3FB978;
+    color: #3fb978;
   }
 `;
 
@@ -31,20 +31,22 @@ export const Button = styled.button`
   border: none;
   background: transparent;
 
-  &:active{
+  &:active {
     transform: translateY(4px);
     transition: transform 50ms ease-in-out;
   }
 `;
 
-export const useStyles = makeStyles(() => createStyles({
-  iconContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '20%',
-    height: '100%',
-    backgroundColor: '#3FB978',
-    borderRadius: '5px',
-  },
-}));
+export const useStyles = makeStyles(() =>
+  createStyles({
+    iconContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '20%',
+      height: '100%',
+      backgroundColor: '#3FB978',
+      borderRadius: '5px',
+    },
+  }),
+);

@@ -7,7 +7,7 @@ export const Container = styled.div`
   position: relative;
   width: 100%;
   height: 100vh;
-  background-color: #F9FBFF;
+  background-color: #f9fbff;
 `;
 
 export const BoxContainer = styled.div`
@@ -34,7 +34,7 @@ export const BoxContainer = styled.div`
 
   h3 {
     margin: 24px 0px;
-    color: #6B6B6B;
+    color: #6b6b6b;
   }
 
   p {

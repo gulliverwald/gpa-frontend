@@ -5,7 +5,11 @@ import { MdPerson, MdSettings } from 'react-icons/md';
 import { IoMdLogOut } from 'react-icons/io';
 import { requestLogout } from '../../features/user/redux/reducers/userReducer';
 import {
-  RootContainer, MenuContainer, OptionsContainer, OptionsItem, useStyles,
+  RootContainer,
+  MenuContainer,
+  OptionsContainer,
+  OptionsItem,
+  useStyles,
 } from './styles';
 import ImgGPA from '../../assets/img/logo.png';
 
@@ -17,10 +21,9 @@ const PatientSidebar: React.FC<PatientSidebarProps> = ({ name }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const handleLogout = useCallback(
-    () => { dispatch(requestLogout()); },
-    [dispatch],
-  );
+  const handleLogout = useCallback(() => {
+    dispatch(requestLogout());
+  }, [dispatch]);
 
   return (
     <>

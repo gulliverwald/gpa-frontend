@@ -8,10 +8,10 @@ export const RootContainer = styled.div`
   justify-content: flex-start;
   width: 40%;
   height: 100%;
-  background-color: #F4F4F4;
+  background-color: #f4f4f4;
   padding-top: 40px;
 
-  @media(max-width: 900px){
+  @media (max-width: 900px) {
     background-color: transparent;
   }
 `;

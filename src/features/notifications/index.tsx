@@ -27,15 +27,17 @@ export const ToastProvider: React.FC = ({ children }) => {
   const getToasts = useCallback(() => toaster?.getToasts(), [toaster]);
 
   useEffect(() => {
-    notifications.forEach((notification) => {
+    notifications.forEach(notification => {
       if (notification.dismissed) {
         dispatch(removeNotification);
       }
       if (
         toaster
           ?.getToasts()
-          .find((toast) => toast.key === notification.key.toString())
-      ) { return; }
+          .find(toast => toast.key === notification.key.toString())
+      ) {
+        return;
+      }
 
       toaster?.show(
         {
@@ -54,7 +56,7 @@ export const ToastProvider: React.FC = ({ children }) => {
       {children}
       <Toaster
         maxToasts={3}
-        ref={(ref_) => {
+        ref={ref_ => {
           toaster = ref_;
         }}
         position={Position.BOTTOM_LEFT}

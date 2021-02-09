@@ -5,7 +5,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   width: 90%;
-  border-bottom: 1px solid #C4C4C4;
+  border-bottom: 1px solid #c4c4c4;
   padding: 23px;
 
   img {
@@ -25,19 +25,21 @@ export const NewsContainer = styled.div`
 
   p {
     padding-top: 8px;
-    color: #6E6E6E;
+    color: #6e6e6e;
   }
 `;
 
-export const useStyles = makeStyles(() => createStyles({
-  linkContainer: {
-    textDecoration: 'none',
-    display: 'flex',
-    width: '90%',
-    color: '#3FB978',
+export const useStyles = makeStyles(() =>
+  createStyles({
+    linkContainer: {
+      textDecoration: 'none',
+      display: 'flex',
+      width: '90%',
+      color: '#3FB978',
 
-    '&:after': {
-      color: '#3D8B4E',
+      '&:after': {
+        color: '#3D8B4E',
+      },
     },
-  },
-}));
+  }),
+);

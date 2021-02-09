@@ -47,5 +47,4 @@ export interface IRequestLoginSuccess {
 
 export interface IRequestUserError {
   message: string;
-
 }

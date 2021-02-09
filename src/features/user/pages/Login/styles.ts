@@ -28,45 +28,47 @@ export const MainContainer = styled.div`
   width: 100%;
   overflow: hidden;
 
-  @media(max-width: 1000px){
+  @media (max-width: 1000px) {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-  };
+  } ;
 `;
 
-export const useStyles = makeStyles((theme: Theme) => createStyles({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1),
-      width: '25ch',
+export const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+        width: '25ch',
+      },
     },
-  },
-  inputField: {
-    width: '100%',
-    minWidth: '400px',
-    margin: '1rem',
-  },
-  imageBackground: {
-    justifySelf: 'bottom',
-    width: '65%',
-    height: '40%',
-    '@media(max-width: 1000px)': {
-      display: 'none',
+    inputField: {
+      width: '100%',
+      minWidth: '400px',
+      margin: '1rem',
     },
-  },
-  imageGPA: {
-    width: '167px',
-    height: '114px',
-  },
-  imageContainer: {
-    display: 'flex',
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  inputAlert: {
-    color: 'red',
-    display: 'flex',
-    alignItems: 'center',
-  },
-}));
+    imageBackground: {
+      justifySelf: 'bottom',
+      width: '65%',
+      height: '40%',
+      '@media(max-width: 1000px)': {
+        display: 'none',
+      },
+    },
+    imageGPA: {
+      width: '167px',
+      height: '114px',
+    },
+    imageContainer: {
+      display: 'flex',
+      alignContent: 'center',
+      justifyContent: 'center',
+    },
+    inputAlert: {
+      color: 'red',
+      display: 'flex',
+      alignItems: 'center',
+    },
+  }),
+);

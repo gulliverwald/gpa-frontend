@@ -1,7 +1,5 @@
 /* eslint-disable no-undef */
-import React, {
-  memo, useCallback, useMemo, useState,
-} from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import {
   CircularProgress,
@@ -19,9 +17,7 @@ import {
   TableSortLabel,
 } from '@material-ui/core';
 import clsx from 'clsx';
-import {
-  DefaultRowProps, IRow, IRowAction, ITableProps,
-} from './types';
+import { DefaultRowProps, IRow, IRowAction, ITableProps } from './types';
 import TableCell from './TableCell';
 
 import { useToolbarStyles } from './styles';
@@ -129,7 +125,8 @@ function Table<T extends DefaultRowProps>({
   );
 
   const pageRowsNumber = useMemo(
-    () => rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).length,
+    () =>
+      rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).length,
     [page, rowsPerPage, rows],
   );
 
@@ -148,13 +145,9 @@ function Table<T extends DefaultRowProps>({
               variant="subtitle1"
               component="div"
             >
-              {selectedRows.length}
-              {' '}
-              selecionadas
-              {' '}
-
+              {selectedRows.length} selecionadas{' '}
             </Typography>
-            {actions?.map((action) => action.renderItem(selectedRows))}
+            {actions?.map(action => action.renderItem(selectedRows))}
           </>
         )}
       </Toolbar>
@@ -172,19 +165,19 @@ function Table<T extends DefaultRowProps>({
                     <Checkbox
                       color="primary"
                       indeterminate={
-                        selectedRows.length > 0
-                        && selectedRows.length < pageRowsNumber
+                        selectedRows.length > 0 &&
+                        selectedRows.length < pageRowsNumber
                       }
                       checked={
-                        rows.length > 0
-                        && selectedRows.length === pageRowsNumber
+                        rows.length > 0 &&
+                        selectedRows.length === pageRowsNumber
                       }
                       onChange={handleSelectAllClick}
                       inputProps={{ 'aria-label': 'select all desserts' }}
                     />
                   </MUITableCell>
                 )}
-                {columns.map((column) => (
+                {columns.map(column => (
                   <MUITableCell
                     key={column.title}
                     // align={column.type === 'number' ? 'right' : 'left'}
@@ -232,7 +225,7 @@ function Table<T extends DefaultRowProps>({
                           />
                         </MUITableCell>
                       )}
-                      {columns.map((column) => (
+                      {columns.map(column => (
                         <TableCell
                           // align={column.type === 'number' ? 'right' : 'left'}
                           column={column}
@@ -242,7 +235,9 @@ function Table<T extends DefaultRowProps>({
 
                       {!!rowActions && !!rowActions.length ? (
                         <MUITableCell align="right">
-                          {rowActions.map((action: IRowAction<T>) => action.renderItem(row))}
+                          {rowActions.map((action: IRowAction<T>) =>
+                            action.renderItem(row),
+                          )}
                         </MUITableCell>
                       ) : null}
                     </TableRow>

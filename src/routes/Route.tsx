@@ -25,7 +25,9 @@ const Route: React.FC<RouteProps> = ({
   const userAuth = useSelector(
     (store: WebStore) => store.user.state.userInfo.user.access_authorization,
   );
-  const token = useSelector((store: WebStore) => store.user.state.userInfo.token);
+  const token = useSelector(
+    (store: WebStore) => store.user.state.userInfo.token,
+  );
 
   api.defaults.headers.authorization = `Bearer ${token}`;
   let pathname: string;
@@ -40,16 +42,18 @@ const Route: React.FC<RouteProps> = ({
     <ReactDOMRoute
       {...rest}
       // render={({ location }) => (isPrivate === !!token ? (
-      render={() => (isPrivate === !!token ? (
-        <Component />
-      ) : (
-        <Redirect
-          to={{
-            pathname: isPrivate ? '/' : pathname,
-            // state: { from: location },
-          }}
-        />
-      ))}
+      render={() =>
+        isPrivate === !!token ? (
+          <Component />
+        ) : (
+          <Redirect
+            to={{
+              pathname: isPrivate ? '/' : pathname,
+              // state: { from: location },
+            }}
+          />
+        )
+      }
     />
   );
 };

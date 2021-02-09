@@ -35,14 +35,14 @@ const sagaMiddleware = createSagaMiddleware();
 const store = configureStore(
   // rootReducer(history),
   // applyMiddleware(...middlewares),
-  { middleware: [sagaMiddleware, routerMiddleware(history)], reducer: persistedReducer },
+  {
+    middleware: [sagaMiddleware, routerMiddleware(history)],
+    reducer: persistedReducer,
+  },
 );
 
 const persister = persistStore(store);
 
 sagaMiddleware.run(rootSaga);
 
-export {
-  persister,
-  store,
-};
+export { persister, store };

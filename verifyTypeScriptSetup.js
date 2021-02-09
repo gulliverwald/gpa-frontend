@@ -1,4 +1,4 @@
 // verifyTypeScriptSetup.js
 
-function verifyTypeScriptSetup() { }
+function verifyTypeScriptSetup() {}
 module.exports = verifyTypeScriptSetup;

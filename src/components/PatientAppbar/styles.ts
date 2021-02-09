@@ -25,21 +25,23 @@ export const ButtonAppbar = styled.button`
   font-size: 26px;
 `;
 
-export const useStyles = makeStyles(() => createStyles({
-  imageGPA: {
-    width: '167px',
-    height: '114px',
-  },
-  imageContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  returnAppbar: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#7CC576',
-  },
-}));
+export const useStyles = makeStyles(() =>
+  createStyles({
+    imageGPA: {
+      width: '167px',
+      height: '114px',
+    },
+    imageContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    returnAppbar: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: '#7CC576',
+    },
+  }),
+);

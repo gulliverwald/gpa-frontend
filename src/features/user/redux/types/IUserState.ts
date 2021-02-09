@@ -15,9 +15,9 @@ export interface IUserState {
       zip?: number;
       number?: number;
       adjunct?: string;
-    },
-    token: string,
-    role: string,
-  },
+    };
+    token: string;
+    role: string;
+  };
   error?: string;
 }

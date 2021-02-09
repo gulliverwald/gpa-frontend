@@ -11,8 +11,13 @@ const AddEatingPlan: React.FC = () => {
   return (
     <Container>
       <AppBar className={classes.appbar}>
-        <p><b>Adicionar Plano Alimentar</b></p>
-        <Button onClick={() => history.goBack()} className={classes.returnAppbar}>
+        <p>
+          <b>Adicionar Plano Alimentar</b>
+        </p>
+        <Button
+          onClick={() => history.goBack()}
+          className={classes.returnAppbar}
+        >
           <MdArrowBack size={20} />
           Voltar
         </Button>

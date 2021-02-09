@@ -7,13 +7,12 @@ import Input from '../../../../../components/Input';
 import Button from '../../../../../components/Button';
 import AppBar from '../../../../../components/AppBar';
 import { PatientProps } from './PatientProps';
-import {
-  Container, MainContainer, useStyles,
-} from './styles';
+import { Container, MainContainer, useStyles } from './styles';
 
 function generatePassword(length: number) {
   let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const charactersLength = characters.length;
   for (let i = 0; i < length; i += 1) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));

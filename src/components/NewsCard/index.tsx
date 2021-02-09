@@ -11,17 +11,25 @@ interface NewsCardProps {
 }
 
 const NewsCard: React.FC<NewsCardProps> = ({
-  id, newsTitle, subTitle, imageLink,
+  id,
+  newsTitle,
+  subTitle,
+  imageLink,
 }) => {
   const classes = useStyles();
 
   return (
     <>
-      <NavLink to={`/dashboard/newsInfo/${id}`} className={classes.linkContainer}>
+      <NavLink
+        to={`/dashboard/newsInfo/${id}`}
+        className={classes.linkContainer}
+      >
         <Container>
           <img src={imageLink} alt="Imagem da Notícia" />
           <NewsContainer>
-            <h3><b>{newsTitle}</b></h3>
+            <h3>
+              <b>{newsTitle}</b>
+            </h3>
             <p>{subTitle}</p>
           </NewsContainer>
         </Container>

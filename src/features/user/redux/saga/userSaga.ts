@@ -1,7 +1,11 @@
 import { call, put, takeLeading } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 import {
-  requestLogin, requestLoginSuccess, requestLogout, requestLogoutSuccess, requestUserError,
+  requestLogin,
+  requestLoginSuccess,
+  requestLogout,
+  requestLogoutSuccess,
+  requestUserError,
 } from '../reducers/userReducer';
 // import addNotificationSucess from '../../../notifications/redux/reducers';
 import { IResponseLoginApi } from '../types/IUserPayloadTypes';
@@ -14,7 +18,8 @@ function* workerRequestLogin(action: any) {
       api.post,
       'sessions',
       {
-        email, password,
+        email,
+        password,
       },
     );
     yield put(requestLoginSuccess({ ...response.data }));

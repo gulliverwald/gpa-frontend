@@ -17,7 +17,10 @@ const Login: React.FC = () => {
   const dispatch = useDispatch();
 
   const loginSchema = yup.object().shape({
-    email: yup.string().email('Email inválido').required('O email é obrigatório!'),
+    email: yup
+      .string()
+      .email('Email inválido')
+      .required('O email é obrigatório!'),
     password: yup.string().required('A senha é obrigatória!'),
   });
 
@@ -29,7 +32,7 @@ const Login: React.FC = () => {
 
   const onSubmit = useCallback(
     // eslint-disable-next-line no-unused-vars
-    (data) => {
+    data => {
       dispatch(requestLogin(data));
     },
     [dispatch],
@@ -64,13 +67,13 @@ const Login: React.FC = () => {
             />
             <span>
               {errors.email && errors.email.type === 'required' && (
-              <>
-                <p className={classes.inputAlert}>
-                  <IoMdAlert color="red" style={{ margin: '0px 8px' }} />
-                  {errors.email.message}
-                </p>
-              </>
-              ) }
+                <>
+                  <p className={classes.inputAlert}>
+                    <IoMdAlert color="red" style={{ margin: '0px 8px' }} />
+                    {errors.email.message}
+                  </p>
+                </>
+              )}
             </span>
             <Input
               inputRef={register({ required: 'A senha é obrigatória!' })}
@@ -89,18 +92,22 @@ const Login: React.FC = () => {
             />
             <span>
               {errors.password && errors.password.type === 'required' && (
-              <>
-                <p className={classes.inputAlert}>
-                  <IoMdAlert color="red" style={{ margin: '0px 8px' }} />
-                  {errors.password.message}
-                </p>
-              </>
-              ) }
+                <>
+                  <p className={classes.inputAlert}>
+                    <IoMdAlert color="red" style={{ margin: '0px 8px' }} />
+                    {errors.password.message}
+                  </p>
+                </>
+              )}
             </span>
             <Button type="submit"> Entrar </Button>
           </form>
         </Container>
-        <img src={ImgBackground} alt="Imagem de fundo" className={classes.imageBackground} />
+        <img
+          src={ImgBackground}
+          alt="Imagem de fundo"
+          className={classes.imageBackground}
+        />
       </MainContainer>
     </>
   );

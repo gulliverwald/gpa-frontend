@@ -5,11 +5,9 @@ import { MdDelete } from 'react-icons/md';
 import { IoMdAlert } from 'react-icons/io';
 import api from '../../../../../services/api';
 import AppBar from '../../../../../components/AppBar';
-import {
-  Container, MainContainer, useStyles,
-} from './styles';
+import { Container, MainContainer, useStyles } from './styles';
 
-interface TipProps{
+interface TipProps {
   content: string;
 }
 
@@ -25,11 +23,11 @@ const AddNews: React.FC = () => {
     handleSubmit: handleSubmit2,
   } = useForm();
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(data => {
     console.log(data);
   });
 
-  const onSubmitTip = handleSubmit2((data) => {
+  const onSubmitTip = handleSubmit2(data => {
     console.log(data);
   });
 
@@ -61,10 +59,18 @@ const AddNews: React.FC = () => {
       <AppBar title="Adicionar Notícia / Dica do Dia" />
       <MainContainer>
         <h2>Adicionar Notícia</h2>
-        <form key={1} onSubmit={onSubmit} className={classes.form} encType="multipart/form-data">
+        <form
+          key={1}
+          onSubmit={onSubmit}
+          className={classes.form}
+          encType="multipart/form-data"
+        >
           <div className={classes.formColumn}>
             <TextField
-              inputRef={register({ required: 'Título é necessário!', maxLength: { value: 2, message: 'error message' } })}
+              inputRef={register({
+                required: 'Título é necessário!',
+                maxLength: { value: 2, message: 'error message' },
+              })}
               id="newsTitle"
               name="newsTitle"
               label="Título"
@@ -75,13 +81,13 @@ const AddNews: React.FC = () => {
             />
             <span>
               {errors.newsTitle && errors.newsTitle.type === 'required' && (
-              <>
-                <p className={classes.inputAlert}>
-                  <IoMdAlert color="red" style={{ margin: '0px 8px' }} />
-                  {errors.newsTitle.message}
-                </p>
-              </>
-              ) }
+                <>
+                  <p className={classes.inputAlert}>
+                    <IoMdAlert color="red" style={{ margin: '0px 8px' }} />
+                    {errors.newsTitle.message}
+                  </p>
+                </>
+              )}
             </span>
             <TextField
               inputRef={register({ required: 'Subtítulo é necessário!' })}
@@ -95,13 +101,13 @@ const AddNews: React.FC = () => {
             />
             <span>
               {errors.newsSubtitle && errors.newsSubtitle.type === 'required' && (
-              <>
-                <p className={classes.inputAlert}>
-                  <IoMdAlert color="red" style={{ margin: '0px 8px' }} />
-                  {errors.newsSubtitle.message}
-                </p>
-              </>
-              ) }
+                <>
+                  <p className={classes.inputAlert}>
+                    <IoMdAlert color="red" style={{ margin: '0px 8px' }} />
+                    {errors.newsSubtitle.message}
+                  </p>
+                </>
+              )}
             </span>
             <TextField
               inputRef={register({ required: true })}
@@ -142,9 +148,7 @@ const AddNews: React.FC = () => {
               id="newsImage"
               name="newsImage"
               label="Imagem da Notícia"
-              inputProps={
-                { accept: 'image/png' }
-              }
+              inputProps={{ accept: 'image/png' }}
             />
           </div>
         </form>
@@ -171,7 +175,13 @@ const AddNews: React.FC = () => {
             >
               Postar
             </Button>
-            <Button onClick={() => { setAux(!aux); }}><MdDelete size={28} color="red" /></Button>
+            <Button
+              onClick={() => {
+                setAux(!aux);
+              }}
+            >
+              <MdDelete size={28} color="red" />
+            </Button>
           </div>
         </form>
       </MainContainer>

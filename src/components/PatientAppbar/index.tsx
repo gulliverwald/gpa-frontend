@@ -12,7 +12,10 @@ const PatientAppbar: React.FC = () => {
   return (
     <>
       <Container>
-        <ButtonAppbar onClick={() => history.goBack()} className={classes.returnAppbar}>
+        <ButtonAppbar
+          onClick={() => history.goBack()}
+          className={classes.returnAppbar}
+        >
           <MdArrowBack size={28} />
           <b>Voltar</b>
         </ButtonAppbar>

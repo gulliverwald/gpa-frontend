@@ -9,7 +9,7 @@ export const Container = styled.div`
   width: 40%;
   padding: 16px 0px;
   border-radius: 32px;
-  background-color: #F4F4F4;
+  background-color: #f4f4f4;
 
   h2 {
     padding: 16px;
@@ -26,5 +26,5 @@ export const ShowContainer = styled.div`
   width: 100%;
   padding-left: 10%;
   margin: 16px;
-  color: #64C077;
+  color: #64c077;
 `;

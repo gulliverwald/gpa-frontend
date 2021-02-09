@@ -12,7 +12,11 @@ import { WebStore } from '../../../../../store/RootReducer';
 import api from '../../../../../services/api';
 
 import {
-  Container, MenuContainer, TipContainer, ContentContainer, useStyles,
+  Container,
+  MenuContainer,
+  TipContainer,
+  ContentContainer,
+  useStyles,
 } from './styles';
 
 interface TipProps {
@@ -25,16 +29,13 @@ const Homepage: React.FC = () => {
 
   const user = useSelector((store: WebStore) => store.user.state.userInfo.user);
 
-  useEffect(
-    () => {
-      async function handleTips(): Promise<void> {
-        const response = await api.get('/Tip');
-        setTips(response.data.slice(-1)[0]);
-      }
-      handleTips();
-    },
-    [],
-  );
+  useEffect(() => {
+    async function handleTips(): Promise<void> {
+      const response = await api.get('/Tip');
+      setTips(response.data.slice(-1)[0]);
+    }
+    handleTips();
+  }, []);
 
   return (
     <>
@@ -45,9 +46,15 @@ const Homepage: React.FC = () => {
             <TipContainer>
               <MdNotificationsActive size={60} color="#FDCB6E" />
               <div className={classes.tipContentContainer}>
-                <h3><b>Dica:</b></h3>
+                <h3>
+                  <b>Dica:</b>
+                </h3>
                 <p>
-                  { tips ? `"${tips?.content}"` : <CircularProgress color="primary" />}
+                  {tips ? (
+                    `"${tips?.content}"`
+                  ) : (
+                    <CircularProgress color="primary" />
+                  )}
                 </p>
               </div>
             </TipContainer>

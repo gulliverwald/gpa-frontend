@@ -18,7 +18,9 @@ const NewsFeed: React.FC = () => {
   return (
     <>
       <Container>
-        <h2><b>Feed de Notícias</b></h2>
+        <h2>
+          <b>Feed de Notícias</b>
+        </h2>
         {news.map((news_) => (
           <NewsCard
             key={news_.id}
@@ -30,10 +32,7 @@ const NewsFeed: React.FC = () => {
         ))}
         <Divider />
         <ShowContainer>
-          <h3>
-            Mostrar mais
-            {' '}
-          </h3>
+          <h3>Mostrar mais </h3>
           <IoMdArrowDropright size={40} color="#64C077" />
         </ShowContainer>
       </Container>

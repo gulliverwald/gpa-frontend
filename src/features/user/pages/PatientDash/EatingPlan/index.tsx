@@ -6,9 +6,7 @@ const EatingPlan: React.FC = () => (
   <>
     <PatientAppbar />
     <Container>
-      <BoxContainer>
-        {/* <p>PLANO ALIMENTAR</p> */}
-      </BoxContainer>
+      <BoxContainer>{/* <p>PLANO ALIMENTAR</p> */}</BoxContainer>
     </Container>
   </>
 );

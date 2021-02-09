@@ -6,9 +6,7 @@ import AddPatient from './AddPatient';
 import AddEatingPlan from './AddEatingPlan';
 import AddNews from './AddNews';
 import NutritionistSidebar from '../../../../components/NutritionistSidebar';
-import {
-  Container, MainContainer, useStyles,
-} from './styles';
+import { Container, MainContainer, useStyles } from './styles';
 
 const NutritionistDash: React.FC = () => {
   const classes = useStyles();
@@ -18,17 +16,21 @@ const NutritionistDash: React.FC = () => {
       <Container>
         <NutritionistSidebar />
         <MainContainer>
-          <AppBar
-            className={classes.appbar}
-          >
+          <AppBar className={classes.appbar}>
             <div className={classes.containerApp}>
-              <p><b>Viviane Camila de Carvalho</b></p>
+              <p>
+                <b>Viviane Camila de Carvalho</b>
+              </p>
               <p className={classes.crn}>CRN: 12391/05</p>
             </div>
           </AppBar>
           <Switch>
             <Route exact path="/admin/addPatient" component={AddPatient} />
-            <Route exact path="/admin/addEatingPlan" component={AddEatingPlan} />
+            <Route
+              exact
+              path="/admin/addEatingPlan"
+              component={AddEatingPlan}
+            />
             <Route exact path="/admin/listPatient" component={ListPatient} />
             <Route exact path="/admin/addNews" component={AddNews} />
           </Switch>

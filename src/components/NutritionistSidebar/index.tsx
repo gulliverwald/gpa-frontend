@@ -3,7 +3,13 @@ import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import {
-  Divider, Drawer, IconButton, List, ListItem, ListItemText, ListItemIcon,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
 } from '@material-ui/core';
 import { MdRestaurantMenu, MdMenu } from 'react-icons/md';
 import { IoMdCalendar, IoMdLogOut } from 'react-icons/io';
@@ -21,7 +27,9 @@ const NutritionistSidebar: React.FC = () => {
     setOpen(!open);
   };
 
-  const handleLogout = useCallback(() => { dispatch(requestLogout()); }, [dispatch]);
+  const handleLogout = useCallback(() => {
+    dispatch(requestLogout());
+  }, [dispatch]);
 
   return (
     <>
@@ -53,8 +61,9 @@ const NutritionistSidebar: React.FC = () => {
                     objectPosition: 'center',
                   }}
                 />
-              ) : ''}
-
+              ) : (
+                ''
+              )}
             </p>
             <IconButton onClick={handleDrawer}>
               {open === true ? <MdRestaurantMenu /> : <MdMenu />}
@@ -62,17 +71,22 @@ const NutritionistSidebar: React.FC = () => {
           </div>
           <Divider />
           <List>
-            <NavLink to="/admin/addPatient" style={{ textDecoration: 'none', color: 'black' }}>
-              <ListItem
-                button
-              >
-                <ListItemIcon><IoMdCalendar size={24} /></ListItemIcon>
+            <NavLink
+              to="/admin/addPatient"
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
+              <ListItem button>
+                <ListItemIcon>
+                  <IoMdCalendar size={24} />
+                </ListItemIcon>
                 <ListItemText primary="Adicionar Paciente" />
               </ListItem>
             </NavLink>
             <Divider />
             <ListItem button onClick={handleLogout}>
-              <ListItemIcon><IoMdLogOut color="red" size={24} /></ListItemIcon>
+              <ListItemIcon>
+                <IoMdLogOut color="red" size={24} />
+              </ListItemIcon>
               <ListItemText primary="Sair" style={{ color: 'red' }} />
             </ListItem>
           </List>

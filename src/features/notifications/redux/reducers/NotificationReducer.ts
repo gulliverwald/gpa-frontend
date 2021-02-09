@@ -27,8 +27,8 @@ const notificationReducerSlice = createSlice({
     closeNotification(state, action: PayloadAction<ICloseNotification>) {
       state.items.forEach((notification, index) => {
         if (
-          action.payload.dismissAll
-          || notification.key === action.payload.key
+          action.payload.dismissAll ||
+          notification.key === action.payload.key
         ) {
           Object.assign(state.items[index], {
             ...notification,
@@ -41,7 +41,7 @@ const notificationReducerSlice = createSlice({
       console.log(action);
       const { key } = action.payload;
       const index = state.items.findIndex(
-        (notification) => notification.key === key,
+        notification => notification.key === key,
       );
       if (index >= 0) {
         state.items.splice(index, 1);
