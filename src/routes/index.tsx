@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 import Route from './Route';
 
-import Login from '../features/user/pages/Login';
+import Login from '../features/session/pages/Login';
 import NutritionistDash from '../features/user/pages/NutritionistDash';
 import PatientDash from '../features/user/pages/PatientDash';
 

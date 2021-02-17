@@ -71,6 +71,33 @@ const NutritionistSidebar: React.FC = () => {
               </ListItem>
             </NavLink>
             <Divider />
+            <NavLink to="/admin/listPatient" style={{ textDecoration: 'none', color: 'black' }}>
+              <ListItem
+                button
+              >
+                <ListItemIcon><IoMdCalendar size={24} /></ListItemIcon>
+                <ListItemText primary="Listar Pacientes" />
+              </ListItem>
+            </NavLink>
+            <Divider />
+            <NavLink to="/admin/addNews" style={{ textDecoration: 'none', color: 'black' }}>
+              <ListItem
+                button
+              >
+                <ListItemIcon><IoMdCalendar size={24} /></ListItemIcon>
+                <ListItemText primary="Adicionar Notícia" />
+              </ListItem>
+            </NavLink>
+            <Divider />
+            <NavLink to="/admin/addEatingPlan" style={{ textDecoration: 'none', color: 'black' }}>
+              <ListItem
+                button
+              >
+                <ListItemIcon><IoMdCalendar size={24} /></ListItemIcon>
+                <ListItemText primary="Adicionar PA" />
+              </ListItem>
+            </NavLink>
+            <Divider />
             <ListItem button onClick={handleLogout}>
               <ListItemIcon><IoMdLogOut color="red" size={24} /></ListItemIcon>
               <ListItemText primary="Sair" style={{ color: 'red' }} />

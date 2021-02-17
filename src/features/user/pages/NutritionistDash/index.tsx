@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { AppBar } from '@material-ui/core';
-import ListPatient from './ListPatient';
-import AddPatient from './AddPatient';
-import AddEatingPlan from './AddEatingPlan';
-import AddNews from './AddNews';
+import ListPatient from '../../../patient/pages/ListPatient';
+import AddPatient from '../../../patient/pages/AddPatient';
+import AddEatingPlan from '../../../eatingPlan/pages/AddEatingPlan';
+import AddNews from '../../../news/pages/AddNews';
 import NutritionistSidebar from '../../../../components/NutritionistSidebar';
 import {
   Container, MainContainer, useStyles,

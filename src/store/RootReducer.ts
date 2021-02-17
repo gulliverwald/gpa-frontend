@@ -5,7 +5,7 @@ import { connectRouter } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import userReducer from '../features/user/redux/reducers';
 import newsReducer from '../features/news/redux/reducers/newsReducer';
-import notificationReducer from '../features/notifications/redux/reducers';
+import notificationReducer from '../hooks/toast/redux/reducers/index';
 
 export const history = createBrowserHistory();
 

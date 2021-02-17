@@ -1,5 +1,5 @@
 import React from 'react';
-import PatientAppbar from '../../../../../components/PatientAppbar';
+import PatientAppbar from '../../../../components/PatientAppbar';
 import { Container, BoxContainer } from './styles';
 
 const EatingPlan: React.FC = () => (

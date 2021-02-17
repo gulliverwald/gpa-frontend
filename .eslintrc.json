@@ -39,6 +39,7 @@
                 "tsx": "never"
             }
         ],
+        "no-unused-vars": "off",
         "camelcase": "off",
         "no-use-before-define": "off",
         "no-param-reassign": 0,

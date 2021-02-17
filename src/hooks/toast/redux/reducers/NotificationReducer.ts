@@ -18,11 +18,7 @@ const notificationReducerSlice = createSlice({
   initialState,
   reducers: {
     addNotification(state, action: PayloadAction<IAddNotification>) {
-      state.items.push({
-        ...action.payload,
-        dismissed: action.payload.dismissed || false,
-        key: action.payload.key || new Date().getTime() + Math.random(),
-      });
+      Object.assign(state.items, [...state.items, { ...action.payload } as INotification]);
     },
     closeNotification(state, action: PayloadAction<ICloseNotification>) {
       state.items.forEach((notification, index) => {

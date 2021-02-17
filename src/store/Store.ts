@@ -8,7 +8,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import { routerMiddleware } from 'connected-react-router';
 import { IUserState } from '../features/user/redux/types/IUserState';
 import { INewsState } from '../features/news/redux/types/INewsState';
-import { INotificationState } from '../features/notifications/redux/types/NotificationStateTypes';
+import { INotificationState } from '../hooks/toast/redux/types/NotificationStateTypes';
 import rootReducer, { history } from './RootReducer';
 import rootSaga from './RootSaga';
 

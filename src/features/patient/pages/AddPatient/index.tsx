@@ -2,10 +2,10 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { InputAdornment } from '@material-ui/core';
 import { MdSave, MdLock } from 'react-icons/md';
-import api from '../../../../../services/api';
-import Input from '../../../../../components/Input';
-import Button from '../../../../../components/Button';
-import AppBar from '../../../../../components/AppBar';
+import api from '../../../../services/api';
+import Input from '../../../../components/Input';
+import Button from '../../../../components/Button';
+import AppBar from '../../../../components/AppBar';
 import { PatientProps } from './PatientProps';
 import {
   Container, MainContainer, useStyles,

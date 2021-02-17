@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch } from 'react-redux';
 import { IoMdAlert, IoMdContact, IoMdLock } from 'react-icons/io';
 import { InputAdornment } from '@material-ui/core';
-import { requestLogin } from '../../redux/reducers/userReducer';
+import { requestLogin } from '../../../user/redux/reducers/userReducer';
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import ImgBackground from '../../../../assets/img/5912.jpg';

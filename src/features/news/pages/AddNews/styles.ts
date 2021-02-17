@@ -7,7 +7,7 @@ export const Container = styled.div`
 `;
 
 export const MainContainer = styled.div`
-  padding: 20px 20px;
+  padding: 30px 10%;
   display: flex;
   flex-direction: column;
 `;

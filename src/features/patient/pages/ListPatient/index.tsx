@@ -5,9 +5,9 @@ import {
   Paper,
 } from '@material-ui/core';
 import { MdDelete, MdEdit } from 'react-icons/md';
-import AppBar from '../../../../../components/AppBar';
-import Table from '../../../../../components/Table';
-import api from '../../../../../services/api';
+import AppBar from '../../../../components/AppBar';
+import Table from '../../../../components/Table';
+import api from '../../../../services/api';
 import {
   Container, MainContainer, useStyles,
 } from './styles';
