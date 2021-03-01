@@ -11,10 +11,12 @@ import { INewsState } from '../features/news/redux/types/INewsState';
 import { INotificationState } from '../hooks/toast/redux/types/NotificationStateTypes';
 import rootReducer, { history } from './RootReducer';
 import rootSaga from './RootSaga';
+import { IFoodState } from '../features/food/redux/types/IFoodState';
 
 export interface IStore {
   user: IUserState;
   news: INewsState;
+  food: IFoodState;
   notification: INotificationState;
 }
 

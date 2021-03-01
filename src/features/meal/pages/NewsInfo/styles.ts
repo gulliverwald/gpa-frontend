@@ -12,10 +12,34 @@ export const Container = styled.div`
 
 export const BoxContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: white;
-  width: 80%;
-  height: 80%;
+  width: 60%;
+  height: 100%;
   margin-top: -30px;
 
   border-radius: 21px;
+
+  img {
+    background-repeat: cover;
+    background-size: 100% 100vh;
+    width: 100%;
+    height: 30%;
+  }
+
+  h2 {
+    margin-top: 24px;
+  }
+
+  h3 {
+    margin: 24px 0px;
+    color: #6B6B6B;
+  }
+
+  p {
+    align-self: center;
+    justify-self: flex-end;
+    width: 70%;
+  }
 `;

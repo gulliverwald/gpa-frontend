@@ -1,6 +1,10 @@
 /* eslint-disable no-undef */
 import React, {
-  memo, useCallback, useMemo, useState,
+  memo,
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+  useState,
 } from 'react';
 
 import {
@@ -20,22 +24,29 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import {
-  DefaultRowProps, IRow, IRowAction, ITableProps,
+  DefaultRowProps,
+  IRow,
+  IRowAction,
+  ITableProps,
+  IInputRef,
 } from './types';
 import TableCell from './TableCell';
 
 import { useToolbarStyles } from './styles';
 
-function Table<T extends DefaultRowProps>({
-  columns,
-  rowActions,
-  actions,
-  defaultOrderBy,
-  rows,
-  selectBox = false,
-  loading,
-  defaultPage = 0,
-}: React.PropsWithChildren<ITableProps<T>>): JSX.Element {
+function Table<T extends DefaultRowProps>(
+  {
+    columns,
+    rowActions,
+    actions,
+    defaultOrderBy,
+    rows,
+    selectBox = false,
+    loading,
+    defaultPage = 0,
+  }: React.PropsWithChildren<ITableProps<T>>,
+  ref: React.Ref<IInputRef>,
+): JSX.Element {
   const [page, setPage] = useState<number>(defaultPage);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -43,6 +54,14 @@ function Table<T extends DefaultRowProps>({
   const [selectedRows, setSelectedRows] = useState<IRow<T>[]>([] as IRow<T>[]);
 
   const classes = useToolbarStyles();
+
+  useImperativeHandle(ref, () => ({
+    rowsPerPage,
+    page,
+    clearSelectedRows() {
+      setSelectedRows([]);
+    },
+  }));
 
   const dynamicSort = useCallback((prop: string) => {
     let sortOrder = 1;
@@ -151,8 +170,6 @@ function Table<T extends DefaultRowProps>({
               {selectedRows.length}
               {' '}
               selecionadas
-              {' '}
-
             </Typography>
             {actions?.map((action) => action.renderItem(selectedRows))}
           </>
@@ -187,7 +204,7 @@ function Table<T extends DefaultRowProps>({
                 {columns.map((column) => (
                   <MUITableCell
                     key={column.title}
-                    // align={column.type === 'number' ? 'right' : 'left'}
+                    align={column.type === 'number' ? 'right' : 'left'}
                     sortDirection={orderBy === column.props[0] ? order : false}
                   >
                     <TableSortLabel
@@ -206,6 +223,7 @@ function Table<T extends DefaultRowProps>({
             </TableHead>
             <TableBody>
               {rows
+                .slice()
                 .sort(dynamicSort(`${order === 'desc' ? '-' : ''}${orderBy}`))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
@@ -234,7 +252,7 @@ function Table<T extends DefaultRowProps>({
                       )}
                       {columns.map((column) => (
                         <TableCell
-                          // align={column.type === 'number' ? 'right' : 'left'}
+                          align={column.type === 'number' ? 'right' : 'left'}
                           column={column}
                           row={row}
                         />
@@ -251,7 +269,7 @@ function Table<T extends DefaultRowProps>({
             </TableBody>
           </MUITable>
         ) : (
-          <Container>
+          <Container className={classes.container}>
             <CircularProgress color="primary" />
           </Container>
         )}
@@ -271,4 +289,5 @@ function Table<T extends DefaultRowProps>({
   );
 }
 
-export default memo(Table) as typeof Table;
+// export default memo(React.forwardRef(Table)) as typeof Table;
+export default React.forwardRef(Table) as typeof Table;

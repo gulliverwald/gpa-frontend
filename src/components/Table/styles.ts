@@ -20,4 +20,12 @@ export const useToolbarStyles = makeStyles((theme: Theme) => createStyles({
   title: {
     flex: '1 1 100%',
   },
+  container: {
+    minHeight: 300,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
+  },
 }));

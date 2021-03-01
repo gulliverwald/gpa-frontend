@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { InputAdornment } from '@material-ui/core';
+import { InputAdornment, Grid } from '@material-ui/core';
 import { MdSave, MdLock } from 'react-icons/md';
 import api from '../../../../services/api';
 import Input from '../../../../components/Input';
@@ -39,100 +39,133 @@ const AddPatient: React.FC = () => {
     <Container>
       <AppBar title="Adicionar paciente" />
       <MainContainer>
-        <form onSubmit={onSubmit} className={classes.form}>
-          <div className={classes.formColumn}>
-            <h2 style={{ color: 'GrayText' }}>Dados Pessoais</h2>
-            <Input
-              inputRef={register({ required: true })}
-              id="name"
-              name="name"
-              label="Nome"
-              className={classes.inputForm}
-            />
-            <Input
-              inputRef={register({ required: true })}
-              id="cpf"
-              name="cpf"
-              label="CPF"
-              className={classes.inputForm}
-            />
-            <Input
-              inputRef={register({ required: true })}
-              type="date"
-              id="birthday"
-              name="birthday"
-              label="Data de Nascimento"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              className={classes.inputFormTiny}
-            />
-            <Input
-              inputRef={register({ required: true })}
-              id="email"
-              name="email"
-              label="Email"
-              className={classes.inputForm}
-            />
-            <Input
-              inputRef={register({ required: true })}
-              id="password"
-              name="password"
-              label="Senha"
-              defaultValue={generatePassword(6)}
-              helperText="Senha gerada aleatoriamente"
-              InputProps={{
-                readOnly: true,
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <MdLock />
-                  </InputAdornment>
-                ),
-              }}
-              className={classes.inputForm}
-            />
-            <Button
-              type="submit"
-              startIcon={<MdSave />}
-              className={classes.buttonForm}
-            >
-              Salvar
-            </Button>
-          </div>
-          <div className={classes.formColumn}>
-            <h2 style={{ color: 'GrayText' }}>Endereço</h2>
-            <Input
-              inputRef={register({ required: true })}
-              id="zipCode"
-              name="zipCode"
-              label="CEP"
-              className={classes.inputForm}
-            />
-            <div className={classes.streetForm}>
-              <Input
-                inputRef={register({ required: true })}
-                id="street"
-                name="street"
-                label="Rua/Logradouro"
-                className={classes.inputForm}
-              />
-              <Input
-                inputRef={register({ required: true })}
-                id="number"
-                name="number"
-                label="Nº"
-                className={classes.inputFormTiny}
-              />
-            </div>
-            <Input
-              inputRef={register({ required: true })}
-              id="phone"
-              name="phone"
-              label="Telefone"
-              className={classes.inputForm}
-              helperText="Coloque apenas o número"
-            />
-          </div>
+
+        <form
+          onSubmit={onSubmit}
+          className={classes.form}
+        >
+          <h2 style={{ color: 'GrayText' }}>Dados Pessoais</h2>
+          <Grid container spacing={1}>
+            <Grid item xs={6}>
+              <Grid item xs={9}>
+                <Input
+                  inputRef={register({ required: true })}
+                  id="name"
+                  name="name"
+                  label="Nome"
+                  className={classes.inputForm}
+                />
+              </Grid>
+
+              <Grid item xs={9}>
+                <Input
+                  inputRef={register({ required: true })}
+                  id="cpf"
+                  name="cpf"
+                  label="CPF"
+                  className={classes.inputForm}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <Input
+                  inputRef={register({ required: true })}
+                  type="date"
+                  id="birthday"
+                  name="birthday"
+                  label="Data de Nascimento"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  className={classes.inputForm}
+                />
+              </Grid>
+
+              <Grid item xs={9}>
+                <Input
+                  inputRef={register({ required: true })}
+                  id="email"
+                  name="email"
+                  label="Email"
+                  className={classes.inputForm}
+                />
+              </Grid>
+
+              <Grid item xs={9}>
+                <Input
+                  inputRef={register({ required: true })}
+                  id="password"
+                  name="password"
+                  label="Senha"
+                  defaultValue={generatePassword(6)}
+                  helperText="Senha gerada aleatoriamente"
+                  InputProps={{
+                    readOnly: true,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MdLock />
+                      </InputAdornment>
+                    ),
+                  }}
+                  className={classes.inputForm}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <Button
+                  type="submit"
+                  startIcon={<MdSave />}
+                >
+                  Salvar
+                </Button>
+              </Grid>
+
+            </Grid>
+
+            <Grid item xs={6}>
+              <h2 style={{ color: 'GrayText' }}>Endereço</h2>
+              <Grid item xs={9}>
+                <Input
+                  inputRef={register({ required: true })}
+                  id="zipCode"
+                  name="zipCode"
+                  label="CEP"
+                  className={classes.inputForm}
+                />
+              </Grid>
+
+              <Grid item xs={9}>
+                <Input
+                  inputRef={register({ required: true })}
+                  id="street"
+                  name="street"
+                  label="Rua/Logradouro"
+                  className={classes.inputForm}
+                />
+              </Grid>
+
+              <Grid item xs={3}>
+                <Input
+                  inputRef={register({ required: true })}
+                  id="number"
+                  name="number"
+                  label="Nº"
+                  className={classes.inputFormTiny}
+                />
+              </Grid>
+
+              <Grid item xs={9}>
+                <Input
+                  inputRef={register({ required: true })}
+                  id="phone"
+                  name="phone"
+                  label="Telefone"
+                  className={classes.inputForm}
+                  helperText="Coloque apenas o número"
+                />
+              </Grid>
+            </Grid>
+          </Grid>
         </form>
       </MainContainer>
     </Container>

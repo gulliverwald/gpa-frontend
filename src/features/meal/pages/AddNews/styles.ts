@@ -7,7 +7,7 @@ export const Container = styled.div`
 `;
 
 export const MainContainer = styled.div`
-  padding: 20px 20px;
+  padding: 30px 10%;
   display: flex;
   flex-direction: column;
 `;
@@ -41,17 +41,44 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
   form: {
     display: 'flex',
     width: '100%',
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'left',
     justifyContent: 'center',
     padding: theme.spacing(2),
+  },
+  formTip: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    alignItems: 'left',
+    justifyContent: 'center',
+    padding: theme.spacing(5),
   },
   inputForm: {
     margin: '1rem',
     width: '80%',
   },
+  inputFormBody: {
+    width: '100%',
+    margin: theme.spacing(5, 0),
+  },
   inputFormTiny: {
     margin: '1rem',
     width: '30%',
+  },
+  formColumn: {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
+  buttonForm: {
+    margin: theme.spacing(2),
+  },
+  inputAlert: {
+    color: 'red',
+    display: 'flex',
+    alignItems: 'center',
   },
 }));

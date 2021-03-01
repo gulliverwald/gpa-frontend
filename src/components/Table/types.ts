@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 import React, { CSSProperties, ReactElement } from 'react';
 
 export type PropType = number | string;
@@ -38,9 +38,16 @@ export interface ITableProps<T extends DefaultRowProps> {
   selectBox?: boolean;
   defaultPage?: number;
   defaultOrderBy?: keyof T;
+  ref?: React.Ref<unknown>;
 }
 
 export interface TableCellProps<T extends DefaultRowProps> {
   column: IColumn<T>;
   row: IRow<T>;
+}
+
+export interface IInputRef {
+  rowsPerPage: number;
+  page: number;
+  clearSelectedRows: VoidFunction;
 }
