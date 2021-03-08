@@ -10,6 +10,8 @@ export const MainContainer = styled.div`
   padding: 30px 10%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 `;
 
 export const ButtonAppbar = styled.button`
@@ -19,26 +21,20 @@ export const ButtonAppbar = styled.button`
 `;
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
-  appbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    height: '50px',
-    width: '100%',
-    position: 'relative',
-    padding: theme.spacing(0, 10),
-    background: 'white',
-    color: 'black',
-  },
-  returnAppbar: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'blue',
-  },
   tableContainer: {
     width: '50%',
+  },
+  inputForm: {
+    margin: '1rem',
+    width: '80%',
+  },
+  buttonForm: {
+    margin: theme.spacing(2),
+  },
+  formContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'left',
+    width: '80%',
   },
 }));
