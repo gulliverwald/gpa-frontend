@@ -42,12 +42,12 @@ const AddNews: React.FC = () => {
       nutritionist_id: userId,
       callback: (data_, error) => {
         if (data_) {
-          dispatch(addNotification({ message: 'Dica deletada com sucesso!', options: { variant: 'success' }, key: Math.random() }));
+          dispatch(addNotification({ message: 'Notícia inserida com sucesso!', options: { variant: 'success' }, key: Math.random() }));
           clearErrors();
           reset();
         }
         if (error) {
-          dispatch(addNotification({ message: 'Erro em deletar Dica!', options: { variant: 'error' }, key: Math.random() }));
+          dispatch(addNotification({ message: 'Erro em inserir notícia!', options: { variant: 'error' }, key: Math.random() }));
         }
         setLoading(false);
       },
@@ -58,7 +58,7 @@ const AddNews: React.FC = () => {
     async function submitTip(): Promise<void> {
       setLoading(true);
       try {
-        const response = await api.post('/Tip', { ...data, date: dataPost.toLocaleDateString(), nutritionist_id: userId });
+        const response = await api.post('/Tip', { ...data, date: dataPost.toISOString(), nutritionist_id: userId });
         if (response.data.status !== 'error') {
           dispatch(addNotification({ message: 'Dica postada com sucesso!', options: { variant: 'success' }, key: Math.random() }));
         } else {
