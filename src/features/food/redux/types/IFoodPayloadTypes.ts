@@ -20,6 +20,7 @@ export interface IRequestUpdateFood {
 
 export interface IRequestDeleteFood {
   id: number;
+  callback?: (data: any, error: any) => void;
 }
 
 export type IRequestListFood = {

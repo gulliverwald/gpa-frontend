@@ -92,7 +92,7 @@ function* workerRequestUpdateFood(action: any) {
       measure,
       substitutions,
     } = action.payload;
-    const response: AxiosResponse<IRequestUpdateFoodSuccess> = yield call(
+    const response: AxiosResponse<any> = yield call(
       api.put,
       'Food',
       {
@@ -104,8 +104,18 @@ function* workerRequestUpdateFood(action: any) {
         substitutions,
       },
     );
-    yield put(requestUpdateFoodSuccess({ ...response.data }));
+    if (response.data.status !== 'error') {
+      yield put(requestListFoodSuccess({ food: response.data }));
+      if (action.payload.callback) {
+        action.payload.callback(response.data, null);
+      }
+    } else if (action.payload.callback) {
+      action.payload.callback(null, 'Ocorreu um erro ao editar...');
+    }
   } catch (err) {
+    if (action.payload.callback) {
+      action.payload.callback(null, 'Ocorreu um erro ao editar...');
+    }
     yield put(
       requestFoodError({
         message: 'Error',
@@ -118,13 +128,22 @@ function* workerRequestUpdateFood(action: any) {
 function* workerRequestDeleteFood(action: any) {
   try {
     const { id } = action.payload;
-    const response: AxiosResponse<IRequestDeleteFoodSuccess> = yield call(
-      api.post,
-      'Food',
-      { id },
+    const response: AxiosResponse<any> = yield call(
+      api.delete,
+      `Food/${id}`,
     );
-    yield put(requestDeleteFoodSuccess({ id: response.data.id }));
+    if (response.data.status !== 'error') {
+      yield put(requestDeleteFoodSuccess({ id }));
+      if (action.payload.callback) {
+        action.payload.callback(response.data, null);
+      }
+    } else if (action.payload.callback) {
+      action.payload.callback(null, response.data.message);
+    }
   } catch (err) {
+    if (action.payload.callback) {
+      action.payload.callback(null, err.response.data.message);
+    }
     yield put(
       requestFoodError({
         message: 'Error',

@@ -11,7 +11,7 @@ export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 `;
 
 export const ButtonAppbar = styled.button`
@@ -35,6 +35,35 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'left',
-    width: '80%',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  modalContainer: {
+    display: 'flex',
+    border: 'none',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '16px',
+  },
+  modalCard: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    border: 'none',
+    padding: '2%',
+    height: 'auto',
+    maxWidth: '50%',
+    width: 'auto',
+  },
+  button: {
+    margin: '8px',
+  },
+  buttonCardContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
   },
 }));
