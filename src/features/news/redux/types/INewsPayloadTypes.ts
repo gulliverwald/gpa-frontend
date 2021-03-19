@@ -7,6 +7,7 @@ export interface IRequestCreateNews {
   nutritionist_id: number;
   image_link: string;
   subtitle?: string;
+  callback?: (data: any, error: any) => void
 }
 
 export interface IRequestUpdateNews {

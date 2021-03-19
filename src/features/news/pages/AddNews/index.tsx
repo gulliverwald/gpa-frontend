@@ -9,6 +9,7 @@ import { IoMdAlert } from 'react-icons/io';
 import api from '../../../../services/api';
 import { WebStore } from '../../../../store/RootReducer';
 import AppBar from '../../../../components/AppBar';
+import BackdropLoading from '../../../../components/BackdropLoading';
 import {
   Container, MainContainer, useStyles,
 } from './styles';
@@ -20,10 +21,13 @@ const AddNews: React.FC = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const dataPost = new Date();
-
   const userId = useSelector((store: WebStore) => store.user.state.userInfo.user.id);
 
-  const { register, errors, handleSubmit } = useForm();
+  const [loading, setLoading] = useState(false);
+
+  const {
+    register, errors, handleSubmit, clearErrors, reset,
+  } = useForm();
   const {
     register: registerTip,
     errors: errorsTip,
@@ -32,11 +36,27 @@ const AddNews: React.FC = () => {
   } = useForm();
 
   const onSubmit = handleSubmit((data) => {
-    dispatch(requestCreateNews({ ...data, nutritionist_id: userId } as IRequestCreateNews));
+    setLoading(true);
+    dispatch(requestCreateNews({
+      ...data,
+      nutritionist_id: userId,
+      callback: (data_, error) => {
+        if (data_) {
+          dispatch(addNotification({ message: 'Dica deletada com sucesso!', options: { variant: 'success' }, key: Math.random() }));
+          clearErrors();
+          reset();
+        }
+        if (error) {
+          dispatch(addNotification({ message: 'Erro em deletar Dica!', options: { variant: 'error' }, key: Math.random() }));
+        }
+        setLoading(false);
+      },
+    } as IRequestCreateNews));
   });
 
   const onSubmitTip = handleSubmitTip((data) => {
     async function submitTip(): Promise<void> {
+      setLoading(true);
       try {
         const response = await api.post('/Tip', { ...data, date: dataPost.toLocaleDateString(), nutritionist_id: userId });
         if (response.data.status !== 'error') {
@@ -46,6 +66,8 @@ const AddNews: React.FC = () => {
         }
       } catch (erro) {
         dispatch(addNotification({ message: 'Erro em inserir Dica!', options: { variant: 'error' }, key: Math.random() }));
+      } finally {
+        setLoading(false);
       }
     }
     submitTip();
@@ -54,6 +76,7 @@ const AddNews: React.FC = () => {
   const handleDeleteTip = () => {
     async function deleteTip(): Promise<void> {
       const response = await api.get('/Tip');
+      setLoading(true);
       try {
         const res = await api.delete(`/Tip/${response.data.pop().id}`);
         if (res.data.status !== 'error') {
@@ -64,6 +87,8 @@ const AddNews: React.FC = () => {
         }
       } catch (erro) {
         dispatch(addNotification({ message: 'Erro em deletar Dica!', options: { variant: 'error' }, key: Math.random() }));
+      } finally {
+        setLoading(false);
       }
     }
     deleteTip();
@@ -86,6 +111,7 @@ const AddNews: React.FC = () => {
 
   return (
     <Container>
+      <BackdropLoading open={loading} />
       <AppBar title="Adicionar Notícia / Dica do Dia" />
       <MainContainer>
         <h2 style={{ margin: '16px' }}>Adicionar Notícia</h2>

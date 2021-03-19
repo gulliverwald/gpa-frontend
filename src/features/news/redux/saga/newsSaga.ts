@@ -46,12 +46,18 @@ function* workerRequestCreateNews(action: any) {
       },
     );
     yield put(requestCreateNewsSuccess({ ...response.data }));
+    if (action.payload.callback) {
+      action.payload.callback(response.data, null);
+    }
   } catch (err) {
     yield put(
       requestNewsError({
         message: 'Error',
       }),
     );
+    if (action.payload.callback) {
+      action.payload.callback(null, err);
+    }
     console.log(err);
   }
 }
