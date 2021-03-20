@@ -5,11 +5,15 @@ import ListPatient from '../../../patient/pages/ListPatient';
 import AddPatient from '../../../patient/pages/AddPatient';
 // import AddEatingPlan from '../../../eatingPlan/pages/AddEatingPlan';
 import AddNews from '../../../news/pages/AddNews';
+import ListNews from '../../../news/pages/ListNews';
+import UpdateNews from '../../../news/pages/UpdateNews';
+
 import NutritionistSidebar from '../../../../components/NutritionistSidebar';
 import {
   Container, MainContainer, useStyles,
 } from './styles';
 import AddFood from '../../../food/pages/AddFood';
+import NewsInfoNutri from '../../../news/pages/NewsInfoNutri';
 
 const NutritionistDash: React.FC = () => {
   const classes = useStyles();
@@ -33,6 +37,9 @@ const NutritionistDash: React.FC = () => {
             <Route exact path="/admin/listPatient" component={ListPatient} />
             <Route exact path="/admin/addFood" component={AddFood} />
             <Route exact path="/admin/addNews" component={AddNews} />
+            <Route exact path="/admin/updateNews/:id" component={UpdateNews} />
+            <Route exact path="/admin/listNews" component={ListNews} />
+            <Route exact path="/admin/listNews/:id" component={NewsInfoNutri} />
           </Switch>
         </MainContainer>
       </Container>

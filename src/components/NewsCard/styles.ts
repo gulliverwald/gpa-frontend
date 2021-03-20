@@ -9,11 +9,12 @@ export const Container = styled.div`
   padding: 23px;
 
   img {
-    width: '89px';
-    height: '89px';
-    object-fit: 'fill';
-    padding-left: '8px';
-    object-position: 'center';
+    width: 110px;
+    height: 89px;
+    padding-left: 8px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 16px;
   }
 `;
 

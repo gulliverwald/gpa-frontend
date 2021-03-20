@@ -23,9 +23,12 @@ export interface IRequestUpdateNews {
 
 export interface IRequestDeleteNews {
   id: number;
+  callback?: (data: any, error: any) => void;
 }
 
-export type IRequestListNews = void;
+export type IRequestListNews = {
+  callback?: (data: any, error: any) => void;
+};
 
 export interface IRequestListNewsSucess {
   id: number;

@@ -22,11 +22,10 @@ export const BoxContainer = styled.div`
   border-radius: 21px;
 
   img {
+    background-repeat: cover;
+    background-size: 100% 100vh;
     width: 100%;
-    height: 40%;
-    border-radius: 21px 21px 0px 0px;
-    object-fit: cover;
-    object-position: center;
+    height: 30%;
   }
 
   h2 {
