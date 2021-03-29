@@ -8,5 +8,8 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     minWidth: '120',
     maxWidth: '200',
   },
+  loadingItem: {
+    height: 32,
+  },
 
 }));

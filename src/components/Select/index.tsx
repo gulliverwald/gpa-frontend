@@ -1,7 +1,14 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import { Select as SelectMUI, FormControl, InputLabel } from '@material-ui/core';
+import {
+  Select as SelectMUI,
+  FormControl,
+  FormControlProps,
+  InputLabel,
+  SelectProps as SelectPropsMUI,
+  MenuItem,
+} from '@material-ui/core';
 
 import { useStyles } from './styles';
 
@@ -12,6 +19,8 @@ interface SelectProps {
   label?: string;
   control?: any;
   defaultValue?: any;
+  loading?: boolean;
+  selectProps?: SelectPropsMUI;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -21,7 +30,9 @@ const Select: React.FC<SelectProps> = ({
   label,
   control,
   defaultValue,
+  loading = false,
   children,
+  selectProps,
   ...props
 }) => {
   const classes = useStyles();
@@ -32,8 +43,19 @@ const Select: React.FC<SelectProps> = ({
       <InputLabel id={labelId}>{label}</InputLabel>
       <Controller
         as={(
-          <SelectMUI labelId={labelId} label={label}>
-            {children}
+          <SelectMUI {...selectProps} labelId={labelId} label={label}>
+            {!loading ? (
+              children
+            ) : (
+              <MenuItem
+                key={Math.random()}
+                value={1}
+                disabled
+                className={classes.loadingItem}
+              >
+                Carregando...
+              </MenuItem>
+            )}
           </SelectMUI>
         )}
         name={name}

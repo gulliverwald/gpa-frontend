@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React, {
   memo,
   useCallback,
@@ -23,6 +22,7 @@ import {
   TableSortLabel,
 } from '@material-ui/core';
 import clsx from 'clsx';
+import { Pagination } from '@material-ui/lab';
 import {
   DefaultRowProps,
   IRow,
@@ -39,17 +39,21 @@ function Table<T extends DefaultRowProps>(
     columns,
     rowActions,
     actions,
+    size,
+    onChangeSort,
     defaultOrderBy,
     rows,
+    hidePagination = false,
     selectBox = false,
     loading,
     defaultPage = 0,
   }: React.PropsWithChildren<ITableProps<T>>,
-  ref: React.Ref<IInputRef>,
+  ref: React.Ref<IInputRef<T>>,
+// eslint-disable-next-line no-undef
 ): JSX.Element {
   const [page, setPage] = useState<number>(defaultPage);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [orderBy, setOrderBy] = useState<keyof T | undefined>(defaultOrderBy);
   const [selectedRows, setSelectedRows] = useState<IRow<T>[]>([] as IRow<T>[]);
 
@@ -57,9 +61,15 @@ function Table<T extends DefaultRowProps>(
 
   useImperativeHandle(ref, () => ({
     rowsPerPage,
+    order,
+    orderBy,
     page,
     clearSelectedRows() {
       setSelectedRows([]);
+    },
+    // eslint-disable-next-line no-shadow
+    setPage(page: number) {
+      setPage(page);
     },
   }));
 
@@ -143,8 +153,9 @@ function Table<T extends DefaultRowProps>(
       setOrder(isAsc ? 'desc' : 'asc');
       setOrderBy(property);
       setSelectedRows([]);
+      if (onChangeSort) onChangeSort(property, isAsc ? 'desc' : 'asc');
     },
-    [order, orderBy],
+    [onChangeSort, order, orderBy],
   );
 
   const pageRowsNumber = useMemo(
@@ -154,32 +165,34 @@ function Table<T extends DefaultRowProps>(
 
   return (
     <>
-      <Toolbar
-        className={clsx(classes.root, {
-          [classes.highlight]: selectedRows.length > 0,
-        })}
-      >
-        {selectedRows.length > 0 && (
-          <>
-            <Typography
-              className={classes.title}
-              color="textSecondary"
-              variant="subtitle1"
-              component="div"
-            >
-              {selectedRows.length}
-              {' '}
-              selecionadas
-            </Typography>
-            {actions?.map((action) => action.renderItem(selectedRows))}
-          </>
-        )}
-      </Toolbar>
+      {selectBox && actions && actions?.length > 0 && (
+        <Toolbar
+          className={clsx(classes.root, {
+            [classes.highlight]: selectedRows.length > 0,
+          })}
+        >
+          {selectedRows.length > 0 && (
+            <>
+              <Typography
+                className={classes.title}
+                color="textSecondary"
+                variant="subtitle1"
+                component="div"
+              >
+                {selectedRows.length}
+                {' '}
+                selecionadas
+              </Typography>
+              {actions?.map((action) => action.renderItem(selectedRows))}
+            </>
+          )}
+        </Toolbar>
+      )}
       <TableContainer>
         {!loading ? (
           <MUITable
             aria-labelledby="tableTitle"
-            size="medium"
+            size={size}
             aria-label="enhanced table"
           >
             <TableHead>
@@ -222,50 +235,65 @@ function Table<T extends DefaultRowProps>(
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows
-                .slice()
-                .sort(dynamicSort(`${order === 'desc' ? '-' : ''}${orderBy}`))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = selectedRows.includes(row);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+              {rows.length ? (
+                rows
+                  .slice()
+                  .sort(dynamicSort(`${order === 'desc' ? '-' : ''}${orderBy}`))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => {
+                    const isItemSelected = selectedRows.includes(row);
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      // onClick={() => handleSelect(row)}
-                      key={row.id}
-                      selected={isItemSelected}
-                      tabIndex={index}
-                    >
-                      {selectBox && (
-                        <MUITableCell padding="checkbox">
-                          <Checkbox
-                            color="primary"
-                            onChange={() => handleSelect(row)}
-                            checked={isItemSelected}
-                            inputProps={{ 'aria-labelledby': labelId }}
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        // onClick={() => handleSelect(row)}
+                        key={row.id || Math.random()}
+                        selected={isItemSelected}
+                        tabIndex={index}
+                      >
+                        {selectBox && (
+                          <MUITableCell padding="checkbox">
+                            <Checkbox
+                              color="primary"
+                              onChange={() => handleSelect(row)}
+                              checked={isItemSelected}
+                              inputProps={{ 'aria-labelledby': labelId }}
+                            />
+                          </MUITableCell>
+                        )}
+                        {columns.map((column, index_) => (
+                          <TableCell
+                            // eslint-disable-next-line react/no-array-index-key
+                            key={index_ + index}
+                            align={column.type === 'number' ? 'right' : 'left'}
+                            column={column}
+                            index={index}
+                            row={row}
                           />
-                        </MUITableCell>
-                      )}
-                      {columns.map((column) => (
-                        <TableCell
-                          align={column.type === 'number' ? 'right' : 'left'}
-                          column={column}
-                          row={row}
-                        />
-                      ))}
+                        ))}
 
-                      {!!rowActions && !!rowActions.length ? (
-                        <MUITableCell align="right">
-                          {rowActions.map((action: IRowAction<T>) => action.renderItem(row))}
-                        </MUITableCell>
-                      ) : null}
-                    </TableRow>
-                  );
-                })}
+                        {!!rowActions && !!rowActions.length ? (
+                          <MUITableCell align="right">
+                            {rowActions.map(
+                              (action: IRowAction<T>) => action.renderItem(row, index),
+                            )}
+                          </MUITableCell>
+                        ) : null}
+                      </TableRow>
+                    );
+                  })
+              ) : (
+                <TableRow>
+                  <MUITableCell colSpan={100} align="center">
+                    <Container className={classes.emptyTableContainer}>
+                      Sem dados
+                    </Container>
+                  </MUITableCell>
+                </TableRow>
+              )}
             </TableBody>
           </MUITable>
         ) : (
@@ -274,9 +302,10 @@ function Table<T extends DefaultRowProps>(
           </Container>
         )}
       </TableContainer>
-      {!loading && rows.length > 0 ? (
+      {!loading && rows.length > 0 && !hidePagination ? (
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
+          labelRowsPerPage="Items por página"
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
@@ -289,5 +318,5 @@ function Table<T extends DefaultRowProps>(
   );
 }
 
-// export default memo(React.forwardRef(Table)) as typeof Table;
-export default React.forwardRef(Table) as typeof Table;
+export default memo(React.forwardRef(Table)) as typeof Table;
+// export default React.forwardRef(Table) as typeof Table;

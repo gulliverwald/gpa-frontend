@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React, { CSSProperties, ReactElement } from 'react';
 
 export type PropType = number | string;
@@ -12,7 +11,7 @@ export interface IColumn<T extends DefaultRowProps> {
   props: Array<keyof T>;
   filterRef?: React.MutableRefObject<HTMLInputElement | undefined>;
   type?: 'currency' | 'number' | 'date' | 'string' | 'boolean';
-  renderItem?: (row: IRow<T>) => string | ReactElement;
+  renderItem?: (row: IRow<T>, index: number) => string | ReactElement;
 }
 
 export interface DefaultRowProps {
@@ -26,7 +25,7 @@ export type IAction<T extends DefaultRowProps> = {
   renderItem: (row: IRow<T>[]) => string | ReactElement;
 };
 export type IRowAction<T extends DefaultRowProps> = {
-  renderItem: (row?: IRow<T>) => string | ReactElement;
+  renderItem: (row: IRow<T>, index: number) => string | ReactElement;
 };
 
 export interface ITableProps<T extends DefaultRowProps> {
@@ -35,8 +34,11 @@ export interface ITableProps<T extends DefaultRowProps> {
   rows: Array<IRow<T>>;
   actions?: Array<IAction<T>>;
   loading?: boolean;
+  hidePagination?: boolean;
+  size?: 'small' | 'medium';
   selectBox?: boolean;
   defaultPage?: number;
+  onChangeSort?: (property: keyof T, order: 'asc' | 'desc') => void;
   defaultOrderBy?: keyof T;
   ref?: React.Ref<unknown>;
 }
@@ -44,10 +46,14 @@ export interface ITableProps<T extends DefaultRowProps> {
 export interface TableCellProps<T extends DefaultRowProps> {
   column: IColumn<T>;
   row: IRow<T>;
+  index: number;
 }
 
-export interface IInputRef {
+export interface IInputRef<T> {
   rowsPerPage: number;
+  order: 'asc' | 'desc';
+  orderBy?: keyof T;
   page: number;
-  clearSelectedRows: VoidFunction;
+  clearSelectedRows: () => void;
+  setPage: (page: number) => void;
 }

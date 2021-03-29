@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import PatientsReducer from './patientsReducer';
+import SchedulesReducer from './schedulesReducer';
 
 export default combineReducers({
-  state: PatientsReducer,
+  state: SchedulesReducer,
 });

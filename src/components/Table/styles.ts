@@ -20,6 +20,15 @@ export const useToolbarStyles = makeStyles((theme: Theme) => createStyles({
   title: {
     flex: '1 1 100%',
   },
+  emptyTableContainer: {
+    color: '#00000066',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: 300,
+    height: '100%',
+    width: '100%',
+  },
   container: {
     minHeight: 300,
     display: 'flex',
