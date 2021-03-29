@@ -8,6 +8,7 @@ import EditPatient from '../../../patient/pages/EditPatient';
 import AddNews from '../../../news/pages/AddNews';
 import ListNews from '../../../news/pages/ListNews';
 import UpdateNews from '../../../news/pages/UpdateNews';
+import ListSchedules from '../../../schedule/pages/ListSchedules';
 
 import NutritionistSidebar from '../../../../components/NutritionistSidebar';
 import {
@@ -35,6 +36,7 @@ const NutritionistDash: React.FC = () => {
           <Switch>
             <Route exact path="/admin/addPatient" component={AddPatient} />
             <Route exact path="/admin/editPatient/:id" component={EditPatient} />
+            <Route exact path="/admin/listSchedules/:id" component={ListSchedules} />
             {/* <Route exact path="/admin/addEatingPlan" component={AddEatingPlan} /> */}
             <Route exact path="/admin/listPatient" component={ListPatient} />
             <Route exact path="/admin/addFood" component={AddFood} />

@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import {
+  MdAssignment,
   MdCheckCircle, MdDelete, MdEdit, MdRadioButtonUnchecked,
 } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
@@ -166,6 +167,17 @@ const ListPatient: React.FC = () => {
             size="small"
             rows={patients}
             rowActions={[
+              {
+                renderItem: (row) => (
+                  <Link to={`/admin/listSchedules/${row.id}`}>
+                    <IconButton
+                      Icon={MdAssignment}
+                      color="default"
+                      size="medium"
+                    />
+                  </Link>
+                ),
+              },
               {
                 renderItem: (row) => (
                   <Link to={`/admin/editPatient/${row.id}`}>

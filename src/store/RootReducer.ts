@@ -7,6 +7,7 @@ import userReducer from '../features/user/redux/reducers';
 import newsReducer from '../features/news/redux/reducers/newsReducer';
 import foodReducer from '../features/food/redux/reducers/foodReducer';
 import patientReducer from '../features/patient/redux/reducers/patientsReducer';
+import scheduleReducer from '../features/schedule/redux/reducers/schedulesReducer';
 import notificationReducer from '../hooks/toast/redux/reducers/index';
 
 export const history = createBrowserHistory();
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   news: newsReducer,
   food: foodReducer,
+  schedule: scheduleReducer,
   patient: patientReducer,
   notification: notificationReducer,
 });
