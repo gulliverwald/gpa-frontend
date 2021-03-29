@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import NewsReducer from './newsReducer';
+import PatientsReducer from './patientsReducer';
 
 export default combineReducers({
-  state: NewsReducer,
+  state: PatientsReducer,
 });

@@ -1,19 +1,35 @@
 /* eslint-disable camelcase */
-import React, { useEffect, useState, useMemo } from 'react';
+import React, {
+  useEffect, useState, useMemo, useCallback,
+} from 'react';
 import {
   TableContainer,
   Paper,
+  Icon,
 } from '@material-ui/core';
-import { MdDelete, MdEdit } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import {
+  MdCheckCircle, MdDelete, MdEdit, MdRadioButtonUnchecked,
+} from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
 import AppBar from '../../../../components/AppBar';
 import Table from '../../../../components/Table';
 import api from '../../../../services/api';
 import {
   Container, MainContainer, useStyles,
 } from './styles';
+import BackdropLoading from '../../../../components/BackdropLoading';
+import IconButton from '../../../../components/IconButton';
+import { requestDeletePatients, requestListPatients } from '../../redux/reducers/patientsReducer';
+import { IPatientsInfo } from '../../redux/types/IPatientsState';
+import ConfirmModal from '../../../../components/Modal';
+import { addNotification } from '../../../../hooks/toast/redux/reducers/NotificationReducer';
+import { WebStore } from '../../../../store/RootReducer';
+import Tooltip from '../../../../components/Tooltip';
+import CheckBoolean from '../../../../components/CheckBoolean';
 
-interface PatientProps{
-  id: string;
+interface PatientProps {
+  id: number;
   name: string;
   birthday: string;
   email: string;
@@ -23,15 +39,72 @@ interface PatientProps{
 
 const ListPatient: React.FC = () => {
   const classes = useStyles();
-  const [patients, setPatients] = useState<PatientProps[]>([]);
+  const patients = useSelector((state: WebStore) => state.patient.patients);
+  const [loading, setLoading] = useState(false);
+  const [toDeletePatient, setToDeletePatient] = useState<IPatientsInfo | null>(null);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    async function handleListPatients(): Promise<void> {
-      const response = await api.get('/Users');
-      setPatients(response.data);
-    }
-    handleListPatients();
-  }, [patients]);
+    setLoading(true);
+    dispatch(requestListPatients({
+      callback: (data, error) => {
+        setLoading(false);
+        if (error) {
+          dispatch(addNotification({
+            key: Math.random(),
+            message: 'Ocorreu um erro ao listar os pacientes, tente novamente',
+            options: {
+              variant: 'error',
+            },
+          }));
+        }
+      },
+    }));
+  }, []);
+
+  const handleCancel = useCallback(
+    () => {
+      setToDeletePatient(null);
+      setOpenConfirmModal(false);
+    },
+    [],
+  );
+
+  const handleConfirm = useCallback(
+    () => {
+      setLoading(true);
+      if (toDeletePatient) {
+        dispatch(requestDeletePatients({
+          id: toDeletePatient.id,
+          callback: (data, error) => {
+            setLoading(false);
+            if (data) {
+              dispatch(addNotification({
+                message: 'Paciente deletado',
+                key: Math.random(),
+                options: {
+                  variant: 'success',
+                },
+              }));
+            }
+            if (error) {
+              dispatch(addNotification({
+                message: 'Erro ao deletar paciente',
+                key: Math.random(),
+                options: {
+                  variant: 'error',
+                },
+              }));
+            }
+          },
+        }));
+      }
+      setOpenConfirmModal(false);
+      setToDeletePatient(null);
+    },
+    [toDeletePatient],
+  );
 
   const getAge = useMemo(() => (dateString: string) => {
     const today = new Date();
@@ -46,10 +119,11 @@ const ListPatient: React.FC = () => {
 
   return (
     <Container>
-      <AppBar title="Listar pacientes" />
+      <BackdropLoading open={loading} />
+      <AppBar title="Listar pacientes" backButton={false} />
       <MainContainer>
         <TableContainer component={Paper} className={classes.tableContainer}>
-          <Table<PatientProps>
+          <Table<IPatientsInfo>
             columns={[
               {
                 title: 'Nome',
@@ -64,63 +138,69 @@ const ListPatient: React.FC = () => {
                 formatter: (patient) => getAge(patient.birthday).toString(),
                 orderable: true,
               },
+              {
+                title: 'Email',
+                type: 'string',
+                props: ['email'],
+                orderable: true,
+              },
+              {
+                title: 'Telefone',
+                type: 'string',
+                props: ['phone'],
+                orderable: false,
+              },
+              {
+                title: 'Acesso',
+                type: 'boolean',
+                props: ['access_authorization'],
+                orderable: false,
+                renderItem: (row) => (
+                  <CheckBoolean
+                    checked={!!row.access_authorization}
+                    title={row.access_authorization ? 'Liberado' : 'Não liberado'}
+                  />
+                ),
+              },
             ]}
+            size="small"
             rows={patients}
             rowActions={[
               {
-                renderItem: () => (<MdEdit color="purple" size={28} />),
+                renderItem: (row) => (
+                  <Link to={`/admin/editPatient/${row.id}`}>
+                    <IconButton
+                      Icon={MdEdit}
+                      color="primary"
+                      size="medium"
+                    />
+                  </Link>
+                ),
               },
               {
-                renderItem: () => (<MdDelete color="red" size={28} />),
-              },
-            ]}
-            selectBox
-            actions={[
-              {
-                renderItem: () => (<MdDelete size={28} />),
+                renderItem: (row) => (
+                  <IconButton
+                    onClick={() => {
+                      setToDeletePatient(row);
+                      setOpenConfirmModal(true);
+                    }}
+                    Icon={MdDelete}
+                    color="secondary"
+                    size="medium"
+                  />
+                ),
               },
             ]}
             defaultOrderBy="name"
           />
-
-          {/* <Table className={classes.table} size="small" aria-label="a dense table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Nome</TableCell>
-                <TableCell align="left">Idade</TableCell>
-                <TableCell align="left">Email</TableCell>
-                <TableCell align="left">Telefone</TableCell>
-                <TableCell align="center" width={16}>Acesso</TableCell>
-                <TableCell align="center" width={16} />
-                <TableCell align="center" width={16} />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {patients.map((patient) => (
-                <TableRow key={patient.id}>
-                  <TableCell component="th" scope="row">
-                    {patient.nome}
-                  </TableCell>
-                  <TableCell align="left">{getAge(patient.data_nascimento)}</TableCell>
-                  <TableCell align="left">{patient.email}</TableCell>
-                  <TableCell align="left">{patient.telefone}</TableCell>
-                  <TableCell align="center">
-                    <Checkbox
-                      key={patient.id}
-                      checked={checked}
-                      onChange={handleChange}
-                      color="primary"
-                      inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
-                    />
-                  </TableCell>
-                  <TableCell align="center"><MdEdit color="purple" size={26} /></TableCell>
-                  <TableCell align="center"><MdDelete color="red" size={26} /></TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table> */}
         </TableContainer>
       </MainContainer>
+      <ConfirmModal
+        open={openConfirmModal}
+        handleCancel={handleCancel}
+        handleConfirm={handleConfirm}
+        message="Deseja realmente deletar este paciente?"
+      />
     </Container>
   );
 };

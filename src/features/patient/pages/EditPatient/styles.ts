@@ -10,8 +10,8 @@ export const MainContainer = styled.div`
   padding: 20px 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 `;
 
 export const ButtonAppbar = styled.button`
@@ -40,11 +40,20 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     justifyContent: 'center',
     color: 'blue',
   },
-  table: {
-    minWidth: '650px',
+  form: {
+    display: 'flex',
     width: '100%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: theme.spacing(2),
   },
-  tableContainer: {
+  inputForm: {
+    margin: '1rem',
     width: '80%',
+  },
+  inputFormTiny: {
+    margin: '1rem',
+    width: '30%',
   },
 }));

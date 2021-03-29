@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-import React from 'react';
+import React, { memo } from 'react';
 import {
   TableCell as MUITableCell,
   TableCellProps as MUITableCellProps,
@@ -9,9 +8,11 @@ import { DefaultRowProps, TableCellProps } from './types';
 function TableCell<T extends DefaultRowProps>({
   column,
   row,
+  index,
   ...rest
 }: React.PropsWithChildren<
   TableCellProps<T> & MUITableCellProps
+// eslint-disable-next-line no-undef
 >): JSX.Element {
   const rowColumnText: (string | number)[] = [];
   let formatRowColumnText;
@@ -20,10 +21,10 @@ function TableCell<T extends DefaultRowProps>({
     return (
       <MUITableCell
         {...rest}
-        key={`${column.title}.${Math.random() + new Date().getTime()}`}
+        key={`${column.title}.${Math.random()}`}
         style={{ ...column.cssProps }}
       >
-        {column.renderItem(row)}
+        {column.renderItem(row, index)}
       </MUITableCell>
     );
   }
@@ -62,7 +63,7 @@ function TableCell<T extends DefaultRowProps>({
   return (
     <MUITableCell
       {...rest}
-      key={`${column.title}.${Math.random() + new Date().getTime()}`}
+      key={`${column.title}.${Math.random()}`}
       style={{ ...column.cssProps }}
     >
       {formatRowColumnText || rowColumnText.join(column.delimiter || ' ')}
@@ -70,4 +71,4 @@ function TableCell<T extends DefaultRowProps>({
   );
 }
 
-export default TableCell;
+export default memo(TableCell) as typeof TableCell;

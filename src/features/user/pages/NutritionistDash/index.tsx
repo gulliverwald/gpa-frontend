@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { AppBar } from '@material-ui/core';
 import ListPatient from '../../../patient/pages/ListPatient';
 import AddPatient from '../../../patient/pages/AddPatient';
+import EditPatient from '../../../patient/pages/EditPatient';
 // import AddEatingPlan from '../../../eatingPlan/pages/AddEatingPlan';
 import AddNews from '../../../news/pages/AddNews';
 import NutritionistSidebar from '../../../../components/NutritionistSidebar';
@@ -29,6 +30,7 @@ const NutritionistDash: React.FC = () => {
           </AppBar>
           <Switch>
             <Route exact path="/admin/addPatient" component={AddPatient} />
+            <Route exact path="/admin/editPatient/:id" component={EditPatient} />
             {/* <Route exact path="/admin/addEatingPlan" component={AddEatingPlan} /> */}
             <Route exact path="/admin/listPatient" component={ListPatient} />
             <Route exact path="/admin/addFood" component={AddFood} />

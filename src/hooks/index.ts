@@ -1,3 +1,4 @@
 import Notification from './toast';
+import useRedirect from './redirect';
 
-export { Notification };
+export { Notification, useRedirect };
