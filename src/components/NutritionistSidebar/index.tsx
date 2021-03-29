@@ -13,7 +13,7 @@ import ImgGPA from '../../assets/img/logo.png';
 import { requestLogout } from '../../features/user/redux/reducers/userReducer';
 
 const NutritionistSidebar: React.FC = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -38,6 +38,7 @@ const NutritionistSidebar: React.FC = () => {
               [classes.drawerClose]: !open,
             }),
           }}
+          anchor="left"
         >
           <div className={classes.toolbar}>
             <p>
