@@ -62,14 +62,24 @@ function* workerRequestCreateNews(action: any) {
   }
 }
 
-function* workerRequestListNews() {
+function* workerRequestListNews(action: any) {
   try {
-    const response: AxiosResponse<IRequestListNewsSucess> = yield call(
+    const response: AxiosResponse<any> = yield call(
       api.get,
       'News',
     );
-    yield put(requestListNewsSuccess({ ...response.data }));
+    if (response.data.status !== 'error') {
+      yield put(requestListNewsSuccess({ ...response.data }));
+      if (action.payload.callback) {
+        action.payload.callback(response.data, null);
+      }
+    } else if (action.payload.callback) {
+      action.payload.callback(null, 'Ocorreu um erro ao listar...');
+    }
   } catch (err) {
+    if (action.payload.callback) {
+      action.payload.callback(null, 'Ocorreu um erro ao listar...');
+    }
     yield put(
       requestNewsError({
         message: 'Error',
@@ -119,13 +129,22 @@ function* workerRequestUpdateNews(action: any) {
 function* workerRequestDeleteNews(action: any) {
   try {
     const { id } = action.payload;
-    const response: AxiosResponse<IRequestDeleteNewsSucess> = yield call(
-      api.post,
-      'News',
-      { id },
+    const response: AxiosResponse<any> = yield call(
+      api.delete,
+      `News/${id}`,
     );
-    yield put(requestDeleteNewsSuccess({ id: response.data.id }));
+    if (response.data.status !== 'error') {
+      yield put(requestDeleteNewsSuccess({ id }));
+      if (action.payload.callback) {
+        action.payload.callback(response.data, null);
+      }
+    } else if (action.payload.callback) {
+      action.payload.callback(null, response.data.message);
+    }
   } catch (err) {
+    if (action.payload.callback) {
+      action.payload.callback(null, err.response.data.message);
+    }
     yield put(
       requestNewsError({
         message: 'Error',

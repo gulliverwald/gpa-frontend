@@ -34,10 +34,6 @@ const PatientSidebar: React.FC<PatientSidebarProps> = ({ name }) => {
             <p>{name}</p>
           </div>
           <OptionsContainer>
-            <OptionsItem>
-              <MdSettings size={28} />
-              <p>Configurações</p>
-            </OptionsItem>
             <OptionsItem onClickCapture={handleLogout}>
               <IoMdLogOut color="red" size={28} />
               <p style={{ color: 'red' }}>Sair</p>

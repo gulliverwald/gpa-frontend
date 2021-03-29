@@ -8,7 +8,7 @@ export const Container = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: #F9FBFF;
+  background-color: #e8eefa;
   /* background-repeat: cover;
   background-size: 100% 100vh;
   background-blend-mode: color-burn;

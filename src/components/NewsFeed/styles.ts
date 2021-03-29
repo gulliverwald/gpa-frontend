@@ -27,4 +27,16 @@ export const ShowContainer = styled.div`
   padding-left: 10%;
   margin: 16px;
   color: #64C077;
+
+  h3 {
+  }
+
+  button {
+    border: 0;
+    background-color: transparent;
+    color: #64C077;
+    display: flex;
+    align-items: center;
+    margin: 0 16px;
+  }
 `;
