@@ -54,4 +54,17 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
   },
+  accordionDetail: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  foodTitle: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  input: {
+    width: '100%',
+    margin: '16px 0px',
+  },
 }));

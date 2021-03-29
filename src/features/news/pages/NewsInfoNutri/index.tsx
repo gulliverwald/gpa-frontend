@@ -16,7 +16,9 @@ const NewsInfoNutri: React.FC = () => {
       <AppBar title={`${news?.title}`} />
       <Container>
         <BoxContainer>
-          <img src={news?.image_link} alt="Imagem da notícia" />
+          <div className="image-container">
+            <img src={news?.image_link} alt="Imagem da notícia" />
+          </div>
           <h2><b>{news?.title}</b></h2>
           <h3>{news?.subtitle}</h3>
           <p>{news?.description}</p>

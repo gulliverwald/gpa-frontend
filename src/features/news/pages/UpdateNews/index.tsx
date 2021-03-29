@@ -4,20 +4,20 @@ import { useForm } from 'react-hook-form';
 
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Button, TextField, Grid,
+  Button, Grid,
 } from '@material-ui/core';
 import { IoMdAlert } from 'react-icons/io';
 import api from '../../../../services/api';
 import { WebStore } from '../../../../store/RootReducer';
 import AppBar from '../../../../components/AppBar';
 import BackdropLoading from '../../../../components/BackdropLoading';
+import Input from '../../../../components/Input';
 import {
   Container, MainContainer, useStyles,
 } from './styles';
 import { requestUpdateNews } from '../../redux/reducers/newsReducer';
 import { IRequestUpdateNews } from '../../redux/types/INewsPayloadTypes';
 import { INewsInfo } from '../../redux/types/INewsState';
-import toUTCDate from '../../../../utils/toUTCDate';
 import { addNotification } from '../../../../hooks/toast/redux/reducers/NotificationReducer';
 
 const AddNews: React.FC = () => {
@@ -93,7 +93,7 @@ const AddNews: React.FC = () => {
           >
             <Grid container spacing={1}>
               <Grid item xs={6}>
-                <TextField
+                <Input
                   key={defaultNews?.title}
                   defaultValue={news?.title || defaultNews?.title}
                   inputRef={register({ required: 'Título é necessário!' })}
@@ -122,7 +122,7 @@ const AddNews: React.FC = () => {
               </Grid>
 
               <Grid item xs={6}>
-                <TextField
+                <Input
                   key={defaultNews?.subtitle}
                   defaultValue={news?.subtitle || defaultNews?.subtitle}
                   inputRef={register({ required: false })}
@@ -150,11 +150,11 @@ const AddNews: React.FC = () => {
               </Grid>
 
               <Grid item xs={6}>
-                <TextField
-                  key={defaultNews?.date.split('T')[0]}
-                  defaultValue={news ? new Date(news.date.split('T')[0]) : null}
-                  inputRef={register({ required: true })}
+                <Input
                   required
+                  key={defaultNews?.date}
+                  defaultValue={defaultNews?.date.split('T')[0]}
+                  inputRef={register({ required: true })}
                   id="date"
                   name="date"
                   label="Data"
@@ -162,12 +162,12 @@ const AddNews: React.FC = () => {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  className={classes.inputFormTiny}
+                  className={classes.inputForm}
                 />
               </Grid>
 
               <Grid item xs={6}>
-                <TextField
+                <Input
                   key={defaultNews?.image_link}
                   defaultValue={news?.image_link || defaultNews?.image_link}
                   inputRef={register({ required: true })}
@@ -184,7 +184,7 @@ const AddNews: React.FC = () => {
               </Grid>
 
               <Grid item xs={12}>
-                <TextField
+                <Input
                   defaultValue={news?.description || defaultNews?.description}
                   inputRef={register({ required: true })}
                   required

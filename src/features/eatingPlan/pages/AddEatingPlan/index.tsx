@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
 import {
   Paper, Accordion, AccordionSummary, AccordionDetails, Typography, IconButton,
   Table, TableHead, TableRow, TableCell, TableBody,
@@ -7,12 +9,20 @@ import {
   MdEdit, MdDelete, MdAdd, MdExpandMore,
 } from 'react-icons/md';
 
+import Input from '../../../../components/Input';
+import Button from '../../../../components/Button';
 import AppBar from '../../../../components/AppBar';
+import BackdropLoading from '../../../../components/BackdropLoading';
 
 import { Container, useStyles } from './styles';
 
 const AddEatingPlan: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const classes = useStyles();
+
+  const {
+    register, errors, handleSubmit,
+  } = useForm();
 
   return (
     <>
@@ -32,7 +42,11 @@ const AddEatingPlan: React.FC = () => {
               >
                 <Typography className={classes.heading}>Café da Manhã</Typography>
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails className={classes.accordionDetail}>
+                <div className={classes.foodTitle}>
+                  <h2><b>Alimento(s)</b></h2>
+                  <Button variant="outlined">Adicionar Alimento</Button>
+                </div>
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -53,6 +67,38 @@ const AddEatingPlan: React.FC = () => {
                     </TableRow>
                   </TableBody>
                 </Table>
+                <Input
+                  defaultValue=""
+                  inputRef={register({ required: true })}
+                  required
+                  id="observations"
+                  name="observations"
+                  label="Observação"
+                  variant="outlined"
+                  autoComplete="off"
+                  rows={3}
+                  multiline
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  className={classes.input}
+                />
+                <Input
+                  defaultValue="Café da Manhã"
+                  inputRef={register({ required: true })}
+                  required
+                  id="name"
+                  name="name"
+                  label="Nome da Refeição"
+                  variant="outlined"
+                  autoComplete="off"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  className={classes.input}
+                  helperText="Caso queira editá-la, digite o novo nome acima."
+                />
+                <Button type="submit">Salvar</Button>
               </AccordionDetails>
             </Accordion>
             <IconButton><MdDelete size={30} color="red" /></IconButton>
@@ -66,6 +112,7 @@ const AddEatingPlan: React.FC = () => {
           </div>
         </Paper>
       </Container>
+      <BackdropLoading open={loading} />
     </>
   );
 };

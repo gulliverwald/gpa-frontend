@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useForm, useFormContext } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Button, TextField, Grid, CircularProgress,
+  Button, Grid, CircularProgress,
 } from '@material-ui/core';
 import { MdDelete } from 'react-icons/md';
 import { IoMdAlert } from 'react-icons/io';
 import api from '../../../../services/api';
 import { WebStore } from '../../../../store/RootReducer';
+import Input from '../../../../components/Input';
 import AppBar from '../../../../components/AppBar';
 import BackdropLoading from '../../../../components/BackdropLoading';
 import {
@@ -40,6 +41,7 @@ const AddNews: React.FC = () => {
     dispatch(requestCreateNews({
       ...data,
       nutritionist_id: userId,
+      date: new Date(data.date).toISOString(),
       callback: (data_, error) => {
         if (data_) {
           dispatch(addNotification({ message: 'Notícia inserida com sucesso!', options: { variant: 'success' }, key: Math.random() }));
@@ -122,7 +124,7 @@ const AddNews: React.FC = () => {
         >
           <Grid container spacing={1}>
             <Grid item xs={6}>
-              <TextField
+              <Input
                 inputRef={register({ required: 'Título é necessário!' })}
                 required
                 id="title"
@@ -146,7 +148,7 @@ const AddNews: React.FC = () => {
             </Grid>
 
             <Grid item xs={6}>
-              <TextField
+              <Input
                 inputRef={register({ required: false })}
                 id="subtitle"
                 name="subtitle"
@@ -169,7 +171,7 @@ const AddNews: React.FC = () => {
             </Grid>
 
             <Grid item xs={6}>
-              <TextField
+              <Input
                 inputRef={register({ required: true })}
                 required
                 id="date"
@@ -179,12 +181,12 @@ const AddNews: React.FC = () => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                className={classes.inputFormTiny}
+                className={classes.inputForm}
               />
             </Grid>
 
             <Grid item xs={6}>
-              <TextField
+              <Input
                 inputRef={register({ required: true })}
                 required
                 id="image_link"
@@ -196,7 +198,7 @@ const AddNews: React.FC = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <TextField
+              <Input
                 inputRef={register({ required: true })}
                 required
                 id="description"
@@ -228,7 +230,7 @@ const AddNews: React.FC = () => {
         <form key={2} onSubmit={onSubmitTip}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
-              <TextField
+              <Input
                 inputRef={registerTip({ required: true })}
                 required
                 id="content"

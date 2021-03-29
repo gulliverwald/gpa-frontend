@@ -42,6 +42,12 @@ const ListNews: React.FC = () => {
 
   const classes = useStyles();
 
+  const handleDate = (aux: string) => {
+    const a = new Date(aux);
+    const aDateOnly = new Date(a.valueOf() + a.getTimezoneOffset() * 60 * 1000);
+    return `${format(aDateOnly, 'dd/MM/yyyy')}`;
+  };
+
   const handleDelete = () => {
     if (toDeleteNews) {
       setLoading(true);
@@ -117,7 +123,7 @@ const ListNews: React.FC = () => {
                 <Card>
                   <CardContent className={classes.cardContent}>
                     <CardMedia image={map.image_link} title={map.title} className={classes.media} />
-                    <Typography variant="body2" color="textSecondary" component="p" className={classes.dateContainer}>{format(new Date(map.date), 'dd/MM/yyyy')}</Typography>
+                    <Typography variant="body2" color="textSecondary" component="p" className={classes.dateContainer}>{handleDate(map.date)}</Typography>
                     <Typography gutterBottom variant="h5" component="h2">{map.title}</Typography>
                     <Typography variant="body2" color="textSecondary" component="p">{map.subtitle}</Typography>
                   </CardContent>

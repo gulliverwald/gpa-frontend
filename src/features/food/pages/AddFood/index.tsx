@@ -184,7 +184,7 @@ const AddFood: React.FC = () => {
 
   return (
     <Container>
-      <AppBar title="Alimentos" />
+      <AppBar title="Alimento" />
       <MainContainer>
         <Grid container spacing={2} alignItems="center" justify="center">
           <form onSubmit={onSubmit} className={classes.formContainer}>

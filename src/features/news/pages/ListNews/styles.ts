@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { makeStyles, createStyles } from '@material-ui/core';
 
 export const Container = styled.div`
-  margin: 100px 0px;
+  margin: 30px 0px;
   overflow: hidden;
   width: 100%;
   display: flex;
@@ -12,7 +12,7 @@ export const Container = styled.div`
 `;
 
 export const SearchContainer = styled.div`
-  padding: 30px 0px;
+  padding: 16px 0px;
   width: 50%;
   display: flex;
   align-items: center;

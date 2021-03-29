@@ -15,17 +15,15 @@ export const BoxContainer = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: white;
-  width: 60%;
+  width: 100%;
   height: 100%;
   margin-top: -30px;
 
   border-radius: 21px;
-
   img {
-    background-repeat: cover;
-    background-size: 100% 100vh;
-    width: 100%;
-    height: 30%;
+    object-fit: fill;
+    object-position: center;
+    max-height: 400px;
   }
 
   h2 {

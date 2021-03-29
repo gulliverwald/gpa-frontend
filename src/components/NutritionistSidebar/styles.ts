@@ -66,4 +66,14 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  nestedList: {
+    paddingLeft: theme.spacing(4),
+    backgroundColor: '#d9d9d9',
+    '&:hover': {
+      backgroundColor: '#e8e8e8',
+    },
+  },
+  activeNavLink: {
+    color: '#3FA041 !important',
+  },
 }));
