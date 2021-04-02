@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   Grid, Paper, Card, CardActions, CardContent, CardMedia, Typography, IconButton,
@@ -9,43 +9,38 @@ import {
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { MdDelete, MdEdit } from 'react-icons/md';
 
-import { requestListNews, requestDeleteNews } from '../../redux/reducers/newsReducer';
+import { datePickerDefaultProps } from '@material-ui/pickers/constants/prop-types';
+import { requestListNews, requestDeleteNews, requestFilterNews } from '../../redux/reducers/newsReducer';
 import { addNotification } from '../../../../hooks/toast/redux/reducers/NotificationReducer';
 import { WebStore } from '../../../../store/RootReducer';
+import api from '../../../../services/api';
 
 import AppBar from '../../../../components/AppBar';
 import ConfirmModal from '../../../../components/Modal';
 import BackdropLoading from '../../../../components/BackdropLoading';
 
+import { INewsInfo } from '../../redux/types/INewsState';
+
 import { Container, SearchContainer, useStyles } from './styles';
 
-interface NewsProps {
-  id: number;
-  title: string;
-  link?: string;
-  description: string;
-  date: string;
-  nutritionist_id: number;
-  image_link: string;
-  subtitle?: string;
-}
-
 const ListNews: React.FC = () => {
-  const [selectedDate, handleDateChange] = useState<Date | null>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [loading, setLoading] = useState(false);
 
-  const [toDeleteNews, setToDeleteNews] = useState<NewsProps>();
+  const [toDeleteNews, setToDeleteNews] = useState<INewsInfo>();
   const [openDelete, setOpenDelete] = useState(false);
 
   const dispatch = useDispatch();
   const news = useSelector((state: WebStore) => state.news.news);
+  const [filterNews, setFilterNews] = useState<INewsInfo[]>(news);
 
   const classes = useStyles();
 
   const handleDate = (aux: string) => {
-    const a = new Date(aux);
-    const aDateOnly = new Date(a.valueOf() + a.getTimezoneOffset() * 60 * 1000);
-    return `${format(aDateOnly, 'dd/MM/yyyy')}`;
+    if (aux) {
+      const a = new Date(aux.split('T')[0]);
+      return `${format(a, 'dd/MM/yyyy')}`;
+    } return '';
   };
 
   const handleDelete = () => {
@@ -82,39 +77,84 @@ const ListNews: React.FC = () => {
 
   useEffect(() => {
     setLoading(true);
-    dispatch(
-      requestListNews({
-        callback: (data, error) => {
-          setLoading(false);
-          if (error) {
-            dispatch(
-              addNotification({
-                message: 'Erro em carregar notícias!',
-                options: { variant: 'error' },
-                key: Math.random(),
-              }),
-            );
-          }
-        },
-      }),
-    );
+
+    // async function listNews() {
+    //   try {
+    //     if (selectedDate) {
+    //       const response = await api.get(`/news/date/${(selectedDate.getMonth() + 1)}
+    // ${selectedDate.getFullYear()}`);
+    //       setFilterNews(response.data);
+    //     }
+    //   } catch (erro) {
+    //     dispatch(addNotification({ message: 'Erro ao filtrar notícias!',
+    // options: { variant: 'error' }, key: Math.random() }));
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // }
+    // listNews();
+    if (selectedDate) {
+      dispatch(
+        requestListNews({
+          // month: (selectedDate.getMonth() + 1),
+          // year: selectedDate.getFullYear(),
+          callback: (data, error) => {
+            setLoading(false);
+            if (error) {
+              dispatch(
+                addNotification({
+                  message: 'Erro em carregar notícias!',
+                  options: { variant: 'error' },
+                  key: Math.random(),
+                }),
+              );
+            }
+          },
+        }),
+      );
+    }
   }, []);
+
+  const handleDateChange = async (date: any) => {
+    if (date) {
+      setLoading(true);
+      setSelectedDate(date);
+      dispatch(
+        requestFilterNews({
+          month: (date.getMonth() + 1),
+          year: date.getFullYear(),
+          callback: (data, error) => {
+            setLoading(false);
+            if (error) {
+              dispatch(
+                addNotification({
+                  message: 'Erro em carregar notícias!',
+                  options: { variant: 'error' },
+                  key: Math.random(),
+                }),
+              );
+            }
+          },
+        }),
+      );
+    }
+  };
 
   return (
     <>
       <AppBar title="Lista de notícias" />
-      <SearchContainer>
+      {/* <SearchContainer>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <DatePicker
             variant="inline"
-            openTo="year"
-            views={['year', 'month']}
+            openTo="month"
+            views={['month', 'year']}
             label="Filtro Data"
             value={selectedDate}
             onChange={handleDateChange}
           />
         </MuiPickersUtilsProvider>
-      </SearchContainer>
+      </SearchContainer> */}
       <Container>
         <Grid container spacing={2} className={classes.gridContainer}>
           {news.map((map) => (
@@ -122,13 +162,17 @@ const ListNews: React.FC = () => {
               <Paper elevation={3} className={classes.paper}>
                 <Card>
                   <CardContent className={classes.cardContent}>
-                    <CardMedia image={map.image_link} title={map.title} className={classes.media} />
+                    <CardMedia
+                      image={map.image_link}
+                      title={map.title}
+                      className={classes.media}
+                    />
                     <Typography variant="body2" color="textSecondary" component="p" className={classes.dateContainer}>{handleDate(map.date)}</Typography>
                     <Typography gutterBottom variant="h5" component="h2">{map.title}</Typography>
                     <Typography variant="body2" color="textSecondary" component="p">{map.subtitle}</Typography>
                   </CardContent>
                   <CardActions className={classes.actions}>
-                    <Link to={(location) => ({ ...location, pathname: `listNews/${map.id}` })} className={classes.link}>LEIA NOTÍCIA COMPLETA</Link>
+                    <Link to={(location) => ({ ...location, pathname: `listNews/${map.id}` })} className={classes.link}>Leia a notícia completa</Link>
                     <Link to={(location) => ({ ...location, pathname: `updateNews/${map.id}` })}>
                       <IconButton
                         aria-label="update"
@@ -152,7 +196,7 @@ const ListNews: React.FC = () => {
                 </Card>
               </Paper>
             </Grid>
-          )) }
+          ))}
         </Grid>
       </Container>
       <ConfirmModal

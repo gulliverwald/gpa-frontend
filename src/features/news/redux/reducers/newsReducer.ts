@@ -6,6 +6,7 @@ import {
   IRequestDeleteNewsSucess,
   IRequestListNewsSucess,
   IRequestListNews,
+  IRequestFilterNews,
   IRequestCreateNews,
   IRequestDeleteNews,
   IRequestUpdateNews,
@@ -27,6 +28,11 @@ const newsReducerSlice = createSlice({
       state.news.push(payload);
     },
     requestListNewsSuccess(state, action: PayloadAction<IRequestListNewsSucess>) {
+      const { payload } = action;
+
+      Object.assign(state.news, payload);
+    },
+    requestFilterNewsSuccess(state, action: PayloadAction<IRequestListNewsSucess>) {
       const { payload } = action;
 
       Object.assign(state.news, payload);
@@ -61,6 +67,10 @@ export const requestCreateNews = createAction<IRequestCreateNews, '@news/request
 
 export const requestListNews = createAction<IRequestListNews, '@news/requestListNews'>(
   '@news/requestListNews',
+);
+
+export const requestFilterNews = createAction<IRequestFilterNews, '@news/requestFilterNews'>(
+  '@news/requestFilterNews',
 );
 
 export const requestDeleteNews = createAction<IRequestDeleteNews, '@news/requestDeleteNews'>(

@@ -9,7 +9,6 @@ import AddNews from '../../../news/pages/AddNews';
 import ListNews from '../../../news/pages/ListNews';
 import UpdateNews from '../../../news/pages/UpdateNews';
 import ListSchedules from '../../../schedule/pages/ListSchedules';
-
 import NutritionistSidebar from '../../../../components/NutritionistSidebar';
 import {
   Container, MainContainer, useStyles,
@@ -17,7 +16,11 @@ import {
 import AddFood from '../../../food/pages/AddFood';
 import NewsInfoNutri from '../../../news/pages/NewsInfoNutri';
 import AddSchedule from '../../../schedule/pages/AddSchedule';
+import ViewSchedule from '../../../schedule/pages/ViewSchedule';
+import UpdateSchedule from '../../../schedule/pages/UpdateSchedule';
+
 import AddEatingPlan from '../../../eatingPlan/pages/AddEatingPlan';
+import Homepage from './Homepage';
 
 const NutritionistDash: React.FC = () => {
   const classes = useStyles();
@@ -36,6 +39,7 @@ const NutritionistDash: React.FC = () => {
             </div>
           </AppBar>
           <Switch>
+            <Route exact path="/admin" component={Homepage} />
             <Route exact path="/admin/addPatient" component={AddPatient} />
             <Route exact path="/admin/editPatient/:id" component={EditPatient} />
             <Route exact path="/admin/listSchedules/:id" component={ListSchedules} />
@@ -46,8 +50,10 @@ const NutritionistDash: React.FC = () => {
             <Route exact path="/admin/updateNews/:id" component={UpdateNews} />
             <Route exact path="/admin/listNews" component={ListNews} />
             <Route exact path="/admin/listNews/:id" component={NewsInfoNutri} />
-            <Route exact path="/admin/addSchedule" component={AddSchedule} />
-            <Route exact path="/admin/addEatingPlan" component={AddEatingPlan} />
+            <Route exact path="/admin/listSchedules/:id/addSchedule" component={AddSchedule} />
+            <Route exact path="/admin/viewSchedule/:id" component={ViewSchedule} />
+            <Route exact path="/admin/updateSchedule/:id" component={UpdateSchedule} />
+            <Route exact path="/admin/addEatingPlan/:id" component={AddEatingPlan} />
           </Switch>
         </MainContainer>
       </Container>

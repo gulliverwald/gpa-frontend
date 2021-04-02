@@ -9,6 +9,7 @@ import {
   requestUpdateNewsSuccess,
   requestListNews,
   requestListNewsSuccess,
+  requestFilterNews,
   requestNewsError,
 } from '../reducers/newsReducer';
 import {
@@ -89,6 +90,33 @@ function* workerRequestListNews(action: any) {
   }
 }
 
+function* workerRequestFilterNews(action: any) {
+  try {
+    const response: AxiosResponse<any> = yield call(
+      api.get,
+      `News/date/${action.payload.month}/${action.payload.year}`,
+    );
+    if (response.data.status !== 'error') {
+      yield put(requestListNewsSuccess({ ...response.data }));
+      if (action.payload.callback) {
+        action.payload.callback(response.data, null);
+      }
+    } else if (action.payload.callback) {
+      action.payload.callback(null, 'Ocorreu um erro ao filtrar...');
+    }
+  } catch (err) {
+    if (action.payload.callback) {
+      action.payload.callback(null, 'Ocorreu um erro ao filtrar...');
+    }
+    yield put(
+      requestNewsError({
+        message: 'Error',
+      }),
+    );
+    console.log(err);
+  }
+}
+
 function* workerRequestUpdateNews(action: any) {
   try {
     const {
@@ -159,4 +187,5 @@ export function* watchRequestNews() {
   yield takeLeading(requestDeleteNews.type, workerRequestDeleteNews);
   yield takeLeading(requestUpdateNews.type, workerRequestUpdateNews);
   yield takeLeading(requestListNews.type, workerRequestListNews);
+  yield takeLeading(requestFilterNews.type, workerRequestFilterNews);
 }

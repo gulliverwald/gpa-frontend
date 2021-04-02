@@ -12,6 +12,12 @@ export const MainContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  .container-button {
+    display: flex;
+    align-self: flex-end;
+    max-width: 400px;
+  }
 `;
 
 export const ButtonAppbar = styled.button`
@@ -46,5 +52,8 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
   },
   tableContainer: {
     width: '80%',
+  },
+  link: {
+    textDecoration: 'none',
   },
 }));

@@ -13,6 +13,7 @@ import {
 import AppBar from '../../../../components/AppBar';
 import BackdropLoading from '../../../../components/BackdropLoading';
 import Table from '../../../../components/Table';
+import Button from '../../../../components/Button';
 import IconButton from '../../../../components/IconButton';
 import CheckBoolean from '../../../../components/CheckBoolean';
 import { WebStore } from '../../../../store/RootReducer';
@@ -73,8 +74,13 @@ export default function ListSchedules() {
   return (
     <Container>
       <BackdropLoading open={loading} />
-      <AppBar title={`Listar Agendamentos do Paciente ${(patient && patient.name) || ''}`} backButton={false} />
+      <AppBar title={`Lista de consultas do paciente: ${(patient && patient.name) || ''}`} backButton={false} />
       <MainContainer>
+        <div className="container-button">
+          <Link to={(location) => `${location.pathname}/addSchedule`} className={classes.link}>
+            <Button>Adicionar uma nova consulta</Button>
+          </Link>
+        </div>
         <TableContainer component={Paper} className={classes.tableContainer}>
           <Table<ISchedulesInfo>
             columns={[

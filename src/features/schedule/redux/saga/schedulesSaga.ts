@@ -30,42 +30,26 @@ function* workerRequestCreateSchedules(action: {
 }) {
   try {
     const {
-      name,
-      cpf,
-      birthday,
-      password,
-      email,
-      zipCode,
-      street,
-      number,
-      phone,
-      authorization,
-      city_id,
-      complement,
-      district,
+      value,
+      date,
+      anthropometric_data_id,
+      observations,
+      patient_id,
     } = action.payload;
-    const response: AxiosResponse<ISchedulesInfo> = yield call(
+    const response: AxiosResponse<any> = yield call(
       api.post,
       'Users',
       {
-        name,
-        cpf,
-        birthday,
-        password,
-        email,
-        zipCode,
-        street,
-        number,
-        phone,
-        authorization,
-        city_id,
-        complement,
-        district,
+        value,
+        date,
+        anthropometric_data_id,
+        observations,
+        patient_id,
       },
     );
     yield put(requestCreateSchedulesSuccess({ schedule: response.data }));
     if (action.payload.callback) {
-      action.payload.callback(response.data, null);
+      action.payload.callback(response.data.schedule, null);
     }
   } catch (err) {
     yield put(
@@ -113,38 +97,22 @@ function* workerRequestUpdateSchedules(action: {
 }) {
   try {
     const {
-      id,
-      name,
-      cpf,
-      birthday,
-      email,
-      zipCode,
-      street,
-      number,
-      phone,
-      authorization,
-      city_id,
-      complement,
-      district,
+      value,
+      date,
+      anthropometric_data_id,
+      observations,
+      patient_id,
     } = action.payload;
 
     const response: AxiosResponse<ISchedulesInfo> = yield call(
       api.put,
       'Users',
       {
-        id,
-        authorization,
-        birthday,
-        city_id,
-        complement,
-        cpf,
-        district,
-        email,
-        name,
-        number,
-        phone,
-        street,
-        zipCode,
+        value,
+        date,
+        anthropometric_data_id,
+        observations,
+        patient_id,
       },
     );
     yield put(requestUpdateSchedulesSuccess({ schedule: response.data }));

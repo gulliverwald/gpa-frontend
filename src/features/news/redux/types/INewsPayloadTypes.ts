@@ -26,6 +26,12 @@ export interface IRequestDeleteNews {
   callback?: (data: any, error: any) => void;
 }
 
+export type IRequestFilterNews = {
+  month: number;
+  year: number;
+  callback?: (data: any, error: any) => void;
+};
+
 export type IRequestListNews = {
   callback?: (data: any, error: any) => void;
 };

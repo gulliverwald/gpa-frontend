@@ -1,38 +1,21 @@
 import { ISchedulesInfo } from './ISchedulesState';
 
 export interface IRequestCreateSchedules {
-  email: string;
-  password: string;
-  birthday: string;
-  authorization: number;
-  cpf: string;
-  number: number;
-  name: string;
-  district: string;
-  complement: string;
-  street: string;
-  zipCode: number;
-  phone: string;
-  city_id: number;
-  callback?: (data: ISchedulesInfo | null, error: any) => void
+  value: number;
+  date: string;
+  anthropometric_data_id: number;
+  observations?: string;
+  patient_id: number;
+  callback?: (data: ISchedulesInfo | null, error: any) => void;
 }
 
 export interface IRequestUpdateSchedules {
-  id: number;
-  email: string;
-  // password: string;
-  birthday: string;
-  authorization: number;
-  cpf: string;
-  number: number;
-  name: string;
-  district: string;
-  complement: string;
-  street: string;
-  zipCode: number;
-  phone: string;
-  city_id: number;
-  callback?: (data: ISchedulesInfo | null, error: any) => void
+  value: number;
+  date: string;
+  anthropometric_data_id: number;
+  observations?: string;
+  patient_id: number;
+  callback?: (data: ISchedulesInfo | null, error: any) => void;
 }
 
 export interface IRequestDeleteSchedules {

@@ -18,6 +18,13 @@ export const Container = styled.div`
     align-items: center;
     justify-content: center;
   }
+
+  @media(max-width: 1000px){
+    .login-form {
+      padding: 2rem 0rem;
+      width: 100%;
+    }
+  };
 `;
 
 export const MainContainer = styled.div`
@@ -46,6 +53,11 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     width: '100%',
     minWidth: '400px',
     margin: '1rem',
+    '@media(max-width: 1000px)': {
+      margin: '20px 0px',
+      minWidth: '0%',
+      width: '100%',
+    },
   },
   imageBackground: {
     justifySelf: 'bottom',
