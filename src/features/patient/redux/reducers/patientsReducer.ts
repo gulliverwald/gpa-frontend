@@ -45,7 +45,7 @@ const PatientsReducerSlice = createSlice({
         (patients) => patients.id === action.payload.patient.id,
       );
       const { payload } = action;
-      state.patients[index] = { ...state.patients[index], ...payload };
+      state.patients[index] = { ...state.patients[index], ...payload.patient };
     },
     requestDeletePatientsSuccess(
       state,

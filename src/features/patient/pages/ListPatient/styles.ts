@@ -45,6 +45,6 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     width: '100%',
   },
   tableContainer: {
-    width: '80%',
+    width: '90%',
   },
 }));

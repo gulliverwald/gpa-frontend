@@ -71,6 +71,9 @@ export const Container = styled.div`
       box-shadow: 2px 8px 25px 5px rgba(0,0,0,0.47);
     }
   }
+  .grow {
+    flex-grow: 1;
+  }
 
   .antropometric-container {
     width: 40%;

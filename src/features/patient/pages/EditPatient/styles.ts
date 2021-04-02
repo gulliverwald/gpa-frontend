@@ -10,8 +10,6 @@ export const MainContainer = styled.div`
   padding: 20px 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 export const ButtonAppbar = styled.button`
@@ -44,7 +42,7 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
     display: 'flex',
     width: '100%',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'left',
     justifyContent: 'center',
     padding: theme.spacing(2),
   },

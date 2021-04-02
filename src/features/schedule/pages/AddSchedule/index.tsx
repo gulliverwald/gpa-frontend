@@ -308,7 +308,7 @@ const AddSchedule: React.FC = () => {
                       <b>Descrição: </b>
                       <span>{`${anamnese.description}`}</span>
                     </span>
-
+                    <div className="grow" />
                     <IconButton
                       onClick={() => setAnamneses(
                         anamneses.filter((item) => item.id !== anamnese.id),

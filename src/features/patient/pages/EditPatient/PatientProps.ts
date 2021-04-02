@@ -3,7 +3,7 @@ export interface PatientProps {
   email: string;
   password: string;
   birthday: Date;
-  authorization: number;
+  authorization: Array<string>;
   cpf: string;
   number: number;
   district: string;
