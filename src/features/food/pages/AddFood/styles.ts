@@ -22,7 +22,7 @@ export const ButtonAppbar = styled.button`
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
   tableContainer: {
-    width: '50%',
+    width: '90%',
   },
   inputForm: {
     margin: '1rem',

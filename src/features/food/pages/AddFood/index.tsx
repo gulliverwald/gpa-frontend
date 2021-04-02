@@ -261,7 +261,8 @@ const AddFood: React.FC = () => {
             <Grid item xs={3}>
               <h2>Lista de Alimentos</h2>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={3} />
+            <Grid item xs={5}>
               <TextField
                 variant="outlined"
                 onChange={(event) => {
@@ -277,7 +278,7 @@ const AddFood: React.FC = () => {
                 }}
               />
             </Grid>
-
+            <Grid item xs={1} />
             <Grid item xs={12}>
               <TableContainer
                 component={Paper}
