@@ -74,7 +74,7 @@ export default function ListSchedules() {
   return (
     <Container>
       <BackdropLoading open={loading} />
-      <AppBar title={`Lista de consultas do paciente: ${(patient && patient.name) || ''}`} backButton={false} />
+      <AppBar title={`Lista de consultas do paciente: ${(patient && patient.name) || ''}`} backButton />
       <MainContainer>
         <div className="container-button">
           <Link to={(location) => `${location.pathname}/addSchedule`} className={classes.link}>
@@ -92,7 +92,7 @@ export default function ListSchedules() {
               },
               {
                 title: 'Observações',
-                type: 'date',
+                type: 'string',
                 props: ['observation'],
                 orderable: false,
               },
