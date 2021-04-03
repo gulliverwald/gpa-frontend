@@ -3,16 +3,17 @@ import { ISchedulesInfo } from './ISchedulesState';
 export interface IRequestCreateSchedules {
   value: number;
   date: string;
-  anthropometric_data_id: number;
+  anthropometric_data_id?: number;
   observations?: string;
   patient_id: number;
+  anamnesis: Array<{type: string, descriptions: string}>;
   callback?: (data: ISchedulesInfo | null, error: any) => void;
 }
 
 export interface IRequestUpdateSchedules {
   value: number;
   date: string;
-  anthropometric_data_id: number;
+  anthropometric_data_id?: number;
   observations?: string;
   patient_id: number;
   callback?: (data: ISchedulesInfo | null, error: any) => void;
