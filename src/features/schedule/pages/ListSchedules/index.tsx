@@ -105,7 +105,7 @@ export default function ListSchedules() {
             rowActions={[
               {
                 renderItem: (row) => (
-                  <Link to={`/admin/schedules/${row.id}`}>
+                  <Link to={`/admin/updateSchedule/${row.patient_id}/${row.id}`}>
                     <IconButton
                       Icon={MdVisibility}
                       color="default"
