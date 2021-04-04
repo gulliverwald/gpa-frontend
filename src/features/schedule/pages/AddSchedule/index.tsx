@@ -366,6 +366,10 @@ const AddSchedule: React.FC = () => {
                     id="anamnesis.type"
                     inputRef={register({ required: false })}
                     name="anamnesis.type"
+                    helperText={
+                      !!errors.anamnesis?.type && errors.anamnesis?.type.message
+                    }
+                    error={!!errors.anamnesis?.type}
                     label="Tipo"
                     InputLabelProps={{
                       shrink: true,
@@ -379,6 +383,11 @@ const AddSchedule: React.FC = () => {
                     id="anamnesis.description"
                     name="anamnesis.description"
                     label="Descrição"
+                    helperText={
+                      !!errors.anamnesis?.description
+                      && errors.anamnesis?.description.message
+                    }
+                    error={!!errors.anamnesis?.description}
                     InputLabelProps={{
                       shrink: true,
                     }}
