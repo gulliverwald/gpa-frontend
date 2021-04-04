@@ -444,7 +444,7 @@ const AddSchedule: React.FC = () => {
                         className="pa-link"
                         onClick={() => {
                           redirect(
-                            `/admin/addEatingPlan/${schedule.schedule.eating_plan_id}`,
+                            `/admin/patient/${patientId}/addEatingPlan/${schedule.schedule.eating_plan_id}`,
                           );
                         }}
                       >
