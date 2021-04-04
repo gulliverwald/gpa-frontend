@@ -11,6 +11,6 @@ export interface ISchedulesInfo {
   patient_id: number;
   appointment_id: number | null;
   eating_plan_id: number | null;
-  anthropometric_data_id: number;
+  anthropometric_data_id?: number;
   observation: number | null;
 }

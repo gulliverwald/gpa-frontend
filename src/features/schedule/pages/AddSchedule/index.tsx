@@ -13,6 +13,9 @@ import {
 import {
   MdSave, MdEdit, MdAdd, MdDelete, MdSend,
 } from 'react-icons/md';
+import { format } from 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 import { WebStore } from '../../../../store/RootReducer';
 import AppBar from '../../../../components/AppBar';
@@ -75,7 +78,9 @@ const AddSchedule: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [anamneses, setAnamneses] = useState<AnamneseProps[]>([]);
+  const [value, setValue] = useState(new Date());
+
+  const [anamnesis, setAnamnesis] = useState<AnamneseProps[]>([]);
   const [patient, setPatient] = useState<IPatientsInfo | null>(null);
 
   const [openModalEatingPlan, setOpenModalEatingPlan] = useState(false);
@@ -141,20 +146,22 @@ const AddSchedule: React.FC = () => {
   });
 
   const onSubmitCreateSchedule = handleSubmit((data) => {
+    console.log(data);
     setLoading(true);
     if (patient) {
       dispatch(
         requestCreateSchedules({
+          anamnesis: anamnesis as any,
           value: data.value,
-          anthropometric_data_id: data.anthropometric_data_id,
+          // anthropometric_data_id: data.anthropometric_data_id,
           patient_id: patient.id,
-          date: new Date(data.date).toISOString(),
+          date: value.toISOString(),
           callback: (data_, error) => {
             if (data_) {
               setSchedule({ ...data_ });
               dispatch(
                 addNotification({
-                  message: 'Notícia inserida com sucesso!',
+                  message: 'Consulta criada com sucesso!',
                   options: { variant: 'success' },
                   key: Math.random(),
                 }),
@@ -163,7 +170,7 @@ const AddSchedule: React.FC = () => {
             if (error) {
               dispatch(
                 addNotification({
-                  message: 'Erro em inserir notícia!',
+                  message: 'Erro ao criar consulta!',
                   options: { variant: 'error' },
                   key: Math.random(),
                 }),
@@ -205,31 +212,50 @@ const AddSchedule: React.FC = () => {
             {' '}
             {patient?.name}
           </h2>
-          <Button type="submit" startIcon={<MdSave />}>
+          <Button type="submit" startIcon={<MdSave />} form="create-schedule">
             Salvar
           </Button>
         </div>
-        <form onSubmit={onSubmitCreateSchedule} key={1} id="create-pa">
+        <form onSubmit={onSubmitCreateSchedule} key={1} id="create-schedule">
           <div className="content-container">
             <div className="schedule-container">
               <h1>Dados da Consulta</h1>
 
               <Grid container spacing={3}>
                 <Grid item xs={6}>
-                  <Input
+                  {/* <Input
+                    inputRef={register({ required: true })}
                     variant="standard"
                     type="date"
+                    name="schedule.date"
+                    id="schedule.date"
                     label="Data"
                     InputLabelProps={{
                       shrink: true,
                     }}
-                  />
+                  /> */}
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      autoOk
+                      label="Data"
+                      name="schedule.date"
+                      id="schedule.date"
+                      variant="inline"
+                      inputVariant="outlined"
+                      format="dd/MM/yyyy"
+                      value={value}
+                      onChange={() => setValue}
+                      InputAdornmentProps={{ position: 'start' }}
+                      inputRef={register({ required: true })}
+                    />
+                  </MuiPickersUtilsProvider>
                 </Grid>
                 <Grid item xs={6}>
                   <Input
+                    inputRef={register({ required: true, valueAsNumber: true })}
                     variant="standard"
-                    id="value"
-                    name="value"
+                    id="schedule.value"
+                    name="schedule.value"
                     label="Valor"
                     value={values}
                     onChange={handleChange}
@@ -246,8 +272,9 @@ const AddSchedule: React.FC = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Input
-                    id="observation"
-                    name="observation"
+                    inputRef={register({ required: false })}
+                    id="schedule.observation"
+                    name="schedule.observation"
                     label="Observações"
                     multiline
                     rows={4}
@@ -263,7 +290,6 @@ const AddSchedule: React.FC = () => {
               <Grid container spacing={2}>
                 <Grid item xs={4}>
                   <Input
-                    inputRef={register({ required: false })}
                     id="anamnesis.type"
                     name="anamnesis.type"
                     label="Tipo"
@@ -275,7 +301,6 @@ const AddSchedule: React.FC = () => {
                 <Grid item xs={6}>
                   <Input
                     fullWidth
-                    inputRef={register({ required: false })}
                     id="anamnesis.description"
                     name="anamnesis.description"
                     label="Descrição"
@@ -286,8 +311,8 @@ const AddSchedule: React.FC = () => {
                 </Grid>
                 <Grid item xs={2}>
                   <IconButton
-                    onClick={() => setAnamneses([
-                      ...anamneses,
+                    onClick={() => setAnamnesis([
+                      ...anamnesis,
                       {
                         id: new Date().getTime(),
                         type: watch('anamnesis.type'),
@@ -300,7 +325,7 @@ const AddSchedule: React.FC = () => {
                 </Grid>
               </Grid>
               <div className="list">
-                {anamneses.map((anamnese) => (
+                {anamnesis.map((anamnese) => (
                   <div className="list-item" key={anamnese.id}>
                     <span>
                       <b>Tipo: </b>
@@ -310,8 +335,8 @@ const AddSchedule: React.FC = () => {
                     </span>
                     <div className="grow" />
                     <IconButton
-                      onClick={() => setAnamneses(
-                        anamneses.filter((item) => item.id !== anamnese.id),
+                      onClick={() => setAnamnesis(
+                        anamnesis.filter((item) => item.id !== anamnese.id),
                       )}
                     >
                       <MdDelete color="red" size={30} />
