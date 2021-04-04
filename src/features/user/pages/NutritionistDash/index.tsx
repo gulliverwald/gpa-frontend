@@ -52,7 +52,7 @@ const NutritionistDash: React.FC = () => {
             <Route exact path="/admin/listNews/:id" component={NewsInfoNutri} />
             <Route exact path="/admin/listSchedules/:id/addSchedule" component={AddSchedule} />
             <Route exact path="/admin/viewSchedule/:id" component={ViewSchedule} />
-            <Route exact path="/admin/updateSchedule/:id" component={UpdateSchedule} />
+            <Route exact path="/admin/updateSchedule/:patientId/:id" component={UpdateSchedule} />
             <Route exact path="/admin/addEatingPlan/:id" component={AddEatingPlan} />
           </Switch>
         </MainContainer>
