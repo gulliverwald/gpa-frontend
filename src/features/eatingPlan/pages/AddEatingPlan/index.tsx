@@ -110,7 +110,12 @@ const AddEatingPlan: React.FC = () => {
   } = useForm();
 
   const onSubmitCreateMeal = handleSubmit((data) => {
+<<<<<<< HEAD
     setOpenModalMeal(false);
+=======
+    console.table('MEAL');
+    console.table(data);
+>>>>>>> c063015827f3228e3f8aadcedbba3610bdea604f
     async function submitMeal(): Promise<void> {
       setLoading(true);
       try {
@@ -687,6 +692,12 @@ const AddEatingPlan: React.FC = () => {
               variant="contained"
               color="secondary"
               className={classes.button}
+<<<<<<< HEAD
+=======
+              // onClick={() => {
+              //   setOpenModalMeal(false);
+              // }}
+>>>>>>> c063015827f3228e3f8aadcedbba3610bdea604f
             >
               Confirmar
             </Button>

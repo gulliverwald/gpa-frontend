@@ -35,11 +35,14 @@ export default function ListSchedules() {
 
   useEffect(() => {
     setLoading(true);
+    console.log(patientId);
+    console.log(id);
     if (id !== undefined && patientId !== parseInt(id, 10)) {
       dispatch(requestListSchedules({
         patientId: parseInt(id, 10),
         callback: (data, error) => {
           setLoading(false);
+          console.log('buscou', data);
           if (error) {
             dispatch(addNotification({
               message: 'Erro ao buscar agendamentos do paciente',
@@ -98,7 +101,7 @@ export default function ListSchedules() {
               },
             ]}
             size="small"
-            rows={schedules}
+            rows={loading ? [] : schedules}
             rowActions={[
               {
                 renderItem: (row) => (
