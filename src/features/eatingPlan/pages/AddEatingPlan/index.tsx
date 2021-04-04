@@ -58,6 +58,11 @@ interface MealProps {
   ];
 }
 
+interface PatientProps {
+  id: number;
+  name: string;
+}
+
 interface FoodProps {
   meal_id: number;
   id: number;
@@ -75,8 +80,11 @@ interface DeleteFoodProps {
 }
 
 const AddEatingPlan: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { patientId, id } = useParams<{ patientId: string, id: string }>();
   const dispatch = useDispatch();
+
+  const [patient, setPatient] = useState<PatientProps>();
+  const [eatingPlanGuidelines, setEatingPlanGuidelines] = useState('');
 
   const [openModalMeal, setOpenModalMeal] = useState(false);
   const [openDeleteMeal, setOpenDeleteMeal] = useState(false);
@@ -109,13 +117,14 @@ const AddEatingPlan: React.FC = () => {
     handleSubmit: handleSubmit3,
   } = useForm();
 
+  const {
+    register: register4,
+    errors: errors4,
+    handleSubmit: handleSubmit4,
+  } = useForm();
+
   const onSubmitCreateMeal = handleSubmit((data) => {
-<<<<<<< HEAD
     setOpenModalMeal(false);
-=======
-    console.table('MEAL');
-    console.table(data);
->>>>>>> c063015827f3228e3f8aadcedbba3610bdea604f
     async function submitMeal(): Promise<void> {
       setLoading(true);
       try {
@@ -346,14 +355,66 @@ const AddEatingPlan: React.FC = () => {
     deleteFood();
   };
 
+  const handleSubmitGuidelines = handleSubmit4((data: any) => {
+    setLoading(true);
+    async function submitGuidelines(): Promise<void> {
+      if (eatingPlanGuidelines) {
+        try {
+          const response = await api.put('/EatingPlan', { id: parseInt(id, 10), guidelines: data.guidelines });
+          if (!response.data.status) {
+            console.log(response.data);
+            setEatingPlanGuidelines(response.data.guidelines);
+            dispatch(
+              addNotification({
+                message: 'Orientações modificadas!',
+                options: { variant: 'success' },
+                key: Math.random(),
+              }),
+            );
+          } else {
+            dispatch(
+              addNotification({
+                message: 'Erro ao modificar orientações!',
+                options: { variant: 'error' },
+                key: Math.random(),
+              }),
+            );
+          }
+        } catch (erro) {
+          dispatch(
+            addNotification({
+              message: 'Erro ao modificar orientações!',
+              options: { variant: 'error' },
+              key: Math.random(),
+            }),
+          );
+        } finally {
+          setLoading(false);
+        }
+      }
+    }
+    submitGuidelines();
+  });
+
   useEffect(() => {
     setLoading(true);
     if (id !== undefined) {
+      api
+        .get(`/Users/${patientId}`)
+        .then((response) => {
+          if (response.data.id) {
+            setPatient(response.data);
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
       api
         .get(`/EatingPlan/${id}`)
         .then((response) => {
           if (response.data.id) {
             setMeals(response.data.meal);
+            setEatingPlanGuidelines(response.data.guidelines);
           }
         })
         .finally(() => {
@@ -376,12 +437,39 @@ const AddEatingPlan: React.FC = () => {
 
   return (
     <>
-      <AppBar title="Plano Alimentar > Paciente: " />
+      <AppBar title={`Plano Alimentar > Paciente: ${patient?.name} `} />
       <Container>
-        <h2>Paciente: </h2>
+        <h2>
+          Paciente:
+          {' '}
+          {patient?.name}
+          {' '}
+        </h2>
 
         <Paper elevation={3} className={classes.paper}>
           <h1>Plano Alimentar</h1>
+          <p className="guidelines">{eatingPlanGuidelines}</p>
+          <form onSubmit={handleSubmitGuidelines} key={4} id="guidelines-form">
+            <Input
+              fullWidth
+              defaultValue={`${eatingPlanGuidelines}`}
+              id="guidelines"
+              name="guidelines"
+              label="Orientações"
+              inputRef={register4({
+                required: false,
+              })}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <Button
+              type="submit"
+              form="guidelines-form"
+            >
+              Salvar
+            </Button>
+          </form>
           <form
             onSubmit={handleSubmit2((data) => onSubmitUpdateMeal(data))}
             key={2}
@@ -692,12 +780,9 @@ const AddEatingPlan: React.FC = () => {
               variant="contained"
               color="secondary"
               className={classes.button}
-<<<<<<< HEAD
-=======
               // onClick={() => {
               //   setOpenModalMeal(false);
               // }}
->>>>>>> c063015827f3228e3f8aadcedbba3610bdea604f
             >
               Confirmar
             </Button>

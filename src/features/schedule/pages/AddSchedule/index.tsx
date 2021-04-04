@@ -431,8 +431,8 @@ const AddSchedule: React.FC = () => {
               )
                 : (
                   <>
-                    {eatingPlan ? (
-                      <Link to={`/admin/addEatingPlan/${eatingPlan.id}`}>
+                    {eatingPlan && patient ? (
+                      <Link to={`/admin/patient/${patient.id}/addEatingPlan/${eatingPlan.id}`}>
                         <button type="button" className="pa-link">
                           <span>Visualizar Plano Alimentar</span>
                           <MdSend size={30} color="white" />

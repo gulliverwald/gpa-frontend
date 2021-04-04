@@ -51,14 +51,28 @@ export const BoxContainer = styled.div`
         justify-content: center;
         }
       }
-    }
 
+    @media(max-width: 600px){
+      grid-template-columns: 1fr;
+    }
+  }
+  @media(max-width: 900px){
+      width: 100%;
+
+      h1 {
+        padding: 20px;
+      }
+
+    }
 `;
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
   paper: {
     width: '70%',
     padding: '20px',
+    '@media (max-width: 900px)': {
+      width: '100%',
+    },
   },
   accordion: {
     margin: '0px 0px',
