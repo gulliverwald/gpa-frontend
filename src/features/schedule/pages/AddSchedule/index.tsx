@@ -379,6 +379,11 @@ const AddSchedule: React.FC = () => {
                     id="anamnesis.description"
                     name="anamnesis.description"
                     label="Descrição"
+                    helperText={
+                      !!errors.anamnesis?.description
+                      && errors.anamnesis?.description.message
+                    }
+                    error={!!errors.anamnesis?.description}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -395,15 +400,6 @@ const AddSchedule: React.FC = () => {
                         return;
                       }
                       clearErrors('anamnesis.description');
-
-                      if (!anamneseForm?.anamnesis.type) {
-                        setError('anamnesis.type', {
-                          message: 'Campo é obrigatório',
-                        });
-                        return;
-                      }
-                      clearErrors('anamnesis.type');
-
                       setAnamnesis([
                         ...anamnesis,
                         {
