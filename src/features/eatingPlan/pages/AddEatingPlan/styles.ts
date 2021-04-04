@@ -16,6 +16,10 @@ export const Container = styled.div`
     font-weight: bold;
   }
 
+  .guidelines {
+    margin: 16px 0px;
+  }
+
   .line {
     padding: 20px 0px;
     width: 100%;

@@ -15,6 +15,11 @@ export const Container = styled.div`
   background-size: 100% 100vh;
   background-blend-mode: color-burn;
   background-color: rgba(255, 255, 255, 0.5);
+
+  @media (max-width: 900px) {
+    padding: 50px 20px;
+    padding-top: 30px;
+  }
 `;
 
 export const ButtonAppbar = styled.button`
