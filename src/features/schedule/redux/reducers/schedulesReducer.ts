@@ -36,7 +36,7 @@ const SchedulesReducerSlice = createSlice({
     ) {
       const { payload } = action;
 
-      Object.assign(state.schedules, payload.schedules);
+      state.schedules = payload.schedules;
       state.patientId = payload.patientId;
     },
     requestUpdateSchedulesSuccess(
