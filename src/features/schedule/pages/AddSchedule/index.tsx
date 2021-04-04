@@ -113,7 +113,7 @@ const AddSchedule: React.FC = () => {
   const [values, setValues] = useState('');
 
   const {
-    register, errors, handleSubmit, watch, control,
+    register, errors, handleSubmit, watch, control, getValues, setError, clearErrors,
   } = useForm();
 
   const {
@@ -386,14 +386,33 @@ const AddSchedule: React.FC = () => {
                 </Grid>
                 <Grid item xs={2}>
                   <IconButton
-                    onClick={() => setAnamnesis([
-                      ...anamnesis,
-                      {
-                        id: new Date().getTime(),
-                        type: watch('anamnesis.type'),
-                        description: watch('anamnesis.description'),
-                      },
-                    ])}
+                    onClick={() => {
+                      const anamneseForm = getValues();
+                      if (!anamneseForm?.anamnesis.description) {
+                        setError('anamnesis.description', {
+                          message: 'Campo é obrigatório',
+                        });
+                        return;
+                      }
+                      clearErrors('anamnesis.description');
+
+                      if (!anamneseForm?.anamnesis.type) {
+                        setError('anamnesis.type', {
+                          message: 'Campo é obrigatório',
+                        });
+                        return;
+                      }
+                      clearErrors('anamnesis.type');
+
+                      setAnamnesis([
+                        ...anamnesis,
+                        {
+                          id: new Date().getTime(),
+                          type: watch('anamnesis.type'),
+                          description: watch('anamnesis.description'),
+                        },
+                      ]);
+                    }}
                   >
                     <MdAdd size={30} />
                   </IconButton>
@@ -482,13 +501,13 @@ const AddSchedule: React.FC = () => {
                     }}
                   />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={4}>
                   <IsolateReRender control={control} />
                 </Grid>
                 <Grid item xs={6}>
                   <Input
                     inputRef={register({ required: true, valueAsNumber: true })}
-                    label="Gordura Viceral"
+                    label="Gordura Visceral"
                     variant="standard"
                     name="anthropometricData.visceral_fat"
                     id="anthropometricData.visceral_fat"

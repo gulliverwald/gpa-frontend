@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Redirect, useParams } from 'react-router-dom';
 import {
   Grid,
   InputAdornment,
@@ -15,7 +15,10 @@ import {
 } from 'react-icons/md';
 import { format } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
 
 import { WebStore } from '../../../../store/RootReducer';
 import AppBar from '../../../../components/AppBar';
@@ -32,9 +35,14 @@ import { addNotification } from '../../../../hooks/toast/redux/reducers/Notifica
 
 import { Container, useStyles } from './styles';
 import { IPatientsInfo } from '../../../patient/redux/types/IPatientsState';
-import { requestCreateSchedules, requestUpdateSchedules } from '../../redux/reducers/schedulesReducer';
+import {
+  requestCreateSchedules,
+  requestUpdateSchedules,
+} from '../../redux/reducers/schedulesReducer';
 import { IRequestCreateSchedules } from '../../redux/types/ISchedulesPayloadTypes';
 import { ISchedulesInfo } from '../../redux/types/ISchedulesState';
+import { useRedirect } from '../../../../hooks';
+import toUTCDate from '../../../../utils/toUTCDate';
 
 interface EatingPlanProps {
   id: number;
@@ -96,10 +104,11 @@ function IsolateReRender({ control }: { control: any }): JSX.Element {
 }
 
 const AddSchedule: React.FC = () => {
-  const { id, patientId } = useParams<{ id: string, patientId: string }>();
+  const { id, patientId } = useParams<{ id: string; patientId: string }>();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState(new Date());
+  const { redirect } = useRedirect();
 
   const [anamnesis, setAnamnesis] = useState<AnamneseProps[]>([]);
   const [patient, setPatient] = useState<IPatientsInfo | null>(null);
@@ -110,10 +119,16 @@ const AddSchedule: React.FC = () => {
 
   const classes = useStyles();
 
-  const [values, setValues] = useState('');
-
   const {
-    register, errors, handleSubmit, watch, control, setValue: setValueForm,
+    register,
+    errors,
+    handleSubmit,
+    watch,
+    control,
+    setValue: setValueForm,
+    getValues,
+    setError,
+    clearErrors,
   } = useForm();
 
   const {
@@ -122,16 +137,15 @@ const AddSchedule: React.FC = () => {
     handleSubmit: handleSubmit2,
   } = useForm();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValues(event.target.value);
-  };
-
   const onSubmitCreateEatingPlan = handleSubmit2((data) => {
     async function submitPA(): Promise<void> {
       setLoading(true);
       if (schedule) {
         try {
-          const response = await api.post('/EatingPlan', { ...data, schedule_id: schedule.schedule.id });
+          const response = await api.post('/EatingPlan', {
+            ...data,
+            schedule_id: schedule.schedule.id,
+          });
           if (response.data.status !== 'error') {
             setEatingPlan(response.data);
             dispatch(
@@ -179,7 +193,10 @@ const AddSchedule: React.FC = () => {
             date: new Date(value),
             id: schedule.schedule.id,
           },
-          anthropometricData: { ...data.anthropometricData, id: schedule.anthropometricData.id },
+          anthropometricData: {
+            ...data.anthropometricData,
+            id: schedule.anthropometricData.id,
+          },
           callback: (data_, error) => {
             if (data_) {
               setSchedule({ ...data_ });
@@ -233,8 +250,8 @@ const AddSchedule: React.FC = () => {
         .then((response) => {
           if (response.data) {
             setSchedule(response.data);
-            setValueForm('schedule', response.data.schedule);
-            setValueForm('anthropometricData', response.data.anthropometricData);
+            setValue(toUTCDate(new Date(response.data.schedule.date)));
+            setAnamnesis(response.data.anamnesis);
           }
         })
         .finally(() => {
@@ -247,7 +264,7 @@ const AddSchedule: React.FC = () => {
 
   return (
     <>
-      <AppBar title="Adicionar nova consulta" />
+      <AppBar title="Editar consulta" />
 
       <Container>
         <div className="container">
@@ -290,8 +307,8 @@ const AddSchedule: React.FC = () => {
                     id="schedule.value"
                     name="schedule.value"
                     label="Valor"
-                    value={values}
-                    onChange={handleChange}
+                    defaultValue={schedule?.schedule.value}
+                    key={schedule?.schedule.value}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">R$</InputAdornment>
@@ -310,6 +327,8 @@ const AddSchedule: React.FC = () => {
                     name="schedule.observation"
                     label="Observações"
                     multiline
+                    defaultValue={schedule?.schedule.observation}
+                    key={schedule?.schedule.observation}
                     rows={4}
                     className={classes.observation}
                     InputLabelProps={{
@@ -327,6 +346,10 @@ const AddSchedule: React.FC = () => {
                     inputRef={register({ required: false })}
                     name="anamnesis.type"
                     label="Tipo"
+                    helperText={
+                      !!errors.anamnesis?.type && errors.anamnesis?.type.message
+                    }
+                    error={!!errors.anamnesis?.type}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -339,6 +362,11 @@ const AddSchedule: React.FC = () => {
                     id="anamnesis.description"
                     name="anamnesis.description"
                     label="Descrição"
+                    helperText={
+                      !!errors.anamnesis?.description
+                      && errors.anamnesis?.description.message
+                    }
+                    error={!!errors.anamnesis?.description}
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -346,14 +374,33 @@ const AddSchedule: React.FC = () => {
                 </Grid>
                 <Grid item xs={2}>
                   <IconButton
-                    onClick={() => setAnamnesis([
-                      ...anamnesis,
-                      {
-                        id: new Date().getTime(),
-                        type: watch('anamnesis.type'),
-                        description: watch('anamnesis.description'),
-                      },
-                    ])}
+                    onClick={() => {
+                      const anamneseForm = getValues();
+                      if (!anamneseForm?.anamnesis.description) {
+                        setError('anamnesis.description', {
+                          message: 'Campo é obrigatório',
+                        });
+                        return;
+                      }
+                      clearErrors('anamnesis.description');
+
+                      if (!anamneseForm?.anamnesis.type) {
+                        setError('anamnesis.type', {
+                          message: 'Campo é obrigatório',
+                        });
+                        return;
+                      }
+                      clearErrors('anamnesis.type');
+
+                      setAnamnesis([
+                        ...anamnesis,
+                        {
+                          id: new Date().getTime(),
+                          type: watch('anamnesis.type'),
+                          description: watch('anamnesis.description'),
+                        },
+                      ]);
+                    }}
                   >
                     <MdAdd size={30} />
                   </IconButton>
@@ -379,7 +426,8 @@ const AddSchedule: React.FC = () => {
                   </div>
                 ))}
               </div>
-              {schedule && !eatingPlan ? (
+              {schedule?.schedule
+              && schedule.schedule.eating_plan_id == null ? (
                 <button
                   type="button"
                   className="pa-link"
@@ -388,17 +436,24 @@ const AddSchedule: React.FC = () => {
                   <span>Criar Plano Alimentar</span>
                   <MdSend size={30} color="white" />
                 </button>
-              )
-                : (
+                ) : (
                   <>
-                    {eatingPlan ? (
-                      <Link to={`/admin/addEatingPlan/${eatingPlan.id}`}>
-                        <button type="button" className="pa-link">
-                          <span>Visualizar Plano Alimentar</span>
-                          <MdSend size={30} color="white" />
-                        </button>
-                      </Link>
-                    ) : ''}
+                    {schedule?.schedule.eating_plan_id ? (
+                      <button
+                        type="button"
+                        className="pa-link"
+                        onClick={() => {
+                          redirect(
+                            `/admin/addEatingPlan/${schedule.schedule.eating_plan_id}`,
+                          );
+                        }}
+                      >
+                        <span>Visualizar Plano Alimentar</span>
+                        <MdSend size={30} color="white" />
+                      </button>
+                    ) : (
+                      ''
+                    )}
                   </>
                 )}
             </div>
@@ -412,6 +467,8 @@ const AddSchedule: React.FC = () => {
                     label="Altura"
                     variant="standard"
                     name="anthropometricData.height"
+                    defaultValue={schedule?.anthropometricData.height}
+                    key={schedule?.anthropometricData.height}
                     id="anthropometricData.height"
                     InputProps={{
                       endAdornment: (
@@ -431,6 +488,8 @@ const AddSchedule: React.FC = () => {
                     variant="standard"
                     name="anthropometricData.weight"
                     id="anthropometricData.weight"
+                    defaultValue={schedule?.anthropometricData.weight}
+                    key={schedule?.anthropometricData.weight}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">Kg</InputAdornment>
@@ -442,7 +501,7 @@ const AddSchedule: React.FC = () => {
                     }}
                   />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={4}>
                   <IsolateReRender control={control} />
                 </Grid>
                 <Grid item xs={6}>
@@ -450,6 +509,8 @@ const AddSchedule: React.FC = () => {
                     inputRef={register({ required: true, valueAsNumber: true })}
                     label="Gordura Viceral"
                     variant="standard"
+                    defaultValue={schedule?.anthropometricData.visceral_fat}
+                    key={schedule?.anthropometricData.visceral_fat}
                     name="anthropometricData.visceral_fat"
                     id="anthropometricData.visceral_fat"
                     InputProps={{ inputComponent: NumberFormatCustom as any }}
@@ -465,6 +526,8 @@ const AddSchedule: React.FC = () => {
                     variant="standard"
                     name="anthropometricData.metabolic_age"
                     id="anthropometricData.metabolic_age"
+                    defaultValue={schedule?.anthropometricData.metabolic_age}
+                    key={schedule?.anthropometricData.metabolic_age}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">anos</InputAdornment>
@@ -485,6 +548,8 @@ const AddSchedule: React.FC = () => {
                     label="Somatório de Pregas"
                     variant="standard"
                     name="anthropometricData.sum_of_pleats"
+                    defaultValue={schedule?.anthropometricData.sum_of_pleats}
+                    key={schedule?.anthropometricData.sum_of_pleats}
                     id="anthropometricData.sum_of_pleats"
                     InputProps={{
                       endAdornment: (
@@ -504,6 +569,8 @@ const AddSchedule: React.FC = () => {
                     variant="standard"
                     name="anthropometricData.bioimpedance"
                     id="anthropometricData.bioimpedance"
+                    defaultValue={schedule?.anthropometricData.bioimpedance}
+                    key={schedule?.anthropometricData.bioimpedance}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">%</InputAdornment>
@@ -520,6 +587,10 @@ const AddSchedule: React.FC = () => {
                     inputRef={register({ required: true, valueAsNumber: true })}
                     label="Percentual de Massa Muscular"
                     variant="standard"
+                    defaultValue={
+                      schedule?.anthropometricData.percentage_of_muscle_mass
+                    }
+                    key={schedule?.anthropometricData.percentage_of_muscle_mass}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">%</InputAdornment>
@@ -541,6 +612,10 @@ const AddSchedule: React.FC = () => {
                     variant="standard"
                     name="anthropometricData.arm_circumference"
                     id="anthropometricData.arm_circumference"
+                    defaultValue={
+                      schedule?.anthropometricData.arm_circumference
+                    }
+                    key={schedule?.anthropometricData.arm_circumference}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">cm</InputAdornment>
@@ -558,6 +633,10 @@ const AddSchedule: React.FC = () => {
                     label="Circunferência da Cintura"
                     variant="standard"
                     name="anthropometricData.waist_circumference"
+                    defaultValue={
+                      schedule?.anthropometricData.waist_circumference
+                    }
+                    key={schedule?.anthropometricData.waist_circumference}
                     id="anthropometricData.waist_circumference"
                     InputProps={{
                       endAdornment: (
@@ -577,6 +656,8 @@ const AddSchedule: React.FC = () => {
                     variant="standard"
                     name="anthropometricData.supra_iliac"
                     id="anthropometricData.supra_iliac"
+                    defaultValue={schedule?.anthropometricData.supra_iliac}
+                    key={schedule?.anthropometricData.supra_iliac}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">mm</InputAdornment>
@@ -595,6 +676,8 @@ const AddSchedule: React.FC = () => {
                     variant="standard"
                     name="anthropometricData.suprascapular"
                     id="anthropometricData.suprascapular"
+                    defaultValue={schedule?.anthropometricData.suprascapular}
+                    key={schedule?.anthropometricData.suprascapular}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">mm</InputAdornment>
@@ -615,6 +698,10 @@ const AddSchedule: React.FC = () => {
                     inputRef={register({ required: true, valueAsNumber: true })}
                     label="Biciptal"
                     variant="standard"
+                    defaultValue={
+                      schedule?.anthropometricData.bicipital_skin_fold
+                    }
+                    key={schedule?.anthropometricData.bicipital_skin_fold}
                     name="anthropometricData.bicipital_skin_fold"
                     id="anthropometricData.bicipital_skin_fold"
                     InputProps={{
@@ -635,6 +722,10 @@ const AddSchedule: React.FC = () => {
                     variant="standard"
                     name="anthropometricData.tricipital_skin_fold"
                     id="anthropometricData.tricipital_skin_fold"
+                    defaultValue={
+                      schedule?.anthropometricData.tricipital_skin_fold
+                    }
+                    key={schedule?.anthropometricData.tricipital_skin_fold}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">mm</InputAdornment>
