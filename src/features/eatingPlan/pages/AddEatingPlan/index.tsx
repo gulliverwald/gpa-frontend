@@ -110,6 +110,7 @@ const AddEatingPlan: React.FC = () => {
   } = useForm();
 
   const onSubmitCreateMeal = handleSubmit((data) => {
+    setOpenModalMeal(false);
     async function submitMeal(): Promise<void> {
       setLoading(true);
       try {
@@ -242,6 +243,7 @@ const AddEatingPlan: React.FC = () => {
   };
 
   const onSubmitAddFood = handleSubmit3((data) => {
+    setOpenModalFood(false);
     console.log(data);
     async function addFood(): Promise<void> {
       if (toAddFood) {
@@ -252,7 +254,7 @@ const AddEatingPlan: React.FC = () => {
             meal_id: toAddFood,
             food_id: parseInt(foodId, 10),
           });
-          if (response.data.status !== 'error') {
+          if (!response.data.status) {
             console.log(response.data);
             const aux = meals.findIndex(
               (item) => item.id === toAddFood,
@@ -423,7 +425,7 @@ const AddEatingPlan: React.FC = () => {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {meal.meal_has_food.map((item) => (
+                          {meal.meal_has_food?.map((item) => (
                             <TableRow key={item.food_id}>
                               <TableCell align="left">
                                 {item.food.name}
@@ -685,9 +687,6 @@ const AddEatingPlan: React.FC = () => {
               variant="contained"
               color="secondary"
               className={classes.button}
-              onClick={() => {
-                setOpenModalMeal(false);
-              }}
             >
               Confirmar
             </Button>

@@ -32,7 +32,7 @@ import { addNotification } from '../../../../hooks/toast/redux/reducers/Notifica
 
 import { Container, useStyles } from './styles';
 import { IPatientsInfo } from '../../../patient/redux/types/IPatientsState';
-import { requestCreateSchedules } from '../../redux/reducers/schedulesReducer';
+import { requestCreateSchedules, requestUpdateSchedules } from '../../redux/reducers/schedulesReducer';
 import { IRequestCreateSchedules } from '../../redux/types/ISchedulesPayloadTypes';
 import { ISchedulesInfo } from '../../redux/types/ISchedulesState';
 
@@ -45,6 +45,27 @@ interface AnamneseProps {
   id: number;
   type: string;
   description: string;
+}
+
+interface ScheduleProps {
+  schedule: ISchedulesInfo;
+  anthropometricData: {
+    id: number;
+    tricipital_skin_fold: number;
+    bicipital_skin_fold: number;
+    percentage_of_muscle_mass: number;
+    waist_circumference: number;
+    arm_circumference: number;
+    height: number;
+    weight: number;
+    supra_iliac: number;
+    visceral_fat: number;
+    suprascapular: number;
+    metabolic_age: number;
+    bioimpedance: number;
+    sum_of_pleats: number;
+  };
+  anamnesis: Array<{ type: string; descriptions: string }>;
 }
 
 function IsolateReRender({ control }: { control: any }): JSX.Element {
@@ -85,7 +106,7 @@ const AddSchedule: React.FC = () => {
 
   const [openModalEatingPlan, setOpenModalEatingPlan] = useState(false);
   const [eatingPlan, setEatingPlan] = useState<EatingPlanProps>();
-  const [schedule, setSchedule] = useState<ISchedulesInfo>();
+  const [schedule, setSchedule] = useState<ScheduleProps>();
 
   const classes = useStyles();
 
@@ -110,8 +131,9 @@ const AddSchedule: React.FC = () => {
       setLoading(true);
       if (schedule) {
         try {
-          const response = await api.post('/EatingPlan', { ...data, schedule_id: schedule.id });
+          const response = await api.post('/EatingPlan', { ...data, schedule_id: schedule.schedule.id });
           if (response.data.status !== 'error') {
+            setEatingPlan(response.data);
             dispatch(
               addNotification({
                 message: 'Plano alimentar criado!',
@@ -146,16 +168,18 @@ const AddSchedule: React.FC = () => {
   });
 
   const onSubmitCreateSchedule = handleSubmit((data) => {
-    console.log(data);
     setLoading(true);
     if (patient) {
       dispatch(
         requestCreateSchedules({
           anamnesis: anamnesis as any,
-          value: data.value,
+          schedule: {
+            ...data.schedule,
+            patient_id: patient.id,
+            date: new Date(value),
+          },
+          anthropometricData: data.anthropometricData,
           // anthropometric_data_id: data.anthropometric_data_id,
-          patient_id: patient.id,
-          date: value.toISOString(),
           callback: (data_, error) => {
             if (data_) {
               setSchedule({ ...data_ });
@@ -171,6 +195,46 @@ const AddSchedule: React.FC = () => {
               dispatch(
                 addNotification({
                   message: 'Erro ao criar consulta!',
+                  options: { variant: 'error' },
+                  key: Math.random(),
+                }),
+              );
+            }
+            setLoading(false);
+          },
+        }),
+      );
+    }
+  });
+
+  const onSubmitUpdateSchedule = handleSubmit((data) => {
+    setLoading(true);
+    if (patient && schedule) {
+      dispatch(
+        requestUpdateSchedules({
+          anamnesis: anamnesis as any,
+          schedule: {
+            ...data.schedule,
+            patient_id: patient.id,
+            date: new Date(value),
+            id: schedule.schedule.id,
+          },
+          anthropometricData: { ...data.anthropometricData, id: schedule.anthropometricData.id },
+          callback: (data_, error) => {
+            if (data_) {
+              setSchedule({ ...data_ });
+              dispatch(
+                addNotification({
+                  message: 'Consulta atualizada com sucesso!',
+                  options: { variant: 'success' },
+                  key: Math.random(),
+                }),
+              );
+            }
+            if (error) {
+              dispatch(
+                addNotification({
+                  message: 'Erro ao atualizar consulta!',
                   options: { variant: 'error' },
                   key: Math.random(),
                 }),
@@ -212,11 +276,20 @@ const AddSchedule: React.FC = () => {
             {' '}
             {patient?.name}
           </h2>
-          <Button type="submit" startIcon={<MdSave />} form="create-schedule">
+          {schedule ? (
+            <Button type="submit" startIcon={<MdSave />} form="create-schedule">
+              Atualizar
+            </Button>
+          ) : (
+            <Button type="submit" startIcon={<MdSave />} form="create-schedule">
+              Salvar
+            </Button>
+          )}
+          {/* <Button type="submit" startIcon={<MdSave />} form="create-schedule">
             Salvar
-          </Button>
+          </Button> */}
         </div>
-        <form onSubmit={onSubmitCreateSchedule} key={1} id="create-schedule">
+        <form onSubmit={schedule ? onSubmitUpdateSchedule : onSubmitCreateSchedule} key={1} id="create-schedule">
           <div className="content-container">
             <div className="schedule-container">
               <h1>Dados da Consulta</h1>
@@ -291,6 +364,7 @@ const AddSchedule: React.FC = () => {
                 <Grid item xs={4}>
                   <Input
                     id="anamnesis.type"
+                    inputRef={register({ required: false })}
                     name="anamnesis.type"
                     label="Tipo"
                     InputLabelProps={{
@@ -301,6 +375,7 @@ const AddSchedule: React.FC = () => {
                 <Grid item xs={6}>
                   <Input
                     fullWidth
+                    inputRef={register({ required: false })}
                     id="anamnesis.description"
                     name="anamnesis.description"
                     label="Descrição"
@@ -344,21 +419,28 @@ const AddSchedule: React.FC = () => {
                   </div>
                 ))}
               </div>
-              {/* {toCreateEatingPlan ? (
-              <Link to={`/admin/addEatingPlan/${toCreateEatingPlan.id}`}>
-                <button type="button" className="pa-link">
-                  <span>Visualizar Plano Alimentar</span>
-                  <MdSend size={30} color="white" />
-                </button>
-              </Link>
-            )
-              : (
-                <button type="button" className="pa-link" onClick={() =>
-                   setOpenModalEatingPlan(true)}>
+              {schedule && !eatingPlan ? (
+                <button
+                  type="button"
+                  className="pa-link"
+                  onClick={() => setOpenModalEatingPlan(true)}
+                >
                   <span>Criar Plano Alimentar</span>
                   <MdSend size={30} color="white" />
                 </button>
-              )} */}
+              )
+                : (
+                  <>
+                    {eatingPlan ? (
+                      <Link to={`/admin/addEatingPlan/${eatingPlan.id}`}>
+                        <button type="button" className="pa-link">
+                          <span>Visualizar Plano Alimentar</span>
+                          <MdSend size={30} color="white" />
+                        </button>
+                      </Link>
+                    ) : ''}
+                  </>
+                )}
             </div>
 
             <div className="antropometric-container">

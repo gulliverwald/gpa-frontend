@@ -30,26 +30,22 @@ function* workerRequestCreateSchedules(action: {
 }) {
   try {
     const {
-      value,
-      date,
-      anthropometric_data_id,
-      observations,
-      patient_id,
+      schedule,
+      anthropometricData,
+      anamnesis,
     } = action.payload;
     const response: AxiosResponse<any> = yield call(
       api.post,
-      'Users',
+      'Schedule',
       {
-        value,
-        date,
-        anthropometric_data_id,
-        observations,
-        patient_id,
+        schedule,
+        anthropometricData,
+        anamnesis,
       },
     );
-    yield put(requestCreateSchedulesSuccess({ schedule: response.data }));
+    yield put(requestCreateSchedulesSuccess({ ...response.data }));
     if (action.payload.callback) {
-      action.payload.callback(response.data.schedule, null);
+      action.payload.callback(response.data, null);
     }
   } catch (err) {
     yield put(
@@ -91,31 +87,24 @@ function* workerRequestListSchedules(action: {
   }
 }
 
-function* workerRequestUpdateSchedules(action: {
-  type: string;
-  payload: IRequestUpdateSchedules;
-}) {
+function* workerRequestUpdateSchedules(action: any) {
   try {
     const {
-      value,
-      date,
-      anthropometric_data_id,
-      observations,
-      patient_id,
+      schedule,
+      anthropometricData,
+      anamnesis,
     } = action.payload;
 
-    const response: AxiosResponse<ISchedulesInfo> = yield call(
+    const response: AxiosResponse<any> = yield call(
       api.put,
-      'Users',
+      'schedule',
       {
-        value,
-        date,
-        anthropometric_data_id,
-        observations,
-        patient_id,
+        schedule,
+        anthropometricData,
+        anamnesis,
       },
     );
-    yield put(requestUpdateSchedulesSuccess({ schedule: response.data }));
+    yield put(requestUpdateSchedulesSuccess({ ...response.data }));
     if (action.payload.callback) {
       action.payload.callback(response.data, null);
     }
