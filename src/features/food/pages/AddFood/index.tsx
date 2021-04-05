@@ -26,7 +26,7 @@ import {
   IRequestCreateFood,
   IRequestUpdateFood,
 } from '../../redux/types/IFoodPayloadTypes';
-import { ISubstitutionsInfo } from '../../redux/types/IFoodState';
+import { IFoodInfo, ISubstitutionsInfo } from '../../redux/types/IFoodState';
 import { addNotification } from '../../../../hooks/toast/redux/reducers/NotificationReducer';
 import { WebStore } from '../../../../store/RootReducer';
 import Table from '../../../../components/Table';
@@ -43,6 +43,21 @@ interface FoodProps {
   unity: string;
   calories: number;
   measure: number;
+  substitutions: [
+    {
+      food_id: number;
+      food_substitution_id: number;
+      measure: number;
+      description: string;
+      substitution: {
+        id: number;
+        measure: number;
+        name: string;
+        unity: string;
+        calories: number;
+      }
+    }
+  ];
 }
 
 interface SubstitutionsProps {
@@ -84,7 +99,7 @@ const AddFood: React.FC = () => {
 
   const [foodSub, setFoodSub] = useState<FoodProps>();
 
-  const foods = useSelector((state: WebStore) => state.food.food);
+  const foods = useSelector((state: WebStore) => state.food.food as unknown as FoodProps[]);
   const classes = useStyles();
 
   const {
@@ -120,13 +135,26 @@ const AddFood: React.FC = () => {
 
   const handleUpdate = handleSubmit((data) => {
     if (toUpdateFood) {
+      setLoading(true);
+      setOpenUpdate(false);
       dispatch(
         requestUpdateFood({
           id: toUpdateFood.id,
           ...data,
           substitutions: substitutions as ISubstitutionsInfo[],
+          callback: (data_, error) => {
+            if (data_) {
+              dispatch(addNotification({ message: 'Substituição(ões) editada(s) com sucesso!', options: { variant: 'success' }, key: Math.random() }));
+            }
+            if (error) {
+              dispatch(addNotification({ message: 'Erro ao inserir/excluir substituição!', options: { variant: 'error' }, key: Math.random() }));
+            }
+            setLoading(false);
+          },
         } as IRequestUpdateFood),
       );
+
+      // setSubstitutions([]);
     }
   });
 
@@ -314,6 +342,12 @@ const AddFood: React.FC = () => {
                           aria-label="update"
                           onClick={() => {
                             setToUpdateFood(food);
+                            setSubstitutions(food.substitutions.map((substitution) => ({
+                              name: substitution.substitution.name,
+                              id: substitution.food_substitution_id,
+                              measure: substitution.measure,
+                              description: substitution.description,
+                            })));
                             setOpenUpdate(true);
                           }}
                         >
@@ -529,6 +563,10 @@ const AddFood: React.FC = () => {
                 variant="contained"
                 color="default"
                 className={classes.button}
+                onClick={() => {
+                  setOpenUpdate(false);
+                  setToUpdateFood(undefined);
+                }}
               >
                 Cancelar
               </Button>

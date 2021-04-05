@@ -105,7 +105,7 @@ function* workerRequestUpdateFood(action: any) {
       },
     );
     if (response.data.status !== 'error') {
-      yield put(requestListFoodSuccess({ food: response.data }));
+      yield put(requestUpdateFoodSuccess(response.data));
       if (action.payload.callback) {
         action.payload.callback(response.data, null);
       }

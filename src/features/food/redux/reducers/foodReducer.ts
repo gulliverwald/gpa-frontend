@@ -34,7 +34,9 @@ const foodReducerSlice = createSlice({
     requestUpdateFoodSuccess(state, action: PayloadAction<IRequestUpdateFoodSuccess>) {
       const index = state.food.findIndex((food) => food.id === action.payload.id);
       const { payload } = action;
-      state.food[index] = { ...state.food[index], ...payload };
+      const aux = state.food;
+      aux[index] = { ...aux[index], ...payload };
+      Object.assign(state.food, aux);
     },
     requestDeleteFoodSuccess(state, action: PayloadAction<IRequestDeleteFoodSuccess>) {
       const index = state.food.findIndex((food) => food.id === action.payload.id);

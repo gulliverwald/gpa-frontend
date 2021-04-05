@@ -16,6 +16,7 @@ export interface IRequestUpdateFood {
   calories: number;
   measure: number;
   substitutions?: ISubstitutionsInfo[];
+  callback?: (data: any, error: any) => void;
 }
 
 export interface IRequestDeleteFood {
