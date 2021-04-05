@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+/* eslint-disable no-undef */
+import React, { useState, useEffect, useCallback } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -53,6 +54,21 @@ interface MealProps {
         name: string;
         unity: string;
         calories: number;
+        substitutions: [
+          {
+            food_id: number;
+            food_substitution_id: number;
+            measure: number;
+            description: string;
+            substitution: {
+              id: number;
+              measure: number;
+              name: string;
+              unity: string;
+              calories: number;
+            }
+          }
+        ];
       };
     }
   ];
@@ -79,8 +95,33 @@ interface DeleteFoodProps {
   description: string;
 }
 
+function IsolateReRender({
+  control,
+  food,
+}: {
+  control: any;
+  food: any;
+}): JSX.Element {
+  const measure: number | undefined = useWatch({
+    control,
+    name: 'measure',
+  });
+
+  if (food && measure) {
+    return (
+      <span>
+        x
+        {` ${food?.measure} ${food?.unity} = ${
+          (food?.calories || 1) * measure
+        } Kcal`}
+      </span>
+    );
+  }
+  return <span />;
+}
+
 const AddEatingPlan: React.FC = () => {
-  const { patientId, id } = useParams<{ patientId: string, id: string }>();
+  const { patientId, id } = useParams<{ patientId: string; id: string }>();
   const dispatch = useDispatch();
 
   const [patient, setPatient] = useState<PatientProps>();
@@ -115,6 +156,9 @@ const AddEatingPlan: React.FC = () => {
     register: register3,
     errors: errors3,
     handleSubmit: handleSubmit3,
+    getValues: getValues3,
+    watch: watch3,
+    control: control3,
   } = useForm();
 
   const {
@@ -270,9 +314,7 @@ const AddEatingPlan: React.FC = () => {
           });
           if (!response.data.status) {
             console.log(response.data);
-            const aux = meals.findIndex(
-              (item) => item.id === toAddFood,
-            );
+            const aux = meals.findIndex((item) => item.id === toAddFood);
             meals[aux].meal_has_food.unshift(response.data);
             dispatch(
               addNotification({
@@ -360,7 +402,10 @@ const AddEatingPlan: React.FC = () => {
     async function submitGuidelines(): Promise<void> {
       if (eatingPlanGuidelines) {
         try {
-          const response = await api.put('/EatingPlan', { id: parseInt(id, 10), guidelines: data.guidelines });
+          const response = await api.put('/EatingPlan', {
+            id: parseInt(id, 10),
+            guidelines: data.guidelines,
+          });
           if (!response.data.status) {
             console.log(response.data);
             setEatingPlanGuidelines(response.data.guidelines);
@@ -463,10 +508,7 @@ const AddEatingPlan: React.FC = () => {
                 shrink: true,
               }}
             />
-            <Button
-              type="submit"
-              form="guidelines-form"
-            >
+            <Button type="submit" form="guidelines-form">
               Salvar
             </Button>
           </form>
@@ -475,124 +517,148 @@ const AddEatingPlan: React.FC = () => {
             key={2}
           >
             {meals
-              ? meals.map((meal, index) => (
-                <div className="line">
-                  <Accordion className={classes.accordion} key={meal.id}>
-                    <AccordionSummary
-                      expandIcon={<MdExpandMore />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <Typography className={classes.heading}>
-                        {meal.name}
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails className={classes.accordionDetail}>
-                      <div className={classes.foodTitle}>
-                        <h2>
-                          <b>Alimento(s)</b>
-                        </h2>
-                        <Button
-                          variant="outlined"
-                          onClick={() => {
-                            setToAddFood(meal.id);
-                            setOpenModalFood(true);
-                          }}
-                        >
-                          Adicionar Alimento
-                        </Button>
-                      </div>
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>
-                              <b>Nome</b>
-                            </TableCell>
-                            <TableCell align="left">
-                              <b>Medida Caseira</b>
-                            </TableCell>
-                            <TableCell align="left">
-                              <b>Substituição</b>
-                            </TableCell>
-                            <TableCell align="center" />
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {meal.meal_has_food?.map((item) => (
-                            <TableRow key={item.food_id}>
-                              <TableCell align="left">
-                                {item.food.name}
-                              </TableCell>
-                              <TableCell align="left">
-                                {item.measure}
-                              </TableCell>
-                              <TableCell align="left" />
-                              <TableCell align="center">
-                                <IconButton
-                                  aria-label="delete"
-                                  onClick={() => {
-                                    const { food, ...rest } = item;
-                                    setToDeleteFood(rest);
-                                    setOpenDeleteFood(true);
-                                  }}
-                                >
-                                  <MdDelete size={30} color="red" />
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                      <Input
-                        defaultValue=""
-                        inputRef={register2({ required: false })}
-                        id="observations"
-                        name={`observations[${index}]`}
-                        label="Observação"
-                        variant="outlined"
-                        autoComplete="off"
-                        rows={3}
-                        multiline
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        className={classes.input}
-                      />
-                      <Input
-                        defaultValue={meal.name}
-                        inputRef={register2({ required: true })}
-                        required
-                        id="name"
-                        name={`name[${index}]`}
-                        label="Nome da Refeição"
-                        variant="outlined"
-                        autoComplete="off"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        className={classes.input}
-                        helperText="Caso queira editá-la, digite o novo nome acima."
-                      />
-                      <Button
-                        type="submit"
-                        onClick={() => setIndexToUpdate(index)}
+              ? meals.map((meal, index) => {
+                const sumCal = meal.meal_has_food
+                  .reduce((total, item) => total + item.measure * item.food.calories, 0);
+                return (
+                  <div className="line">
+                    <Accordion className={classes.accordion} key={meal.id}>
+                      <AccordionSummary
+                        expandIcon={<MdExpandMore />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
                       >
-                        Salvar
-                      </Button>
-                    </AccordionDetails>
-                  </Accordion>
+                        <Typography className={classes.heading} key={sumCal}>
+                          {meal.name}
+                          {' '}
+                          -
+                          {' '}
+                          {sumCal}
+                          {' '}
+                          Kcal
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails className={classes.accordionDetail}>
+                        <div className={classes.foodTitle}>
+                          <h2>
+                            <b>Alimento(s)</b>
+                          </h2>
+                          <Button
+                            variant="outlined"
+                            onClick={() => {
+                              setToAddFood(meal.id);
+                              setOpenModalFood(true);
+                            }}
+                          >
+                            Adicionar Alimento
+                          </Button>
+                        </div>
+                        <Table>
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>
+                                <b>Nome</b>
+                              </TableCell>
+                              <TableCell align="left">
+                                <b>Medida Caseira</b>
+                              </TableCell>
+                              <TableCell align="left">
+                                <b>Substituição</b>
+                              </TableCell>
+                              <TableCell align="left">
+                                <b>Calorias (Kcal)</b>
+                              </TableCell>
+                              <TableCell align="center" />
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            {meal.meal_has_food?.map((item) => (
+                              <TableRow key={item.food_id}>
+                                <TableCell align="left">
+                                  {item.food.name}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {item.measure}
+                                  {' '}
+                                  {item.food.unity}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {item.food.substitutions.map((substitution) => (
+                                    <span>
+                                      {` ${substitution.substitution.name} (${substitution.measure * substitution.substitution.measure} ${substitution.substitution.unity}),`}
+                                    </span>
+                                  ))}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {item.measure * item.food.calories}
+                                </TableCell>
+                                <TableCell align="center">
+                                  <IconButton
+                                    aria-label="delete"
+                                    onClick={() => {
+                                      const { food, ...rest } = item;
+                                      setToDeleteFood(rest);
+                                      setOpenDeleteFood(true);
+                                    }}
+                                  >
+                                    <MdDelete size={30} color="red" />
+                                  </IconButton>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                        <Input
+                          defaultValue=""
+                          inputRef={register2({ required: false })}
+                          id="observations"
+                          name={`observations[${index}]`}
+                          label="Observação"
+                          variant="outlined"
+                          autoComplete="off"
+                          rows={3}
+                          multiline
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          className={classes.input}
+                        />
+                        <Input
+                          defaultValue={meal.name}
+                          inputRef={register2({ required: true })}
+                          required
+                          id="name"
+                          name={`name[${index}]`}
+                          label="Nome da Refeição"
+                          variant="outlined"
+                          autoComplete="off"
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          className={classes.input}
+                          helperText="Caso queira editá-la, digite o novo nome acima."
+                        />
+                        <Button
+                          type="submit"
+                          onClick={() => setIndexToUpdate(index)}
+                        >
+                          Salvar
+                        </Button>
+                      </AccordionDetails>
+                    </Accordion>
 
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => {
-                      setToDeleteMeal(meal);
-                      setOpenDeleteMeal(true);
-                    }}
-                  >
-                    <MdDelete size={30} color="red" />
-                  </IconButton>
-                </div>
-              ))
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => {
+                        setToDeleteMeal(meal);
+                        setOpenDeleteMeal(true);
+                      }}
+                    >
+                      <MdDelete size={30} color="red" />
+                    </IconButton>
+                  </div>
+                );
+              })
               : ''}
           </form>
 
@@ -646,7 +712,12 @@ const AddEatingPlan: React.FC = () => {
             </Grid>
             <Grid item xs={12}>
               <form onSubmit={onSubmitAddFood} key={3} id="add-food">
-                <Grid container spacing={3}>
+                <Grid
+                  container
+                  spacing={3}
+                  alignItems="center"
+                  justify="center"
+                >
                   <Grid item xs={12}>
                     <InputLabel shrink> Alimento </InputLabel>
                     <Select
@@ -657,6 +728,9 @@ const AddEatingPlan: React.FC = () => {
                       value={foodId}
                       onChange={(e) => setFoodId(`${e.target.value}`)}
                       displayEmpty
+                      inputRef={register3({
+                        required: true,
+                      })}
                     >
                       {foods
                         && foods.map((food) => (
@@ -666,17 +740,36 @@ const AddEatingPlan: React.FC = () => {
                         ))}
                     </Select>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={3}>
                     <Input
                       fullWidth
+                      type="number"
                       id="measure"
                       name="measure"
                       label="Medida"
+                      inputProps={{
+                        min: 1,
+                      }}
                       inputRef={register3({
                         required: false,
                         valueAsNumber: true,
+                        min: 1,
                       })}
                       className={classes.inputFormBody}
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={9}
+                    alignItems="center"
+                    alignContent="center"
+                    justify="center"
+                  >
+                    <IsolateReRender
+                      control={control3}
+                      food={foods.find(
+                        (item: any) => item.id === parseInt(foodId, 10),
+                      )}
                     />
                   </Grid>
                   <Grid item xs={12}>

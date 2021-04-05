@@ -86,6 +86,13 @@ interface EatingPlanProps {
                 food_substitution_id: number;
                 measure: number;
                 description: string;
+                substitution: {
+                  id: number;
+                  measure: number;
+                  name: string;
+                  unity: string;
+                  calories: number;
+                }
               }
               >;
             };
@@ -292,15 +299,18 @@ const EatingPlan: React.FC = () => {
                                 `
                                 {foodAux.food.name}
                               </TableCell>
-                              <TableCell align="left">{foodAux.measure}</TableCell>
                               <TableCell align="left">
-                                {/* {foodAux.food.substitutions.map((substitution) => (
-                                  <p key={substitution.}>
-                                    {','}
-                                    {substitution.description}
-                                    {','}
-                                  </p>
-                                ))} */}
+                                {foodAux.food.measure}
+                                {' '}
+                                {' '}
+                                {foodAux.food.unity}
+                              </TableCell>
+                              <TableCell align="left">
+                                {foodAux.food.substitutions.map((substitution) => (
+                                  <span>
+                                    {` ${substitution.substitution.name} (${substitution.measure * substitution.substitution.measure} ${substitution.substitution.unity}),`}
+                                  </span>
+                                ))}
                               </TableCell>
                             </TableRow>
                           ))}

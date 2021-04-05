@@ -39,15 +39,17 @@ const NewsFeed: React.FC = () => {
     <>
       <Container>
         <h2><b>Feed de Notícias</b></h2>
-        {news.slice(count * 4 - 4, count * 4).map((news_) => (
-          <NewsCard
-            key={news_.id}
-            id={news_.id}
-            newsTitle={news_.title}
-            subTitle={news_.subtitle}
-            imageLink={news_.image_link}
-          />
-        ))}
+        {news
+          .slice(count * 4 - 4, count * 4)
+          .map((news_: any) => (
+            <NewsCard
+              key={news_.id}
+              id={news_.id}
+              newsTitle={news_.title}
+              subTitle={news_.subtitle}
+              imageLink={news_.image_link}
+            />
+          ))}
         <Divider />
         <ShowContainer>
 
