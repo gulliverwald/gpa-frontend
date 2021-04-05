@@ -3,8 +3,10 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IUserState } from '../types/IUserState';
 import {
+  IRequestForgotPassword,
   IRequestLogin,
   IRequestLoginSuccess,
+  IRequestResetPassword,
   IRequestUserError,
 } from '../types/IUserPayloadTypes';
 
@@ -107,6 +109,14 @@ export const requestLogin = createAction<IRequestLogin, '@user/requestLogin'>(
 
 export const requestLogout = createAction<void, '@user/requestLogout'>(
   '@user/requestLogout',
+);
+
+export const requestForgotPassword = createAction<IRequestForgotPassword, '@user/requestForgotPassword'>(
+  '@user/requestForgotPassword',
+);
+
+export const requestResetPassword = createAction<IRequestResetPassword, '@user/requestResetPassword'>(
+  '@user/requestResetPassword',
 );
 
 // export const responseLoginApi = createAction<IResponseLoginApi, '@user/responseLoginApi'>(

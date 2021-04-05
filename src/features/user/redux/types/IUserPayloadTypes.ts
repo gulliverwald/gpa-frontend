@@ -1,6 +1,18 @@
 export interface IRequestLogin {
   email: string;
   password: string;
+  callback?: (data: any, error: any)=> void;
+
+}
+export interface IRequestForgotPassword {
+  email: string;
+  callback?: (data: any, error: any)=> void;
+}
+export interface IRequestResetPassword {
+  password: string;
+  token: string;
+  confirmPassword: string;
+  callback?: (data: any, error: any)=> void;
 }
 
 export interface IResponseLoginApi {
@@ -22,6 +34,7 @@ export interface IResponseLoginApi {
   };
   token: string;
   role: string;
+
 }
 
 export interface IRequestLoginSuccess {

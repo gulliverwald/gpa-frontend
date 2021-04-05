@@ -6,14 +6,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch } from 'react-redux';
 import { IoMdAlert, IoMdContact, IoMdLock } from 'react-icons/io';
 import { InputAdornment } from '@material-ui/core';
-import { requestLogin } from '../../../user/redux/reducers/userReducer';
+import { requestForgotPassword, requestLogin } from '../../../user/redux/reducers/userReducer';
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 import ImgBackground from '../../../../assets/img/5912.jpg';
 import ImgGPA from '../../../../assets/img/logo.png';
 import { MainContainer, Container, useStyles } from './styles';
-import BackdropLoading from '../../../../components/BackdropLoading';
 import { addNotification } from '../../../../hooks/toast/redux/reducers/NotificationReducer';
+import BackdropLoading from '../../../../components/BackdropLoading';
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,6 @@ const Login: React.FC = () => {
 
   const loginSchema = yup.object().shape({
     email: yup.string().email('Email inválido').required('O email é obrigatório!'),
-    password: yup.string().required('A senha é obrigatória!'),
   });
 
   const { register, errors, handleSubmit } = useForm({
@@ -34,14 +33,25 @@ const Login: React.FC = () => {
     // eslint-disable-next-line no-unused-vars
     (data) => {
       setLoading(true);
-      dispatch(requestLogin({
+      dispatch(requestForgotPassword({
         ...data,
         callback: (data_, error) => {
           setLoading(false);
+          console.table(errors);
+          if (data_) {
+            console.table(data_);
+            dispatch(addNotification({
+              key: Math.random(),
+              message: `Email enviado para ${data.email}`,
+              options: {
+                variant: 'success',
+              },
+            }));
+          }
           if (error) {
             dispatch(addNotification({
               key: Math.random(),
-              message: error.response.data.message,
+              message: 'erro',
               options: {
                 variant: 'error',
               },
@@ -63,7 +73,7 @@ const Login: React.FC = () => {
             <img src={ImgGPA} alt="Logo GPA" className={classes.imageGPA} />
           </div>
           <form
-            className="login-form"
+            className="forgot-form"
             onSubmit={handleSubmit(onSubmit)}
             autoComplete="off"
           >
@@ -81,51 +91,16 @@ const Login: React.FC = () => {
                 ),
               }}
             />
-            <span>
-              {errors.email && errors.email.type === 'required' && (
-                <>
-                  <p className={classes.inputAlert}>
-                    <IoMdAlert color="red" style={{ margin: '0px 8px' }} />
-                    {errors.email.message}
-                  </p>
-                </>
-              )}
-            </span>
-            <Input
-              inputRef={register({ required: 'A senha é obrigatória!' })}
-              id="password"
-              name="password"
-              label="Senha"
-              type="password"
-              className={classes.inputField}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <IoMdLock size={26} />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <span>
-              {errors.password && errors.password.type === 'required' && (
-                <>
-                  <p className={classes.inputAlert}>
-                    <IoMdAlert color="red" style={{ margin: '0px 8px' }} />
-                    {errors.password.message}
-                  </p>
-                </>
-              )}
-            </span>
-            <Button type="submit"> Entrar </Button>
+            <Button type="submit"> Enviar </Button>
             <Link
-              to="/forgot"
+              to="/"
               style={{
                 marginTop: 16,
                 paddingTop: 16,
               }}
             >
               <span>
-                Recuperar senha
+                Voltar ao login
               </span>
             </Link>
           </form>

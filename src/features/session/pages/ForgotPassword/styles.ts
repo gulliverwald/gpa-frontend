@@ -10,7 +10,7 @@ export const Container = styled.div`
   justify-content: center;
   background: #ffffff;
 
-  .login-form {
+  .forgot-form {
     padding: 4rem;
     width: 100%;
     display: flex;
