@@ -54,9 +54,9 @@ const Homepage: React.FC = () => {
             <NavLink to="/dashboard/eatingPlan" className={classes.cardLink}>
               <CardPatient Icon={IoMdPaper} message="Plano Alimentar" />
             </NavLink>
-            <NavLink to="/dashboard/preSchedule" className={classes.cardLink}>
+            {/* <NavLink to="/dashboard/preSchedule" className={classes.cardLink}>
               <CardPatient Icon={IoMdCalendar} message="Pré-agendar Consulta" />
-            </NavLink>
+            </NavLink> */}
           </MenuContainer>
           <NewsFeed />
         </ContentContainer>

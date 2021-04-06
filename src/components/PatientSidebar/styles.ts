@@ -13,6 +13,9 @@ export const RootContainer = styled.div`
 
   @media(max-width: 900px){
     background-color: transparent;
+    padding-top: 0;
+    height: unset;
+    width: 100%;
   }
 `;
 
@@ -28,6 +31,10 @@ export const MenuContainer = styled.div`
   p {
     padding-left: 16px;
   }
+
+  @media (max-width: 900px) {
+    padding: 20px;
+  }
 `;
 
 export const OptionsContainer = styled.div`
@@ -37,6 +44,9 @@ export const OptionsContainer = styled.div`
   justify-content: center;
   width: 50%;
   height: 100%;
+  @media (max-width: 900px) {
+    width: 100%;
+  }
 `;
 
 export const OptionsItem = styled.button`
@@ -69,5 +79,8 @@ export const useStyles = makeStyles(() => createStyles({
     width: '50%',
     fontSize: '26px',
     color: '#3CB878',
+    '@media (max-width: 900px)': {
+      width: '100%',
+    },
   },
 }));

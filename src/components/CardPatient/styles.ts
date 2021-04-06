@@ -35,6 +35,11 @@ export const Button = styled.button`
     transform: translateY(4px);
     transition: transform 50ms ease-in-out;
   }
+
+  @media (max-width: 900px) {
+    min-width: unset;
+    width: 80%;
+  }
 `;
 
 export const useStyles = makeStyles(() => createStyles({

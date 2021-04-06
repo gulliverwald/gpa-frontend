@@ -312,8 +312,8 @@ const AddEatingPlan: React.FC = () => {
             meal_id: toAddFood,
             food_id: parseInt(foodId, 10),
           });
-          if (!response.data.status) {
-            console.log(response.data);
+          console.log(response.data);
+          if (response.data.meal_id) {
             const aux = meals.findIndex((item) => item.id === toAddFood);
             meals[aux].meal_has_food.unshift(response.data);
             dispatch(
@@ -333,6 +333,7 @@ const AddEatingPlan: React.FC = () => {
             );
           }
         } catch (erro) {
+          console.log(erro);
           dispatch(
             addNotification({
               message: 'Erro ao adicionar o alimento!',
@@ -519,7 +520,7 @@ const AddEatingPlan: React.FC = () => {
             {meals
               ? meals.map((meal, index) => {
                 const sumCal = meal.meal_has_food
-                  .reduce((total, item) => total + item.measure * item.food.calories, 0);
+                  ?.reduce((total, item) => total + item.measure * item.food.calories, 0);
                 return (
                   <div className="line">
                     <Accordion className={classes.accordion} key={meal.id}>

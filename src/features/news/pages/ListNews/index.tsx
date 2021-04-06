@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { format, parseISO } from 'date-fns';
+import {
+  format, parseISO, isBefore, isAfter,
+} from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   Grid, Paper, Card, CardActions, CardContent, CardMedia, Typography, IconButton,
@@ -32,7 +34,7 @@ const ListNews: React.FC = () => {
 
   const dispatch = useDispatch();
   const news = useSelector((state: WebStore) => state.news.news);
-  const [filterNews, setFilterNews] = useState<INewsInfo[]>(news);
+  const [filterNews, setFilterNews] = useState<INewsInfo[]>([]);
 
   const classes = useStyles();
 
@@ -113,6 +115,17 @@ const ListNews: React.FC = () => {
         }),
       );
     }
+    if (news) {
+      const arraySort = [...news];
+      setFilterNews(arraySort.sort((a, b) => {
+        const keyA = new Date(a.date);
+        const keyB = new Date(b.date);
+
+        if (isBefore(keyA, keyB)) return 1;
+        if (isAfter(keyA, keyB)) return -1;
+        return 0;
+      }));
+    }
   }, []);
 
   const handleDateChange = async (date: any) => {
@@ -157,7 +170,7 @@ const ListNews: React.FC = () => {
       </SearchContainer> */}
       <Container>
         <Grid container spacing={2} className={classes.gridContainer}>
-          {news.map((map) => (
+          {filterNews.map((map) => (
             <Grid item xs={4} key={map.id}>
               <Paper elevation={3} className={classes.paper}>
                 <Card>

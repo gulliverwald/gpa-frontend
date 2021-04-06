@@ -14,6 +14,11 @@ export const Container = styled.div`
   h2 {
     padding: 16px;
   }
+
+  @media (max-width: 900px) {
+    width: 90%;
+    height: auto;
+  }
 `;
 
 export const ShowContainer = styled.div`

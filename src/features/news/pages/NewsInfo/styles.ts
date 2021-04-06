@@ -43,4 +43,9 @@ export const BoxContainer = styled.div`
     justify-self: flex-end;
     width: 70%;
   }
+
+  @media (max-width: 900px) {
+    width: 90%;
+    height: auto;
+  }
 `;

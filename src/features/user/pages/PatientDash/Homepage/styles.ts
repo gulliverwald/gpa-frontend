@@ -16,6 +16,7 @@ export const Container = styled.div`
 
   @media(max-width: 900px){
     flex-direction: column;
+    height: auto;
   }
 `;
 
@@ -28,6 +29,16 @@ export const MenuContainer = styled.div`
   height: 100%;
   max-width: 400px;
   padding: 34px;
+
+  @media (max-width: 900px) {
+    width: 90%;
+    padding: 0;
+    max-width: 90%;
+
+    div {
+      min-width: inherit;
+    }
+  }
 `;
 
 export const ContentContainer = styled.div`
