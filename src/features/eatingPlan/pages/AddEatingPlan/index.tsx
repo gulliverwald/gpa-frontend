@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React, { useState, useEffect, useCallback } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm, useWatch, Controller } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -310,7 +310,7 @@ const AddEatingPlan: React.FC = () => {
           const response = await api.post('/Meal/addFood', {
             ...data,
             meal_id: toAddFood,
-            food_id: parseInt(foodId, 10),
+            food_id: data.food_id,
           });
           console.log(response.data);
           if (response.data.meal_id) {
@@ -721,25 +721,32 @@ const AddEatingPlan: React.FC = () => {
                 >
                   <Grid item xs={12}>
                     <InputLabel shrink> Alimento </InputLabel>
-                    <Select
-                      variant="outlined"
-                      fullWidth
-                      id="food_id"
-                      name="food_id"
-                      value={foodId}
-                      onChange={(e) => setFoodId(`${e.target.value}`)}
-                      displayEmpty
-                      inputRef={register3({
-                        required: true,
-                      })}
-                    >
-                      {foods
+                    <Controller
+                      as={(
+                        <Select
+                          variant="outlined"
+                          fullWidth
+                          // id="food_id"
+                          // name="food_id"
+                          // value={foodId}
+                          // onChange={(e) => setFoodId(`${e.target.value}`)}
+                          displayEmpty
+                          inputRef={register3({
+                            required: true,
+                          })}
+                        >
+                          {foods
                         && foods.map((food) => (
                           <MenuItem key={food.id} value={food.id}>
                             {food.name}
                           </MenuItem>
                         ))}
-                    </Select>
+                        </Select>
+                    )}
+                      name="food_id"
+                      id="food_id"
+                      control={control3}
+                    />
                   </Grid>
                   <Grid item xs={3}>
                     <Input
@@ -769,7 +776,7 @@ const AddEatingPlan: React.FC = () => {
                     <IsolateReRender
                       control={control3}
                       food={foods.find(
-                        (item: any) => item.id === parseInt(foodId, 10),
+                        (item: any) => item.id === getValues3('food_id'),
                       )}
                     />
                   </Grid>
