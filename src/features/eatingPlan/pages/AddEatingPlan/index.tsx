@@ -227,7 +227,7 @@ const AddEatingPlan: React.FC = () => {
         });
         if (response.data.status !== 'error') {
           const index = meals.findIndex((meal) => meal.id === response.data.id);
-          meals[index] = response.data;
+          meals[index] = { ...meals[index], ...response.data };
           setMeals(meals);
           dispatch(
             addNotification({
@@ -499,6 +499,7 @@ const AddEatingPlan: React.FC = () => {
             <Input
               fullWidth
               defaultValue={`${eatingPlanGuidelines}`}
+              key={`${eatingPlanGuidelines}`}
               id="guidelines"
               name="guidelines"
               label="Orientações"
@@ -515,6 +516,7 @@ const AddEatingPlan: React.FC = () => {
           </form>
           <form
             onSubmit={handleSubmit2((data) => onSubmitUpdateMeal(data))}
+            id="update-meal"
             key={2}
           >
             {meals
@@ -610,7 +612,7 @@ const AddEatingPlan: React.FC = () => {
                           </TableBody>
                         </Table>
                         <Input
-                          defaultValue=""
+                          defaultValue={meal.observations}
                           inputRef={register2({ required: false })}
                           id="observations"
                           name={`observations[${index}]`}
@@ -641,6 +643,7 @@ const AddEatingPlan: React.FC = () => {
                         />
                         <Button
                           type="submit"
+                          form="update-meal"
                           onClick={() => setIndexToUpdate(index)}
                         >
                           Salvar
@@ -757,6 +760,7 @@ const AddEatingPlan: React.FC = () => {
                       label="Medida"
                       inputProps={{
                         min: 1,
+                        step: 0.01,
                       }}
                       inputRef={register3({
                         required: false,
