@@ -140,6 +140,7 @@ const AddSchedule: React.FC = () => {
   const onSubmitCreateEatingPlan = handleSubmit2((data) => {
     async function submitPA(): Promise<void> {
       setLoading(true);
+      setOpenModalEatingPlan(false);
       if (schedule) {
         try {
           const response = await api.post('/EatingPlan', {
@@ -414,7 +415,7 @@ const AddSchedule: React.FC = () => {
                 ))}
               </div>
               {schedule?.schedule
-              && schedule.schedule.eating_plan_id == null ? (
+              && !eatingPlan ? (
                 <button
                   type="button"
                   className="pa-link"
@@ -425,13 +426,13 @@ const AddSchedule: React.FC = () => {
                 </button>
                 ) : (
                   <>
-                    {schedule?.schedule.eating_plan_id ? (
+                    {eatingPlan ? (
                       <button
                         type="button"
                         className="pa-link"
                         onClick={() => {
                           redirect(
-                            `/admin/patient/${patientId}/addEatingPlan/${schedule.schedule.eating_plan_id}`,
+                            `/admin/patient/${patientId}/addEatingPlan/${eatingPlan.id}`,
                           );
                         }}
                       >
