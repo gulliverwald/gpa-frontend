@@ -727,13 +727,13 @@ const AddEatingPlan: React.FC = () => {
                           variant="outlined"
                           fullWidth
                           // id="food_id"
-                          // name="food_id"
+                          name="food_id_select"
                           // value={foodId}
                           // onChange={(e) => setFoodId(`${e.target.value}`)}
                           displayEmpty
-                          inputRef={register3({
-                            required: true,
-                          })}
+                          // inputRef={register3({
+                          //   required: true,
+                          // })}
                         >
                           {foods
                         && foods.map((food) => (
