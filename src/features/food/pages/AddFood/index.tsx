@@ -69,6 +69,8 @@ interface SubstitutionsProps {
 
 const unities = [
   'Unidade',
+  'ml',
+  'Fatia',
   'Escumadeira Grande',
   'Escumadeira Média',
   'Escumadeira Pequena',
@@ -82,6 +84,7 @@ const unities = [
   'Colher café',
   'Copo americano',
   'Copo duplo',
+  'Xícara',
 ];
 
 const AddFood: React.FC = () => {

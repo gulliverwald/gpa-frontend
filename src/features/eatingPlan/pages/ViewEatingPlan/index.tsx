@@ -300,7 +300,7 @@ const EatingPlan: React.FC = () => {
                                 {foodAux.food.name}
                               </TableCell>
                               <TableCell align="left">
-                                {foodAux.food.measure}
+                                {foodAux.measure}
                                 {' '}
                                 {' '}
                                 {foodAux.food.unity}
