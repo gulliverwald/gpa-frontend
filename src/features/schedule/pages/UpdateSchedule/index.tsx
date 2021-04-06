@@ -250,6 +250,7 @@ const AddSchedule: React.FC = () => {
         .get(`/schedule/${id}`)
         .then((response) => {
           if (response.data) {
+            setEatingPlan(response.data.eatingPlan);
             setSchedule(response.data);
             setValue(toUTCDate(new Date(response.data.schedule.date)));
             setAnamnesis(response.data.anamnesis);
